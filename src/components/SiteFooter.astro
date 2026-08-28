@@ -1,0 +1,124 @@
+---
+/**
+ * Pied de page.
+ *
+ * Il porte le NAP dans exactement la même formulation que la page contact et
+ * que le JSON-LD : une seule source, `src/data/site.config.mjs`.
+ */
+import { getImage } from 'astro:assets';
+import Mark from './brand/Mark.astro';
+import Wordmark from './brand/Wordmark.astro';
+import { SITE, STUDIO } from '../data/site';
+import { FOOTER_SERVICES, FOOTER_SITE } from '../data/pages';
+
+/* Signe du studio. Le fichier vient de `uploads/a-mark.original-737px.png`,
+   détouré et remis à l'échelle d'affichage — aucun agrandissement. */
+import darklineMark from '../assets/brand/darkline-mark.png';
+
+const path = Astro.url.pathname;
+const year = new Date(SITE.lastReviewed).getFullYear();
+
+/**
+ * Le symbole du studio est produit ici plutôt que par `<Image>` : ce composant
+ * sérialise `alt=""` en attribut booléen `alt`, ce que le contrôle de build
+ * refuse — et il a raison de le refuser, la règle « toute image déclare son
+ * texte alternatif » ne doit pas dépendre de la façon dont un composant écrit
+ * ses attributs. En écrivant la balise, `alt=""` sort tel quel : vide parce
+ * que le symbole est décoratif, présent parce que c'est la règle.
+ */
+const darklineImage = await getImage({
+  src: darklineMark,
+  width: 26,
+  height: 23,
+  densities: [2, 3],
+  format: 'webp'
+});
+---
+
+<footer class="tp-footer tp-dark" id="tp-footer">
+  <div class="tp-shell">
+    <!-- Le mot-symbole reprend ici l'échelle qu'il avait dans le hero : la
+         page se referme sur la marque, à la taille d'une enseigne. -->
+    <a class="tp-footer__sign" href="/" aria-label={`${SITE.name} — accueil`}>
+      <Wordmark class="tp-footer__logo" />
+    </a>
+
+    <div class="tp-footer__top">
+      <div class="tp-stack">
+        <Mark class="tp-footer__mark" variant="color" />
+        <p class="tp-text-soft">{SITE.signature}</p>
+
+        <address>
+          {SITE.address.inline}<br />
+          <a href={SITE.contact.phoneHref} data-track="phone">{SITE.contact.phoneDisplay}</a><br />
+          <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>
+        </address>
+      </div>
+
+      <div>
+        <h2>Services</h2>
+        <ul class="tp-footer__list">
+          {
+            FOOTER_SERVICES.map((link) => (
+              <li>
+                <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2>Le site</h2>
+        <ul class="tp-footer__list">
+          {
+            FOOTER_SITE.map((link) => (
+              <li>
+                <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
+              >Facebook<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+            >
+          </li>
+          <li>
+            <a href={SITE.contact.whatsappHref} rel="noopener noreferrer" target="_blank" data-track="whatsapp"
+              >WhatsApp<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tp-footer__bottom">
+      <p>© {year} {SITE.name}</p>
+      <p>{SITE.activity}</p>
+    </div>
+
+    <!-- Signature du studio. Le symbole est décoratif : c'est la phrase qui
+         porte l'information, et la répéter en texte alternatif la ferait lire
+         deux fois. -->
+    <p class="tp-sign">
+      <a class="tp-sign__link" href={STUDIO.href} rel="noopener noreferrer" target="_blank">
+        <img
+          class="tp-sign__mark"
+          src={darklineImage.src}
+          srcset={darklineImage.srcSet.attribute}
+          width="26"
+          height="23"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <span>Conçu et développé par <b>{STUDIO.name}</b></span>
+        <span class="tp-visually-hidden"> (nouvel onglet)</span>
+      </a>
+    </p>
+  </div>
+</footer>

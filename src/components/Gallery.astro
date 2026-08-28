@@ -1,0 +1,84 @@
+---
+/**
+ * Galerie de réalisations.
+ *
+ * Le filtre est un groupe de boutons radio et une règle `:has()`. Résultat :
+ * il fonctionne sans JavaScript, il se pilote entièrement au clavier avec les
+ * flèches, et si `:has()` manque au navigateur, toutes les photographies
+ * restent visibles — jamais l'inverse.
+ *
+ * Les facettes ne décrivent que ce que le manifeste d'assets permet
+ * d'affirmer : l'état du chantier et la nature de la vue. Aucune ville n'est
+ * attachée à une photo tant que la publication source ne la confirme pas.
+ */
+import { getCollection } from 'astro:content';
+import Shot from './Shot.astro';
+
+interface Props {
+  /** Nombre maximal de photographies (aperçu sur l'accueil). */
+  limit?: number | undefined;
+  /** Le filtre n'a de sens que sur la galerie complète. */
+  filtrable?: boolean | undefined;
+  /** Ne garder que les photos rattachables à une famille de service. */
+  service?: 'pergolas' | 'verrieres' | 'abris' | undefined;
+  /** La première image est-elle au-dessus de la ligne de flottaison ? */
+  eagerFirst?: boolean | undefined;
+}
+
+const { limit, filtrable = false, service, eagerFirst = false } = Astro.props;
+
+const FACETS = [
+  { id: 'tout', label: 'Tout' },
+  { id: 'realisations', label: 'Réalisations terminées' },
+  { id: 'chantiers', label: 'Chantier et pose' },
+  { id: 'details', label: 'Détails de structure' }
+] as const;
+
+const all = await getCollection('realisations');
+const entries = all
+  .filter((entry) => (service ? entry.data.services.includes(service) : true))
+  .sort((a, b) => a.data.ordre - b.data.ordre)
+  .slice(0, limit ?? Infinity);
+---
+
+<div class="tp-gallery-scope">
+  {
+    filtrable && (
+      <fieldset class="tp-filters">
+        <legend>Filtrer les réalisations</legend>
+        {FACETS.map((facet, index) => (
+          <>
+            <input
+              type="radio"
+              name="tp-filtre"
+              id={`tp-f-${facet.id}`}
+              value={facet.id}
+              checked={index === 0}
+            />
+            <label for={`tp-f-${facet.id}`}>{facet.label}</label>
+          </>
+        ))}
+      </fieldset>
+    )
+  }
+
+  <div class="tp-gallery">
+    {
+      entries.map((entry, index) => (
+        <div
+          class:list={['tp-shot', `tp-shot--${entry.data.format}`, 'tp-reveal']}
+          data-cat={entry.data.categories.join(' ')}
+        >
+          <Shot
+            photo={entry.data.photo}
+            alt={entry.data.alt}
+            legende={entry.data.legende}
+            ratio={entry.data.ratio}
+            format={entry.data.format}
+            eager={eagerFirst && index === 0}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>

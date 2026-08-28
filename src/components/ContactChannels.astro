@@ -1,0 +1,49 @@
+---
+/**
+ * Canaux directs. Le formulaire reste le canal principal, mais un visiteur
+ * pressé doit pouvoir appeler ou écrire sans remplir quoi que ce soit.
+ * Un seul numéro, celui de la fiche publique, pour l'appel comme pour WhatsApp.
+ */
+import { SITE } from '../data/site';
+
+interface Props {
+  /** Ajoute l'adresse postale sous les canaux joignables. */
+  withAddress?: boolean | undefined;
+}
+
+const { withAddress = false } = Astro.props;
+---
+
+<div class="tp-cta__channels">
+  <a class="tp-channel" href={SITE.contact.phoneHref} data-track="phone">
+    <span>Appeler</span>
+    <span class="tp-tabular">{SITE.contact.phoneDisplay}</span>
+  </a>
+
+  <a
+    class="tp-channel"
+    href={SITE.contact.whatsappHref}
+    rel="noopener noreferrer"
+    target="_blank"
+    data-track="whatsapp"
+  >
+    <span>WhatsApp</span>
+    <span class="tp-tabular"
+      >{SITE.contact.phoneDisplay}<span class="tp-visually-hidden"> — ouvre un nouvel onglet</span></span
+    >
+  </a>
+
+  <a class="tp-channel" href={SITE.contact.emailHref}>
+    <span>E-mail</span>
+    <span>{SITE.contact.email}</span>
+  </a>
+
+  {
+    withAddress && (
+      <p class="tp-channel">
+        <span>Adresse</span>
+        <span>{SITE.address.inline}</span>
+      </p>
+    )
+  }
+</div>

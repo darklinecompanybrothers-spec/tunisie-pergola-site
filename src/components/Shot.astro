@@ -1,0 +1,63 @@
+---
+/**
+ * Une photographie et sa légende.
+ *
+ * `astro:assets` génère AVIF et WebP avec un JPEG de secours, aux seules
+ * largeurs réellement utiles : jamais au-delà de la largeur native du dérivé,
+ * pour qu'aucun agrandissement ne soit servi. Les dimensions sont écrites dans
+ * le HTML et le cadre porte un `aspect-ratio`, donc la place est réservée avant
+ * même le premier octet d'image.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  photo: ImageMetadata;
+  alt: string;
+  legende?: string | undefined;
+  ratio: '1-1' | '4-3' | '3-4' | '4-5' | '3-2' | '16-9' | '21-9';
+  /** Emprise dans la grille — détermine aussi l'attribut `sizes`. */
+  format?: 'third' | 'half' | 'wide' | 'full';
+  eager?: boolean | undefined;
+  class?: string | undefined;
+}
+
+const {
+  photo,
+  alt,
+  legende,
+  ratio,
+  format = 'half',
+  eager = false,
+  class: className
+} = Astro.props;
+
+/** Largeur rendue au maximum, par emprise, sur une grille de 6 colonnes. */
+const SIZES: Record<NonNullable<Props['format']>, string> = {
+  third: '(min-width: 90rem) 410px, (min-width: 48rem) 22vw, 45vw',
+  half: '(min-width: 90rem) 640px, (min-width: 48rem) 46vw, 45vw',
+  wide: '(min-width: 90rem) 860px, (min-width: 48rem) 62vw, 92vw',
+  full: '(min-width: 90rem) 1312px, 92vw'
+};
+
+const candidates = [420, 640, 860, 1280, 1600, 2048];
+const widths = [...new Set(candidates.filter((w) => w < photo.width).concat(photo.width))];
+---
+
+<figure class:list={['tp-figure', className]}>
+  <div class:list={['tp-figure__frame', `tp-ratio-${ratio}`]}>
+    <Picture
+      src={photo}
+      alt={alt}
+      widths={widths}
+      sizes={SIZES[format]}
+      formats={['avif', 'webp']}
+      fallbackFormat="jpeg"
+      quality={72}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding={eager ? 'sync' : 'async'}
+      fetchpriority={eager ? 'high' : 'auto'}
+    />
+  </div>
+  {legende && <figcaption>{legende}</figcaption>}
+</figure>

@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../data/site';
+
+/**
+ * Cette page décrit le traitement réellement mis en place par ce site, et
+ * uniquement lui. Elle ne recopie pas un modèle et n'annonce aucune mesure qui
+ * n'existe pas : pas de durée de conservation chiffrée tant qu'elle n'est pas
+ * arrêtée, pas de mention d'un sous-traitant qui n'intervient pas, pas de
+ * bannière de cookies alors qu'aucun cookie n'est déposé.
+ *
+ * Les points qui relèvent d'une décision juridique du client sont consignés
+ * dans `docs/RELEASE-GATES.md` et bloquent la mise en production.
+ */
+const COLLECTE = [
+  ['Nom et prénom', 'Obligatoire — pour savoir à qui répondre.'],
+  ['Téléphone', 'Obligatoire — c’est le canal de rappel principal.'],
+  ['Ville', 'Obligatoire — pour situer le projet et l’intervention.'],
+  ['Type de projet, usage, dimensions approximatives', 'Obligatoires — pour préparer une réponse utile.'],
+  ['Message', 'Obligatoire — votre description du projet.'],
+  ['E-mail', 'Facultatif — seulement si vous préférez une réponse écrite.'],
+  ['Échéance souhaitée', 'Facultatif — pour situer l’urgence.'],
+  [
+    'Origine de la visite et page d’entrée',
+    'Ajoutées automatiquement à votre demande : le site d’où vous venez et la première page consultée.'
+  ]
+];
+---
+
+<Base route="/politique-confidentialite/">
+  <PageHead
+    route="/politique-confidentialite/"
+    eyebrow="Vie privée"
+    title="Ce que devient ce que vous écrivez."
+    lede="Cette page décrit le traitement réellement en place sur ce site : les données du formulaire de projet, ce que le navigateur retient, et ce que le site ne fait pas."
+    theme="grid"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-donnees">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Données collectées</p>
+        <h2 class="tp-mask" id="tp-donnees">Uniquement le formulaire de projet.</h2>
+        <p class="tp-text-soft">
+          Aucune autre page ne collecte de donnée. Naviguer sur le site sans envoyer de demande ne
+          transmet rien.
+        </p>
+      </div>
+
+      <div class="tp-span-body tp-reveal">
+        <dl class="tp-nap">
+          {
+            COLLECTE.map(([champ, role]) => (
+              <div>
+                <dt>{champ}</dt>
+                <dd class="tp-text-soft">{role}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-usage">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Usage et destinataires</p>
+        <h2 class="tp-mask" id="tp-usage">Qui reçoit votre demande.</h2>
+      </div>
+
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          <strong>À quoi elles servent.</strong> À vous recontacter au sujet du projet que vous avez
+          décrit, et à rien d’autre. Vos réponses ne servent ni à de la prospection sans lien avec
+          votre demande, ni à de la publicité, et ne sont ni vendues ni échangées.
+        </p>
+        <p>
+          <strong>Sur quelle base.</strong> Sur votre accord : la case de consentement du formulaire
+          doit être cochée pour que la demande parte.
+        </p>
+        <p>
+          <strong>Qui les reçoit.</strong> Pendant la phase initiale, les demandes sont reçues et
+          traitées par DCB Authority Group, l’agence qui opère ce site pour {SITE.name}, puis
+          transmises à l’entreprise pour le suivi du projet.
+        </p>
+        <p>
+          <strong>Par quel moyen technique.</strong> L’envoi passe par un formulaire hébergé par
+          Google (Google Forms) et alimente une feuille de calcul Google accessible à l’équipe. À ce
+          titre, Google agit comme hébergeur des réponses.
+        </p>
+        <p>
+          <strong>Combien de temps.</strong> Vos réponses sont conservées le temps du suivi de votre
+          demande. Vous pouvez en demander la suppression à tout moment, sans avoir à vous
+          justifier, à l’adresse indiquée plus bas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-navigateur">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Dans votre navigateur</p>
+        <h2 class="tp-mask" id="tp-navigateur">Aucun cookie, aucun traceur.</h2>
+      </div>
+
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Ce site ne dépose aucun cookie, ne charge aucun outil de mesure d’audience, aucun pixel
+          publicitaire et aucun script tiers. C’est aussi pourquoi il n’affiche aucune bannière de
+          consentement : il n’y a rien à consentir.
+        </p>
+        <p>
+          Deux informations seulement sont retenues, dans le <em>stockage de session</em> de votre
+          navigateur : le site depuis lequel vous êtes arrivé avec la première page consultée, et
+          la liste des actions de contact effectuées pendant la visite (formulaire commencé, envoi,
+          clic sur le numéro, clic sur WhatsApp). Elles restent sur votre appareil, sont jointes à
+          votre demande si vous en envoyez une, et disparaissent à la fermeture de l’onglet.
+        </p>
+        <p>
+          Aucun identifiant publicitaire n’est lu ni créé, et aucune de ces informations ne permet
+          de vous identifier tant que vous n’envoyez pas de demande.
+        </p>
+        <p>
+          <strong>Envoi de fichiers.</strong> Le formulaire n’accepte aucune pièce jointe. Cette
+          possibilité ne sera ouverte que si un stockage sécurisé, une limite de taille, un contrôle
+          du type de fichier et une politique de conservation sont réellement en place.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-droits">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Vos droits</p>
+        <h2 class="tp-mask" id="tp-droits">Demander, corriger, effacer.</h2>
+      </div>
+
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Vous pouvez demander à consulter les informations que vous avez transmises, à les faire
+          corriger, ou à les faire supprimer. Une seule adresse suffit :
+        </p>
+        <p>
+          <a href={SITE.contact.emailHref}>{SITE.contact.email}</a><br />
+          <a href={SITE.contact.phoneHref} class="tp-tabular" data-track="phone"
+            >{SITE.contact.phoneDisplay}</a
+          ><br />
+          {SITE.address.inline}
+        </p>
+        <p>
+          Indiquez le nom et le numéro de téléphone utilisés lors de l’envoi : c’est ce qui permet
+          de retrouver la demande.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

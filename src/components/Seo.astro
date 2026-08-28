@@ -1,0 +1,143 @@
+---
+/**
+ * Métadonnées, partage et données structurées.
+ *
+ * Le domaine canonique vient d'une seule constante. Les données structurées ne
+ * contiennent que ce que le dossier client confirme : nom, adresse, téléphone,
+ * e-mail, site, page Facebook et villes déclarées. Pas de fourchette de prix,
+ * pas d'horaires, pas d'avis, pas de note, pas d'offre — Google traite ces
+ * inventions comme du balisage trompeur, et elles seraient fausses.
+ *
+ * L'entité de marque n'est définie qu'une fois, sur l'accueil, sous un `@id`
+ * stable. Les autres pages s'y réfèrent au lieu de la redéclarer.
+ */
+import { SITE, ENTITY_ID, absolute } from '../data/site';
+import { meta, trail, type RoutePath } from '../data/pages';
+
+interface Props {
+  route: RoutePath;
+  /** Chemin d'une image de partage propre à la page. Défaut : image de marque. */
+  shareImage?: string | undefined;
+}
+
+const { route, shareImage } = Astro.props;
+const page = meta(route);
+
+const canonical = route === '/404' ? absolute('/404') : absolute(route);
+const share = absolute(shareImage ?? '/brand/og-tunisie-pergola.jpg');
+
+const business = {
+  '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
+  '@id': ENTITY_ID,
+  name: SITE.name,
+  description: SITE.activity,
+  url: absolute('/'),
+  telephone: SITE.contact.phoneE164,
+  email: SITE.contact.email,
+  image: share,
+  logo: absolute('/apple-touch-icon.png'),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    postalCode: SITE.address.postalCode,
+    addressLocality: SITE.address.city,
+    addressCountry: SITE.address.countryCode
+  },
+  areaServed: SITE.areaServed.map((city) => ({ '@type': 'City', name: city })),
+  sameAs: [SITE.social.facebook],
+  knowsAbout: ['Pergola', 'Verrière', 'Abri de jardin', 'Auvent']
+};
+
+const crumbs = trail(route);
+const breadcrumb =
+  crumbs.length > 1
+    ? {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonical}#fil`,
+        itemListElement: crumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: crumb.label,
+          item: absolute(crumb.path)
+        }))
+      }
+    : null;
+
+const webPage = {
+  '@type': 'WebPage',
+  '@id': `${canonical}#page`,
+  url: canonical,
+  name: page.title,
+  description: page.description,
+  inLanguage: SITE.lang,
+  isPartOf: { '@id': `${SITE.origin}/#site` },
+  about: { '@id': ENTITY_ID },
+  ...(breadcrumb ? { breadcrumb: { '@id': breadcrumb['@id'] } } : {})
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${SITE.origin}/#site`,
+  url: absolute('/'),
+  name: SITE.name,
+  inLanguage: SITE.lang,
+  publisher: { '@id': ENTITY_ID }
+};
+
+const graph = [
+  ...(route === '/' ? [business] : []),
+  website,
+  webPage,
+  ...(breadcrumb ? [breadcrumb] : [])
+];
+
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{page.title}</title>
+<meta name="description" content={page.description} />
+<link rel="canonical" href={canonical} />
+{page.indexable ? null : <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={route === '/' ? 'website' : 'article'} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content="fr_TN" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={page.title} />
+<meta property="og:description" content={page.description} />
+<meta property="og:image" content={share} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${SITE.name} — ${SITE.signature}`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={page.title} />
+<meta name="twitter:description" content={page.description} />
+<meta name="twitter:image" content={share} />
+
+<meta name="theme-color" content="#151A1C" />
+<meta name="format-detection" content="telephone=no" />
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link
+  rel="preload"
+  href="/fonts/syne-latin-wght-normal.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/manrope-latin-wght-normal.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+
+<script type="application/ld+json" is:inline set:html={jsonLd} />

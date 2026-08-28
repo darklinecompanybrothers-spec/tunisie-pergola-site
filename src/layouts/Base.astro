@@ -1,0 +1,60 @@
+---
+/**
+ * Gabarit unique du site.
+ *
+ * L'ouverture — le monogramme qui se construit pièce par pièce sur fond
+ * anthracite — n'est posée que sur l'accueil. Son mécanisme est décrit dans
+ * `scenes.css` : l'état écrit par défaut est « absent », l'animation part de
+ * l'état couvert et y revient sans `animation-fill-mode`. Si les animations ne
+ * s'exécutent pas — moteur ancien, réduction de mouvement, JavaScript coupé —
+ * le rideau n'apparaît jamais et ne peut donc jamais rester devant le contenu.
+ */
+import Seo from '../components/Seo.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Mark from '../components/brand/Mark.astro';
+import Wordmark from '../components/brand/Wordmark.astro';
+import type { RoutePath } from '../data/pages';
+import { SITE } from '../data/site';
+import '../styles/app.css';
+
+interface Props {
+  route: RoutePath;
+  shareImage?: string | undefined;
+  /** Scène d'ouverture — accueil uniquement. */
+  curtain?: boolean | undefined;
+}
+
+const { route, shareImage, curtain = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <Seo route={route} shareImage={shareImage} />
+  </head>
+  <body class="tp-light">
+    <a class="tp-skip" href="#tp-main">Aller au contenu</a>
+
+    {
+      curtain && (
+        <div class="tp-curtain" aria-hidden="true">
+          <Mark class="tp-curtain__mark" variant="color" parts />
+          <Wordmark class="tp-curtain__word" />
+        </div>
+      )
+    }
+
+    <SiteHeader />
+
+    <main id="tp-main">
+      <slot />
+    </main>
+
+    <SiteFooter />
+
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

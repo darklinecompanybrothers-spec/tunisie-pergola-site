@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Gallery from '../components/Gallery.astro';
+import Shot from '../components/Shot.astro';
+import { SITE } from '../data/site';
+
+import auventPhoto from '../assets/photos/derived/auvent-entree-sous-face-bois.jpg';
+import detailPhoto from '../assets/photos/derived/detail-sous-face-bois-auvent.jpg';
+import headPhoto from '../assets/photos/derived/pose-couverture-bord-de-piscine.jpg';
+
+const USAGES = [
+  {
+    titre: 'Auvent d’entrée',
+    texte:
+      'Une couverture au-dessus de la porte, qui abrite l’arrivée et donne une adresse à la façade. Les réalisations publiées montrent des auvents anthracite à sous-face couleur bois.'
+  },
+  {
+    titre: 'Abri de jardin',
+    texte:
+      'Un volume couvert autonome, posé dans le jardin pour protéger un usage : rangement, coin d’ombre, prolongement d’une pièce de vie vers l’extérieur.'
+  },
+  {
+    titre: 'Abri de terrasse et de bord de piscine',
+    texte:
+      'Une couverture qui rend un espace praticable toute la journée. La contrainte principale est l’accès et le levage sur un lieu déjà aménagé.'
+  }
+];
+---
+
+<Base route="/abris/">
+  <PageHead
+    route="/abris/"
+    eyebrow="Service"
+    title="Abris, abris de jardin et auvents."
+    lede="Des structures conçues pour protéger un usage précis et s’intégrer à l’environnement existant, de l’entrée d’une maison au fond du jardin."
+    theme="shelter"
+    photo={headPhoto}
+    photoAlt="Pose d’une couverture anthracite à sous-face bois au bord d’une piscine, engin de levage visible."
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-abris-intro">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Ce que c’est</p>
+        <h2 class="tp-mask" id="tp-abris-intro">Protéger un usage, pas remplir un espace.</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Un abri part toujours d’un usage concret : entrer sans se mouiller, laisser du matériel
+          dehors, s’asseoir à l’ombre à midi. C’est cet usage qui donne les dimensions, la hauteur et
+          l’emplacement — pas l’inverse.
+        </p>
+        <p>
+          {SITE.name} conçoit, fournit et pose des abris et des abris de jardin, au même titre que
+          les pergolas et les verrières.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--flush-top tp-light">
+    <div class="tp-bleed tp-grow tp-reveal" data-scene="enter">
+      <Shot
+        photo={detailPhoto}
+        alt="Détail d’un auvent anthracite dont la sous-face a un aspect bois, avec des poteaux décoratifs verticaux."
+        legende="Auvent anthracite avec sous-face à aspect bois et poteaux décoratifs."
+        ratio="21-9"
+        format="full"
+      />
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark" aria-labelledby="tp-abris-usages">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">Trois usages</p>
+          <h2 class="tp-mask" id="tp-abris-usages">De l’entrée au fond du jardin.</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">
+          Les trois usages ci-dessous couvrent la plupart des demandes d’abri. Le vôtre peut n’en
+          être aucun : décrivez-le tel qu’il est.
+        </p>
+      </div>
+
+      <ol class="tp-cols tp-stagger" role="list">
+        {
+          USAGES.map((usage, index) => (
+            <li class="tp-stack tp-reveal">
+              <p class="tp-index">{String(index + 1).padStart(2, '0')}</p>
+              <h3>{usage.titre}</h3>
+              <p class="tp-text-soft">{usage.texte}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-abris-galerie">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">En situation</p>
+          <h2 class="tp-mask" id="tp-abris-galerie">Auvents et couvertures posés.</h2>
+        </div>
+        <div class="tp-span-body tp-reveal">
+          <Shot
+            photo={auventPhoto}
+            alt="Auvent d’entrée anthracite avec sous-face couleur bois et structure verticale décorative devant la porte d’une maison."
+            legende="Auvent d’entrée anthracite, sous-face couleur bois, structure verticale décorative."
+            ratio="4-3"
+            format="half"
+          />
+        </div>
+      </div>
+
+      <Gallery service="abris" />
+
+      <p><Btn href="/realisations/" tone="quiet">Toutes les réalisations</Btn></p>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-abris-suite">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Aussi</p>
+        <h2 class="tp-mask" id="tp-abris-suite">Si l’abri devient une pièce.</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Quand la demande dépasse la simple protection et vise un lieu où l’on s’installe, elle
+          relève souvent d’une <a href="/pergolas/">pergola</a>. Quand elle porte sur la lumière et
+          la transparence, d’une <a href="/verrieres/">verrière</a>.
+        </p>
+        <p>
+          <Btn href="/zones-intervention/" tone="quiet">Où l’entreprise intervient</Btn>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Dites-nous ce que l’abri doit protéger."
+    text="L’usage, l’emplacement et les dimensions approximatives suffisent pour commencer. L’équipe chargée du suivi commercial vous répond sous 24 heures."
+  />
+</Base>

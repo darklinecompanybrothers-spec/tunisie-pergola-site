@@ -1,0 +1,1569 @@
+@layer components {
+  /* ==========================================================================
+     Ouverture
+     Rideau anthracite d'environ trois quarts de seconde. Son état de repos est
+     « absent » : l'animation part de l'état couvert et y revient sans
+     `animation-fill-mode`. Si les animations ne s'exécutent pas — moteur
+     ancien, réduction de mouvement, JavaScript coupé — le rideau n'apparaît
+     jamais et ne peut donc jamais rester coincé devant le contenu.
+     ========================================================================== */
+
+  .tp-curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background-color: var(--tp-anthracite);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .tp-curtain__mark {
+    inline-size: clamp(4.5rem, 14vw, 9rem);
+    color: var(--tp-ivory);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tp-curtain {
+      animation: tp-curtain 760ms var(--tp-ease-mask);
+    }
+
+    .tp-curtain__mark {
+      animation: tp-curtain-mark 760ms var(--tp-ease-mask);
+    }
+  }
+
+  @keyframes tp-curtain {
+    0%,
+    58% {
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: visible;
+    }
+  }
+
+  @keyframes tp-curtain-mark {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    52% {
+      clip-path: inset(0 0 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      scale: 1.06;
+    }
+  }
+
+  /* ==========================================================================
+     En-tête et navigation
+     ========================================================================== */
+
+  .tp-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    color: var(--tp-ivory);
+    background-color: color-mix(in srgb, var(--tp-anthracite) 92%, transparent);
+    border-block-end: 1px solid color-mix(in srgb, var(--tp-ivory) 12%, transparent);
+    --tp-focus: var(--tp-copper);
+  }
+
+  @supports (backdrop-filter: blur(1px)) {
+    .tp-header {
+      backdrop-filter: blur(14px) saturate(1.1);
+    }
+  }
+
+  .tp-header__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--tp-gap-md);
+    min-block-size: 4.5rem;
+  }
+
+  .tp-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    padding-block: 0.5rem;
+    margin-inline-end: auto;
+  }
+
+  .tp-logo__mark {
+    inline-size: 2.15rem;
+    flex: none;
+  }
+
+  .tp-logo__word {
+    inline-size: clamp(6.5rem, 18vw, 8.75rem);
+    flex: none;
+  }
+
+  .tp-nav {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.5rem, 1.6vw, 1.5rem);
+    }
+  }
+
+  .tp-nav__list {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.25rem, 1.4vw, 1.25rem);
+    margin: 0;
+  }
+
+  .tp-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    padding-inline: 0.55rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    white-space: nowrap;
+  }
+
+  .tp-nav__link::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.55rem;
+    inset-block-end: 0.85rem;
+    block-size: 2px;
+    background-color: var(--tp-copper);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-nav__link:hover::after,
+  .tp-nav__link[aria-current='page']::after,
+  .tp-nav__link[data-current]::after {
+    scale: 1 1;
+  }
+
+  /* Sous-menu Services — `<details>` natif : il s'ouvre au clavier et à la
+     souris sans JavaScript, et son état est exposé correctement aux
+     technologies d'assistance. Le script ne fait qu'ajouter la fermeture par
+     Échap et par clic extérieur. */
+  .tp-nav__group {
+    position: relative;
+  }
+
+  .tp-nav__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-block-size: var(--tp-hit);
+    padding-inline: 0.55rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  .tp-nav__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tp-nav__summary[data-current] {
+    color: var(--tp-copper);
+  }
+
+  .tp-nav__summary::after {
+    content: '';
+    inline-size: 0.42em;
+    block-size: 0.42em;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    rotate: 45deg;
+    translate: 0 -0.15em;
+    transition: rotate var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-nav__group[open] > .tp-nav__summary::after {
+    rotate: -135deg;
+    translate: 0 0.1em;
+  }
+
+  .tp-nav__panel {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(100% + 0.4rem);
+    min-inline-size: 14rem;
+    margin: 0;
+    padding: 0.5rem;
+    background-color: var(--tp-anthracite-raised);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+    box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  }
+
+  .tp-nav__panel a {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    padding-inline: 0.85rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--tp-ivory);
+  }
+
+  .tp-nav__panel a:hover,
+  .tp-nav__panel a[aria-current='page'] {
+    background-color: color-mix(in srgb, var(--tp-copper) 26%, transparent);
+  }
+
+  /* --- Bouton menu mobile -------------------------------------------------
+     C'est un lien vers le panneau : sans JavaScript il fonctionne grâce à
+     `:target`, avec JavaScript il devient un vrai bouton d'ouverture. */
+  .tp-burger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-block-size: var(--tp-hit);
+    min-inline-size: var(--tp-hit);
+    padding-inline: 0.75rem;
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 30%, transparent);
+  }
+
+  .tp-burger__glyph {
+    inline-size: 1.15rem;
+    block-size: 0.75rem;
+    background-image:
+      linear-gradient(currentColor, currentColor),
+      linear-gradient(currentColor, currentColor),
+      linear-gradient(currentColor, currentColor);
+    background-size: 100% 2px;
+    background-position:
+      0 0,
+      0 50%,
+      0 100%;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-burger {
+      display: none;
+    }
+  }
+
+  .tp-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background-color: var(--tp-anthracite);
+    color: var(--tp-ivory);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--tp-gutter);
+    padding-block-start: 1.1rem;
+  }
+
+  .tp-menu:target,
+  .tp-menu[data-open] {
+    display: grid;
+    align-content: start;
+    gap: var(--tp-gap-md);
+  }
+
+  /* Panneau modal ouvert : la page derrière ne défile plus. */
+  .tp-locked,
+  .tp-locked body {
+    overflow: hidden;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-menu:target,
+    .tp-menu[data-open] {
+      display: none;
+    }
+  }
+
+  .tp-menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-block-size: 3.4rem;
+  }
+
+  .tp-menu__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: var(--tp-hit);
+    padding-inline: 0.9rem;
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 30%, transparent);
+  }
+
+  .tp-menu__list {
+    display: grid;
+    margin: 0;
+  }
+
+  .tp-menu__list a {
+    display: flex;
+    align-items: center;
+    min-block-size: 3.5rem;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tp-track-display);
+    text-decoration: none;
+    color: var(--tp-ivory);
+    border-block-end: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+  }
+
+  .tp-menu__list a[aria-current='page'] {
+    color: var(--tp-copper);
+  }
+
+  .tp-menu__meta {
+    display: grid;
+    gap: 0.4rem;
+    font-size: var(--tp-text-sm);
+    color: var(--tp-light-soft);
+    overflow-wrap: anywhere;
+  }
+
+  .tp-menu__meta a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    color: var(--tp-ivory);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* ==========================================================================
+     Boutons
+     Le cuivre-bois de marque porte une étiquette anthracite : 4,51:1 mesuré,
+     conforme AA sur fond clair comme sur fond sombre, sans altérer la couleur.
+     ========================================================================== */
+
+  .tp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    min-block-size: var(--tp-hit);
+    padding: 0.9rem 1.6rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--tp-speed-fast) var(--tp-ease),
+      color var(--tp-speed-fast) var(--tp-ease),
+      border-color var(--tp-speed-fast) var(--tp-ease),
+      translate var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-btn:hover {
+    translate: 0 -2px;
+  }
+
+  .tp-btn--primary {
+    background-color: var(--tp-copper);
+    color: var(--tp-anthracite);
+    border-color: var(--tp-copper);
+  }
+
+  .tp-btn--primary:hover {
+    background-color: color-mix(in srgb, var(--tp-copper) 84%, var(--tp-white));
+    border-color: color-mix(in srgb, var(--tp-copper) 84%, var(--tp-white));
+  }
+
+  .tp-btn--ghost {
+    color: var(--tp-text);
+    border-color: var(--tp-line-strong);
+  }
+
+  .tp-btn--ghost:hover {
+    border-color: var(--tp-copper);
+    color: var(--tp-accent);
+  }
+
+  .tp-btn[disabled],
+  .tp-btn[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: progress;
+    translate: none;
+  }
+
+  .tp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tp-gap-sm);
+  }
+
+  /* ==========================================================================
+     Hero
+     ========================================================================== */
+
+  .tp-hero {
+    position: relative;
+    display: grid;
+    align-content: center;
+    /* La barre de navigation est `sticky`, donc elle occupe déjà sa hauteur
+       au-dessus : on la retire pour que le hero tienne réellement dans une
+       fenêtre, sans forcer un défilement dès l'arrivée. */
+    min-block-size: min(calc(100svh - 4.5rem), 52rem);
+    padding-block: clamp(2rem, 4.5vw, 3.75rem);
+    overflow: clip;
+  }
+
+  /* Monogramme architectural : il traverse le bord du viewport comme une
+     structure réelle, en très basse intensité. Purement décoratif. */
+  .tp-hero__monogram {
+    position: absolute;
+    inset-block-start: 42%;
+    inset-inline-start: -18%;
+    inline-size: min(76vw, 46rem);
+    color: color-mix(in srgb, var(--tp-ivory) 6%, transparent);
+    pointer-events: none;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-hero__monogram {
+      inset-block-start: 20%;
+      inset-inline-start: -9%;
+      inline-size: min(46vw, 40rem);
+    }
+  }
+
+  .tp-hero__inner {
+    display: grid;
+    gap: var(--tp-gap-md);
+  }
+
+  /* La promesse traverse toute la largeur : c'est elle qui donne l'échelle de
+     la page, et elle tient en trois lignes jusqu'en 320 px. */
+  .tp-hero__title {
+    font-size: var(--tp-display);
+    line-height: var(--tp-leading-tight);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    margin-block: 0.28em 0;
+  }
+
+  .tp-hero__body {
+    display: grid;
+    gap: var(--tp-gap-md);
+    align-items: end;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-hero__body {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--tp-gap-xl);
+    }
+  }
+
+  .tp-hero__lede {
+    max-width: 44ch;
+    margin-block-start: 1.15em;
+    font-size: var(--tp-text-md);
+    color: var(--tp-light-soft);
+    line-height: 1.55;
+  }
+
+  .tp-hero__actions {
+    margin-block-start: 1.6rem;
+  }
+
+  /* --- Ouverture par lames ------------------------------------------------
+     La photographie est révélée par cinq lames qui s'écartent. Les lames
+     n'existent que si le mouvement est autorisé; sinon la photo est
+     simplement là. */
+  .tp-aperture {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* `<picture>` est en ligne par défaut : sans cette règle, l'image reprend sa
+     largeur intrinsèque et déborde de son cadre — et de la page avec elle. */
+  .tp-aperture picture,
+  .tp-figure__frame picture {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .tp-aperture img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  /* Les cinq lames sont écartées AU REPOS : `translate: 0 -101%` est leur état
+     par défaut, écrit en dur. L'animation ne fait que les ramener devant la
+     photo pendant sa durée, avec `animation-fill-mode: backwards` pour couvrir
+     le décalage de départ. Si les animations ne s'exécutent pas, les lames
+     sont déjà hors champ et la photographie est simplement visible. */
+  .tp-aperture__slats {
+    display: grid;
+    position: absolute;
+    inset: 0;
+    grid-template-columns: repeat(5, 1fr);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tp-aperture__slats span {
+    background-color: var(--tp-anthracite);
+    translate: 0 -101%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tp-aperture__slats span {
+      animation: tp-slat 1100ms var(--tp-ease-mask) backwards;
+    }
+
+    .tp-aperture__slats span:nth-child(1) {
+      animation-delay: 320ms;
+    }
+    .tp-aperture__slats span:nth-child(2) {
+      animation-delay: 400ms;
+    }
+    .tp-aperture__slats span:nth-child(3) {
+      animation-delay: 480ms;
+    }
+    .tp-aperture__slats span:nth-child(4) {
+      animation-delay: 560ms;
+    }
+    .tp-aperture__slats span:nth-child(5) {
+      animation-delay: 640ms;
+    }
+  }
+
+  @keyframes tp-slat {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 -101%;
+    }
+  }
+
+  .tp-aperture--hero {
+    aspect-ratio: 1 / 1;
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 16%, transparent);
+  }
+
+  @media (min-width: 62rem) {
+    .tp-aperture--hero {
+      aspect-ratio: auto;
+      align-self: end;
+      min-block-size: 20rem;
+      /* Plafond de hauteur : c'est lui qui garantit que le hero, la promesse
+         et les deux appels à l'action tiennent dans une fenêtre de 900 px. */
+      max-block-size: 27rem;
+    }
+  }
+
+  /* Bandeau de repères sous le hero. */
+  .tp-hero__ledger {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--tp-gap-sm) var(--tp-gap-md);
+    margin-block-start: var(--tp-gap-md);
+    padding-block-start: var(--tp-gap-sm);
+    border-block-start: 1px solid color-mix(in srgb, var(--tp-ivory) 16%, transparent);
+  }
+
+  .tp-hero__ledger div {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .tp-hero__ledger dt {
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tp-copper);
+  }
+
+  .tp-hero__ledger dd {
+    margin: 0;
+    font-size: var(--tp-text-sm);
+    color: var(--tp-light-soft);
+  }
+
+  /* Un lien dans le relevé reste une cible tactile de plein droit. */
+  .tp-hero__ledger dd a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    color: var(--tp-ivory);
+    text-underline-offset: 0.25em;
+  }
+
+  /* ==========================================================================
+     Manifeste
+     ========================================================================== */
+
+  .tp-manifesto {
+    position: relative;
+    overflow: clip;
+  }
+
+  .tp-manifesto__slats {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: min(46vw, 22rem);
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      104deg,
+      color-mix(in srgb, var(--tp-copper) 26%, transparent) 0 clamp(0.5rem, 1.4vw, 1.1rem),
+      transparent clamp(0.5rem, 1.4vw, 1.1rem) clamp(1.6rem, 4.4vw, 3.4rem)
+    );
+    mask-image: linear-gradient(to bottom, black, transparent);
+  }
+
+  .tp-manifesto__title {
+    font-size: var(--tp-manifesto);
+    line-height: 0.92;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    text-wrap: nowrap;
+    margin-block: 0;
+  }
+
+  .tp-manifesto__title span {
+    display: block;
+  }
+
+  .tp-manifesto__title em {
+    font-style: normal;
+    color: var(--tp-accent-display);
+  }
+
+  .tp-manifesto__body {
+    display: grid;
+    gap: var(--tp-gap-md);
+    margin-block-start: var(--tp-gap-lg);
+  }
+
+  @media (min-width: 60rem) {
+    .tp-manifesto__body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--tp-gap-xl);
+    }
+  }
+
+  /* ==========================================================================
+     Panneaux de service
+     ========================================================================== */
+
+  .tp-panel {
+    display: grid;
+    gap: var(--tp-gap-md);
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    border-block-start: 1px solid var(--tp-line);
+  }
+
+  @media (min-width: 62rem) {
+    .tp-panel {
+      grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.15fr);
+      align-items: start;
+      gap: var(--tp-gap-lg);
+    }
+
+    .tp-panel--reverse .tp-panel__media {
+      order: -1;
+    }
+  }
+
+  .tp-panel__title {
+    font-size: var(--tp-text-xl);
+    margin-block-end: 0.6em;
+  }
+
+  .tp-panel__media {
+    align-self: stretch;
+  }
+
+  /* Panneau sans photographie : la typographie et la structure prennent le
+     relais. Aucune image de remplacement, aucune image d'illustration
+     achetée, aucun visuel qui laisserait croire à une réalisation. */
+  .tp-plate {
+    position: relative;
+    display: grid;
+    place-content: center;
+    aspect-ratio: 4 / 3;
+    padding: var(--tp-gap-md);
+    background-color: var(--tp-anthracite);
+    color: var(--tp-ivory);
+    overflow: clip;
+  }
+
+  .tp-plate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        color-mix(in srgb, var(--tp-ivory) 14%, transparent) 0 1px,
+        transparent 1px 4.5rem
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--tp-ivory) 10%, transparent) 0 1px,
+        transparent 1px 4.5rem
+      );
+  }
+
+  .tp-plate span {
+    position: relative;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-lg);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: center;
+    max-width: 22ch;
+  }
+
+  /* ==========================================================================
+     Photographies
+     ========================================================================== */
+
+  .tp-figure {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+  }
+
+  .tp-figure__frame {
+    position: relative;
+    overflow: clip;
+    background-color: color-mix(in srgb, var(--tp-anthracite) 12%, transparent);
+  }
+
+  .tp-figure__frame img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: scale var(--tp-speed-slow) var(--tp-ease);
+  }
+
+  .tp-figure figcaption {
+    font-size: var(--tp-text-xs);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: var(--tp-text-soft);
+    max-width: 44ch;
+  }
+
+  .tp-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+  .tp-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+  .tp-ratio-3-4 {
+    aspect-ratio: 3 / 4;
+  }
+  .tp-ratio-4-5 {
+    aspect-ratio: 4 / 5;
+  }
+  .tp-ratio-3-2 {
+    aspect-ratio: 3 / 2;
+  }
+  .tp-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+  .tp-ratio-21-9 {
+    aspect-ratio: 21 / 9;
+  }
+
+  /* Pleine largeur réelle. `.tp-scene` occupe déjà toute la fenêtre : un
+     enfant direct est donc plein cadre sans aucun calcul en `vw`, donc sans
+     l'erreur de largeur de barre de défilement que ce calcul entraîne. */
+  .tp-scene > .tp-bleed {
+    inline-size: 100%;
+  }
+
+  /* L'image va d'un bord à l'autre, sa légende reste alignée sur la trame. */
+  .tp-bleed figcaption {
+    padding-inline: var(--tp-gutter);
+  }
+
+  /* ==========================================================================
+     Galerie
+     Le filtrage est fait de boutons radio et de `:has()` — il fonctionne sans
+     une ligne de JavaScript, et si `:has()` manque, toutes les photos restent
+     visibles.
+     ========================================================================== */
+
+  .tp-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tp-gap-xs);
+    margin: 0 0 var(--tp-gap-md);
+  }
+
+  .tp-filters legend {
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tp-text-soft);
+    margin-block-end: var(--tp-gap-xs);
+  }
+
+  .tp-filters input {
+    position: absolute;
+    opacity: 0;
+    inline-size: 1px;
+    block-size: 1px;
+  }
+
+  .tp-filters label {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    padding-inline: 1.1rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border: 1px solid var(--tp-line-strong);
+    transition:
+      background-color var(--tp-speed-fast) var(--tp-ease),
+      border-color var(--tp-speed-fast) var(--tp-ease),
+      color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-filters label:hover {
+    border-color: var(--tp-copper);
+  }
+
+  .tp-filters input:checked + label {
+    background-color: var(--tp-copper);
+    border-color: var(--tp-copper);
+    color: var(--tp-anthracite);
+  }
+
+  .tp-filters input:focus-visible + label {
+    outline: 3px solid var(--tp-focus);
+    outline-offset: 3px;
+  }
+
+  /* ==========================================================================
+     La galerie — un module éditorial, répété
+     ==========================================================================
+     Relevé sur la référence : elle ne pose pas ses photographies dans une
+     trame régulière, elle définit un MODULE de quelques images aux emprises
+     délibérément inégales, et le répète. On ne voit jamais la répétition —
+     on ne voit qu'un rythme.
+
+     Deux différences avec son implémentation, et les deux sont des corrections :
+
+       1. Elle place ses images en zones fixes (`grid-area: 3 / 1 / 7 / 2`).
+          Ici la galerie est FILTRABLE : une image masquée laisserait un trou,
+          et la suivante se poserait par-dessus une autre. Le module est donc
+          exprimé en `span`, jamais en coordonnées, et `grid-auto-flow: dense`
+          referme ce que le filtre retire.
+
+       2. La hauteur de rangée devient la vraie variable. La grille précédente
+          ne faisait varier que la largeur : toutes les photos avaient la même
+          hauteur, et c'est exactement ce qui donnait l'impression d'un
+          catalogue. Ici le cadre remplit sa cellule, et c'est le module qui
+          décide de sa hauteur.
+
+     La hauteur d'une cellule est une LONGUEUR, pas un rapport : elle est donc
+     connue avant le premier octet d'image, et la page ne bouge pas au
+     chargement. C'est ce qui permet d'abandonner l'`aspect-ratio` ici sans
+     rien perdre.
+     ========================================================================== */
+
+  .tp-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: clamp(3.25rem, 9vw, 5.5rem);
+    grid-auto-flow: dense;
+    gap: var(--tp-gap-sm);
+  }
+
+  /* Le cadre cesse de porter son rapport de forme et remplit la cellule; la
+     légende garde sa place sous lui. `minmax(0, 1fr)` est indispensable : sans
+     lui, une image haute repousserait le fond de la cellule. */
+  .tp-gallery .tp-figure {
+    block-size: 100%;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .tp-gallery .tp-figure__frame {
+    aspect-ratio: auto;
+    block-size: 100%;
+    min-block-size: 0;
+  }
+
+  /* Le module. Chaque paire couvre la largeur : le rythme varie, la trame
+     reste lisible. */
+  .tp-gallery .tp-shot {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+  .tp-gallery .tp-shot:nth-of-type(6n + 1) {
+    grid-column: span 4;
+    grid-row: span 4;
+  }
+  .tp-gallery .tp-shot:nth-of-type(6n + 2) {
+    grid-column: span 2;
+    grid-row: span 4;
+  }
+  .tp-gallery .tp-shot:nth-of-type(6n + 3) {
+    grid-column: span 2;
+    grid-row: span 4;
+  }
+  .tp-gallery .tp-shot:nth-of-type(6n + 6) {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+
+  @media (min-width: 48rem) {
+    .tp-gallery {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: clamp(3.5rem, 4.4vw, 5.75rem);
+      gap: var(--tp-gap-md);
+    }
+
+    /* Sur six colonnes, le module s'ouvre : une grande et une haute, puis une
+       petite et une large, puis deux égales. Chaque ligne fait bien six. */
+    .tp-gallery .tp-shot {
+      grid-column: span 3;
+      grid-row: span 4;
+    }
+    .tp-gallery .tp-shot:nth-of-type(6n + 1) {
+      grid-column: span 4;
+      grid-row: span 5;
+    }
+    .tp-gallery .tp-shot:nth-of-type(6n + 2) {
+      grid-column: span 2;
+      grid-row: span 5;
+    }
+    .tp-gallery .tp-shot:nth-of-type(6n + 3) {
+      grid-column: span 2;
+      grid-row: span 4;
+    }
+    .tp-gallery .tp-shot:nth-of-type(6n + 4) {
+      grid-column: span 4;
+      grid-row: span 4;
+    }
+    .tp-gallery .tp-shot:nth-of-type(6n + 5),
+    .tp-gallery .tp-shot:nth-of-type(6n + 6) {
+      grid-column: span 3;
+      grid-row: span 3;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .tp-gallery:hover .tp-shot:not(:hover) .tp-figure__frame img {
+      scale: 1;
+    }
+
+    .tp-shot:hover .tp-figure__frame img {
+      scale: 1.03;
+    }
+  }
+
+  .tp-gallery-scope:has(#tp-f-realisations:checked)
+    .tp-shot:not([data-cat~='realisations']),
+  .tp-gallery-scope:has(#tp-f-chantiers:checked) .tp-shot:not([data-cat~='chantiers']),
+  .tp-gallery-scope:has(#tp-f-details:checked) .tp-shot:not([data-cat~='details']) {
+    display: none;
+  }
+
+  /* ==========================================================================
+     Zones d'intervention
+     ========================================================================== */
+
+  .tp-zones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+    gap: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--tp-line);
+  }
+
+  .tp-zones li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 1.05rem;
+    border-block-end: 1px solid var(--tp-line);
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .tp-zones li::before {
+    content: '';
+    inline-size: 0.6rem;
+    block-size: 2px;
+    background-color: var(--tp-accent-display);
+    flex: none;
+    translate: 0 -0.35em;
+  }
+
+  /* ==========================================================================
+     Fiche de contact
+     ========================================================================== */
+
+  .tp-nap {
+    display: grid;
+    gap: var(--tp-gap-sm);
+    margin: 0;
+  }
+
+  .tp-nap > div {
+    display: grid;
+    gap: 0.25rem;
+    padding-block-end: var(--tp-gap-sm);
+    border-block-end: 1px solid var(--tp-line);
+  }
+
+  .tp-nap dt {
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tp-text-soft);
+  }
+
+  .tp-nap dd {
+    margin: 0;
+    font-size: var(--tp-text-md);
+    font-weight: 600;
+    /* Même raison que `.tp-channel` : l'e-mail est insécable. */
+    overflow-wrap: anywhere;
+  }
+
+  .tp-nap a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  .tp-nap a:hover {
+    color: var(--tp-accent);
+  }
+
+  /* ==========================================================================
+     Formulaire de projet
+     ========================================================================== */
+
+  .tp-form {
+    display: grid;
+    gap: var(--tp-gap-md);
+  }
+
+  .tp-form__grid {
+    display: grid;
+    gap: var(--tp-gap-sm);
+  }
+
+  @media (min-width: 44rem) {
+    .tp-form__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tp-field--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .tp-field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .tp-field > label {
+    font-size: var(--tp-text-sm);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    min-block-size: 1.75rem;
+  }
+
+  .tp-field__hint {
+    font-size: var(--tp-text-xs);
+    color: var(--tp-text-soft);
+  }
+
+  .tp-field__optional {
+    font-weight: 400;
+    color: var(--tp-text-soft);
+  }
+
+  .tp-input,
+  .tp-select,
+  .tp-textarea {
+    inline-size: 100%;
+    min-block-size: var(--tp-hit);
+    padding: 0.8rem 0.9rem;
+    font-size: max(1rem, var(--tp-text-base));
+    color: var(--tp-text);
+    background-color: var(--tp-surface-raised);
+    border: 1px solid var(--tp-line-strong);
+    border-radius: var(--tp-radius);
+    transition: border-color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-textarea {
+    min-block-size: 8rem;
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  .tp-select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.15rem) 55%,
+      calc(100% - 0.75rem) 55%;
+    background-size:
+      0.4rem 0.4rem,
+      0.4rem 0.4rem;
+    background-repeat: no-repeat;
+    padding-inline-end: 2.4rem;
+  }
+
+  .tp-input:hover,
+  .tp-select:hover,
+  .tp-textarea:hover {
+    border-color: var(--tp-copper);
+  }
+
+  .tp-input[aria-invalid='true'],
+  .tp-select[aria-invalid='true'],
+  .tp-textarea[aria-invalid='true'] {
+    border-color: #a3282a;
+    border-inline-start-width: 4px;
+  }
+
+  .tp-error {
+    display: none;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    color: #8f2224;
+  }
+
+  .tp-dark .tp-error {
+    color: #ffb4a8;
+  }
+
+  .tp-error:not(:empty) {
+    display: block;
+  }
+
+  .tp-consent {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.75rem;
+    padding: var(--tp-gap-sm);
+    border: 1px solid var(--tp-line);
+  }
+
+  .tp-consent input {
+    inline-size: 1.4rem;
+    block-size: 1.4rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--tp-copper);
+    flex: none;
+  }
+
+  .tp-consent label {
+    font-size: var(--tp-text-sm);
+    line-height: 1.55;
+  }
+
+  .tp-consent a {
+    color: var(--tp-accent);
+    text-underline-offset: 0.2em;
+  }
+
+  /* Récapitulatif d'erreurs : premier élément lisible après une soumission
+     refusée, chaque entrée ramène au champ concerné. */
+  .tp-summary {
+    display: none;
+    padding: var(--tp-gap-sm);
+    border: 2px solid #a3282a;
+    background-color: color-mix(in srgb, #a3282a 8%, transparent);
+  }
+
+  .tp-summary[data-visible] {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .tp-summary h3 {
+    font-size: var(--tp-text-md);
+  }
+
+  .tp-summary ul {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding-inline-start: 1.1rem;
+  }
+
+  .tp-summary a {
+    color: inherit;
+    font-weight: 600;
+  }
+
+  .tp-status {
+    display: grid;
+    gap: 0.35rem;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    min-block-size: 1.4em;
+  }
+
+  .tp-status[data-tone='busy'] {
+    color: var(--tp-accent);
+  }
+
+  .tp-status[data-tone='error'] {
+    color: #8f2224;
+  }
+
+  .tp-dark .tp-status[data-tone='error'] {
+    color: #ffb4a8;
+  }
+
+  /* Confirmation d'envoi — remplace le formulaire, ne se superpose pas. */
+  .tp-sent {
+    display: grid;
+    gap: var(--tp-gap-sm);
+    padding: var(--tp-gap-md);
+    border: 2px solid var(--tp-copper);
+  }
+
+  .tp-sent h3 {
+    font-size: var(--tp-text-xl);
+  }
+
+  /* ==========================================================================
+     Fil d'Ariane
+     ========================================================================== */
+
+  .tp-crumbs {
+    padding-block: 0.25rem;
+    font-size: var(--tp-text-xs);
+    letter-spacing: 0.06em;
+    color: var(--tp-text-soft);
+  }
+
+  .tp-crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tp-crumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .tp-crumbs li + li::before {
+    content: '';
+    inline-size: 0.75rem;
+    block-size: 1px;
+    background-color: var(--tp-line-strong);
+  }
+
+  .tp-crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tp-crumbs a:hover {
+    color: var(--tp-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .tp-crumbs [aria-current='page'] {
+    color: var(--tp-text);
+    font-weight: 700;
+  }
+
+  /* ==========================================================================
+     En-tête de page interne
+     ========================================================================== */
+
+  .tp-pagehead {
+    display: grid;
+    gap: var(--tp-gap-md);
+    padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  @media (min-width: 62rem) {
+    .tp-pagehead {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: end;
+      gap: var(--tp-gap-xl);
+    }
+  }
+
+  .tp-pagehead h1 {
+    font-size: var(--tp-text-3xl);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+  }
+
+  /* ==========================================================================
+     Bande de conversion
+     ========================================================================== */
+
+  .tp-cta {
+    display: grid;
+    gap: var(--tp-gap-md);
+  }
+
+  @media (min-width: 62rem) {
+    .tp-cta {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--tp-gap-xl);
+    }
+  }
+
+  .tp-cta__title {
+    font-size: var(--tp-text-2xl);
+    line-height: 1.02;
+    max-width: 18ch;
+  }
+
+  .tp-cta__channels {
+    display: grid;
+    gap: var(--tp-gap-xs);
+  }
+
+  .tp-channel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-block-size: 3.6rem;
+    padding: 0.5rem 1.1rem;
+    text-decoration: none;
+    border: 1px solid var(--tp-line-strong);
+    font-weight: 600;
+    /* Une adresse e-mail est un mot insécable de plus de 300 px : sans cette
+       règle, elle impose sa largeur minimale à toute la grille et pousse la
+       page en débordement horizontal sur un écran de 320 px. */
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    transition:
+      border-color var(--tp-speed-fast) var(--tp-ease),
+      background-color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  /* Sous 26rem, l'étiquette passe au-dessus de la valeur : les deux tiennent
+     alors sans compression ni césure. */
+  @media (max-width: 26rem) {
+    .tp-channel {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.1rem;
+    }
+  }
+
+  .tp-channel:hover {
+    border-color: var(--tp-copper);
+    background-color: color-mix(in srgb, var(--tp-copper) 12%, transparent);
+  }
+
+  .tp-channel span:first-child {
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tp-text-soft);
+  }
+
+  .tp-channel span:last-child {
+    font-size: var(--tp-text-md);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ==========================================================================
+     Pied de page
+     ========================================================================== */
+
+  .tp-footer {
+    padding-block: var(--tp-gap-xl) var(--tp-gap-lg);
+  }
+
+  .tp-footer__top {
+    display: grid;
+    gap: var(--tp-gap-lg);
+  }
+
+  @media (min-width: 56rem) {
+    .tp-footer__top {
+      grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+      gap: var(--tp-gap-lg);
+    }
+  }
+
+  .tp-footer__logo {
+    inline-size: clamp(9rem, 22vw, 12rem);
+    color: var(--tp-ivory);
+  }
+
+  .tp-footer h2 {
+    font-family: var(--tp-font-text);
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tp-copper);
+    margin-block-end: var(--tp-gap-sm);
+  }
+
+  .tp-footer__list {
+    display: grid;
+    margin: 0;
+  }
+
+  .tp-footer__list a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tp-hit);
+    font-size: var(--tp-text-sm);
+    text-decoration: none;
+    color: var(--tp-light-soft);
+  }
+
+  .tp-footer__list a:hover {
+    color: var(--tp-ivory);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .tp-footer address {
+    font-style: normal;
+    font-size: var(--tp-text-sm);
+    line-height: 1.7;
+    color: var(--tp-light-soft);
+    overflow-wrap: anywhere;
+  }
+
+  .tp-footer address a {
+    color: var(--tp-ivory);
+    text-decoration: none;
+  }
+
+  .tp-footer address a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .tp-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--tp-gap-sm);
+    margin-block-start: var(--tp-gap-lg);
+    padding-block-start: var(--tp-gap-md);
+    border-block-start: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+    font-size: var(--tp-text-xs);
+    color: var(--tp-light-soft);
+  }
+
+  .tp-footer__bottom a {
+    color: var(--tp-light-soft);
+  }
+
+  .tp-footer__bottom a:hover {
+    color: var(--tp-ivory);
+  }
+
+  /* ==========================================================================
+     Page 404
+     ========================================================================== */
+
+  .tp-lost {
+    display: grid;
+    align-content: center;
+    min-block-size: 70svh;
+    gap: var(--tp-gap-md);
+    padding-block: var(--tp-gap-xl);
+  }
+
+  .tp-lost__code {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-manifesto);
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--tp-accent-display);
+  }
+}

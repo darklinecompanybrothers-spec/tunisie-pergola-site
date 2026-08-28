@@ -1,0 +1,36 @@
+---
+/**
+ * Bande de conversion des pages internes. Un seul appel à l'action principal
+ * par scène, doublé des canaux directs — le formulaire complet reste sur
+ * l'accueil et sur la page contact.
+ */
+import ContactChannels from './ContactChannels.astro';
+import Btn from './Btn.astro';
+import { SITE } from '../data/site';
+
+interface Props {
+  title?: string | undefined;
+  text?: string | undefined;
+}
+
+const {
+  title = 'Votre espace mérite une réponse précise.',
+  text = 'Décrivez le lieu, les dimensions approximatives et l’usage recherché. L’équipe chargée du suivi commercial vous répond sous 24 heures.'
+} = Astro.props;
+---
+
+<section class="tp-scene tp-dark" aria-labelledby="tp-cta-titre">
+  <div class="tp-shell tp-cta">
+    <div class="tp-stack">
+      <p class="tp-eyebrow">Votre projet</p>
+      <h2 class="tp-cta__title tp-mask" id="tp-cta-titre">{title}</h2>
+      <p class="tp-lede">{text}</p>
+      <div class="tp-actions">
+        <Btn href="/contact/">Parler de votre projet</Btn>
+      </div>
+      <p class="tp-text-soft">{SITE.responsePromise}.</p>
+    </div>
+
+    <ContactChannels />
+  </div>
+</section>

@@ -1,0 +1,169 @@
+---
+/**
+ * Les trois familles — scène tenue.
+ * =================================
+ *
+ * MÉCANIQUE (relevée sur la « products section » de la référence)
+ * Une colonne de noms défile derrière une PLAQUE DE VERRE qui couvre toute la
+ * fenêtre. La plaque floute et voile ce qu'elle recouvre — et un masque à bord
+ * franc y perce une ouverture. Le nom qui passe dans l'ouverture est donc net
+ * parce que rien ne le recouvre; ceux du dessus et du dessous sont flous parce
+ * que la plaque, elle, les recouvre.
+ *
+ * C'est l'inverse de ce qu'on écrit d'instinct : ce n'est pas le nom courant
+ * qu'on met en avant, c'est tout le reste qu'on met derrière une vitre. Un seul
+ * exemplaire des noms, donc, et une profondeur de champ vraie plutôt qu'un
+ * texte gris pâle — la différence entre un objectif et un texte à moitié effacé.
+ *
+ * La référence perce un disque. Nous perçons une baie horizontale bordée de
+ * deux rails cuivre : la traverse et la panne du monogramme, vues de face.
+ * Même mécanique, autre langue.
+ *
+ * Une seconde fenêtre, à droite, fait défiler les images au même rythme : le
+ * nom et l'image changent ensemble, parce qu'ils lisent le même nombre.
+ *
+ * LE RYTHME
+ * `data-scene-slots="3"` demande au moteur de tenir chaque famille un moment
+ * avant de rejoindre la suivante, au lieu de balayer la course d'un trait. Une
+ * scène qui n'est jamais posée n'est jamais lisible : c'est ce qui donnait
+ * l'impression d'une composition perpétuellement à mi-chemin. Le moteur publie
+ * en retour l'index de la famille atteinte dans `data-slot`, ce qui permet au
+ * rail de la marquer — l'équivalent du compteur 1·2·3 de la référence.
+ *
+ * CE QUI EST DÉCORATIF, CE QUI EST RÉEL
+ * Le grand nom est `aria-hidden` : il ne fait que répéter en très grand ce
+ * que dit déjà le rail, et le faire lire deux fois n'apporterait rien. Les
+ * photographies, elles, restent exposées avec leur texte alternatif : elles
+ * disent quelque chose que le texte ne dit pas.
+ * Le rail est du contenu — trois liens réels, toujours présents, toujours
+ * atteignables au clavier, toujours lisibles par un moteur de recherche. Rien
+ * n'est caché derrière une position de défilement, et aucun lien invisible ne
+ * piège la tabulation.
+ *
+ * Sous `prefers-reduced-motion`, le spectacle disparaît et le rail prend toute
+ * la scène : moins de mise en scène, exactement la même information.
+ */
+import type { ImageMetadata } from 'astro';
+import Shot from './Shot.astro';
+import Btn from './Btn.astro';
+
+import pergolaPhoto from '../assets/photos/derived/pergola-lames-salon-exterieur.jpg';
+import verrierePhoto from '../assets/photos/derived/veranda-vitree-lames-salon.jpg';
+import auventPhoto from '../assets/photos/derived/auvent-entree-sous-face-bois.jpg';
+
+/**
+ * Chaque famille porte une photographie — plus de plaque typographique de
+ * repli. Verrières était la seule à n'en avoir aucune de publiée; l'envoi
+ * client d'août 2026 en a apporté plusieurs, et la case se remplit avec ce
+ * qu'elle aurait toujours dû montrer.
+ */
+interface Famille {
+  readonly index: string;
+  readonly nom: string;
+  readonly href: string;
+  readonly texte: string;
+  readonly lien: string;
+  readonly photo: ImageMetadata;
+  readonly alt: string;
+}
+
+const FAMILLES: readonly Famille[] = [
+  {
+    index: '01',
+    nom: 'Pergolas',
+    href: '/pergolas/',
+    texte:
+      'Des structures adossées ou indépendantes pour redéfinir terrasses, jardins, rooftops et abords de piscine.',
+    lien: 'Voir les pergolas',
+    photo: pergolaPhoto,
+    alt: 'Pergola à lames sombres couvrant un salon d’extérieur en mobilier clair, ouvert sur une pièce de vie par de larges baies vitrées.'
+  },
+  {
+    index: '02',
+    nom: 'Verrières',
+    href: '/verrieres/',
+    texte:
+      'Des solutions de couverture et de séparation à étudier selon l’espace, la lumière et l’usage attendu.',
+    lien: 'Voir les verrières',
+    photo: verrierePhoto,
+    alt: 'Véranda entièrement vitrée coiffée d’une toiture à lames sombres, salon en résine tressée, tronc de palmier au premier plan et bassin au fond.'
+  },
+  {
+    index: '03',
+    nom: 'Abris',
+    href: '/abris/',
+    texte:
+      'Des abris et abris de jardin conçus pour protéger un usage et s’intégrer à l’environnement existant.',
+    lien: 'Voir les abris',
+    photo: auventPhoto,
+    alt: 'Auvent d’entrée sombre avec sous-face couleur bois et structure verticale décorative devant la porte d’une maison.'
+  }
+];
+---
+
+<section
+  class="tp-fam tp-light"
+  data-scene="pin"
+  data-scene-slots={String(FAMILLES.length)}
+  aria-labelledby="tp-services"
+>
+  <div class="tp-fam__stage">
+    <div class="tp-shell tp-fam__grid">
+      <div class="tp-fam__head">
+        <p class="tp-eyebrow">Trois familles</p>
+        <h2 class="tp-fam__lede" id="tp-services">
+          Une structure par usage, pas un modèle par client.
+        </h2>
+      </div>
+
+      <div class="tp-fam__show">
+        {/* Les grands noms ne sont que la répétition en grand du rail : ils
+            sont retirés de l'arbre d'accessibilité pour ne pas être lus deux
+            fois. Les photographies, elles, apportent une information que le
+            texte ne donne pas — elles restent exposées, avec leur alternative.
+
+            Trois calques, dans cet ordre : les noms, la vitre qui les floute
+            sauf dans l'ouverture, puis les rails de la baie par-dessus. */}
+        <div class="tp-fam__type" aria-hidden="true">
+          <div class="tp-fam__lens">
+            <p class="tp-fam__stack">
+              {FAMILLES.map((f) => <span>{f.nom}</span>)}
+            </p>
+          </div>
+          <div class="tp-fam__glass"></div>
+          <div class="tp-fam__bay"></div>
+        </div>
+
+        <div class="tp-fam__frame">
+          <div class="tp-fam__reel">
+            {
+              FAMILLES.map((f) => (
+                <div class="tp-fam__cell">
+                  <Shot photo={f.photo} alt={f.alt} ratio="4-3" format="half" />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* ---- Le contenu : réel, indexable, atteignable ---- */}
+      <ol class="tp-fam__rail" role="list">
+        {
+          FAMILLES.map((f) => (
+            <li class="tp-fam__item">
+              <p class="tp-fam__n">{f.index}</p>
+              <h3 class="tp-fam__nom">
+                <a href={f.href}>{f.nom}</a>
+              </h3>
+              <p class="tp-fam__texte">{f.texte}</p>
+              <Btn href={f.href} tone="quiet">
+                {f.lien}
+              </Btn>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

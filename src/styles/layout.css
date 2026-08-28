@@ -1,0 +1,295 @@
+@layer layout {
+  /* ==========================================================================
+     Trame architecturale
+     Le site est bâti sur une seule grille de 12 colonnes. Elle reste visible
+     dans les alignements, et affleure parfois sous la forme d'une ligne fine.
+     ========================================================================== */
+
+  .tp-shell {
+    width: 100%;
+    max-width: var(--tp-shell);
+    margin-inline: auto;
+    padding-inline: var(--tp-gutter);
+    /* Élément de grille ou de flex, la coquille hérite d'un `min-width: auto`
+       qui l'autorise à dépasser sa piste dès qu'un descendant a un contenu
+       minimum plus large qu'elle. Elle devenait alors plus large que la fenêtre
+       et son contenu partait sous le bord — masqué par le `overflow-x: clip`
+       du document, donc invisible au test mais bien coupé à l'écran.
+       La coquille ne doit jamais être plus large que ce qui la contient : une
+       fois contrainte, le contenu se recompose de lui-même. */
+    min-inline-size: 0;
+  }
+
+  .tp-scene {
+    position: relative;
+    padding-block: var(--tp-scene-y);
+    color: var(--tp-text);
+    background-color: var(--tp-surface);
+  }
+
+  .tp-scene--tight {
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .tp-scene--flush-top {
+    padding-block-start: 0;
+  }
+
+  /* Trame verticale affleurante — décor pur, jamais porteur d'information.
+     Trois colonnes sur petit écran, six ensuite : la trame doit rester une
+     respiration, pas une texture. */
+  .tp-scene--ruled::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--tp-line) 0 1px,
+      transparent 1px calc(100% / 3)
+    );
+    opacity: 0.5;
+  }
+
+  @media (min-width: 60rem) {
+    .tp-scene--ruled::before {
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--tp-line) 0 1px,
+        transparent 1px calc(100% / 6)
+      );
+    }
+  }
+
+  .tp-scene > * {
+    position: relative;
+  }
+
+  .tp-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: var(--tp-gap-md);
+    row-gap: var(--tp-gap-lg);
+  }
+
+  @media (min-width: 60rem) {
+    .tp-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  /* Emprises nommées sur la trame. Sur petit écran tout occupe la largeur; à
+     partir de 60rem la composition reprend ses appuis. */
+  .tp-grid > .tp-span-half,
+  .tp-grid > .tp-span-lede,
+  .tp-grid > .tp-span-body,
+  .tp-grid > .tp-span-third {
+    grid-column: span 6;
+  }
+
+  .tp-grid > .tp-span-full {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 60rem) {
+    .tp-grid > .tp-span-half {
+      grid-column: span 6;
+    }
+    .tp-grid > .tp-span-third {
+      grid-column: span 4;
+    }
+    .tp-grid > .tp-span-lede {
+      grid-column: 1 / span 4;
+    }
+    .tp-grid > .tp-span-body {
+      grid-column: 6 / span 7;
+    }
+  }
+
+  /* Colonnes égales qui se replient d'elles-mêmes. */
+  .tp-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--tp-gap-lg) var(--tp-gap-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tp-measure {
+    max-width: var(--tp-measure);
+  }
+
+  .tp-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tp-gap-sm);
+  }
+
+  .tp-stack--md {
+    gap: var(--tp-gap-md);
+  }
+
+  .tp-stack--lg {
+    gap: var(--tp-gap-lg);
+  }
+
+  /* --- Repères éditoriaux ------------------------------------------------- */
+  .tp-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
+    font-family: var(--tp-font-text);
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: var(--tp-track-eyebrow);
+    text-transform: uppercase;
+    color: var(--tp-accent);
+    margin: 0;
+  }
+
+  .tp-eyebrow::before {
+    content: '';
+    inline-size: clamp(1.75rem, 5vw, 3.5rem);
+    block-size: 2px;
+    background-color: var(--tp-accent-display);
+    flex: none;
+  }
+
+  .tp-rule {
+    border: 0;
+    block-size: 1px;
+    background-color: var(--tp-line);
+    margin: 0;
+  }
+
+  .tp-rule--accent {
+    block-size: 2px;
+    background-color: var(--tp-accent-display);
+    inline-size: clamp(3rem, 8vw, 6rem);
+  }
+
+  .tp-lede {
+    font-size: var(--tp-text-md);
+    line-height: 1.55;
+    color: var(--tp-text-soft);
+    max-width: 46ch;
+  }
+
+  .tp-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+    max-width: var(--tp-measure);
+  }
+
+  .tp-prose h2,
+  .tp-prose h3 {
+    margin-block-start: 0.6em;
+  }
+
+  .tp-prose :first-child {
+    margin-block-start: 0;
+  }
+
+  .tp-prose a {
+    color: var(--tp-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+
+  .tp-prose a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Chiffre d'index surdimensionné : ponctue les séquences sans rien affirmer. */
+  .tp-index {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-sm);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--tp-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ==========================================================================
+     Révélations
+     ==========================================================================
+     Aucune révélation ne dépend de JavaScript. L'état écrit par défaut est
+     l'état FINAL : contenu visible, en place. Le mouvement n'est ajouté que
+     par-dessus, via une timeline de défilement native, et seulement si le
+     navigateur la connaît et si l'utilisateur n'a pas demandé moins de
+     mouvement.
+
+     Conséquence recherchée : il n'existe aucun scénario — script bloqué,
+     observateur en échec, moteur ancien — où un texte reste invisible. Le pire
+     cas est un site sans animation, ce qui n'est pas un défaut.
+     ========================================================================== */
+
+  .tp-reveal,
+  .tp-mask {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* La courbe compte autant que la plage. En `linear`, une révélation liée
+         au défilement n'est pas une animation : c'est une réglette que la
+         molette pousse par paliers, et l'élément reste visiblement à mi-chemin
+         tout le temps qu'on descend. Avec une décélération marquée, il rejoint
+         sa place dans le premier tiers de la plage puis s'y POSE — l'œil lit un
+         mouvement qui se termine, comme une transition jouée, et le reste de la
+         course ne fait plus que confirmer. Même mécanique, tout autre lecture. */
+      .tp-reveal {
+        animation: tp-rise var(--tp-ease-blade) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 58%;
+      }
+
+      /* Le texte monte derrière un bord net, comme sous une lame. */
+      .tp-mask {
+        animation: tp-unmask var(--tp-ease-blade) both;
+        animation-timeline: view();
+        animation-range: entry 4% entry 62%;
+      }
+
+      /* Cascade : chaque élément d'un groupe démarre un peu plus tard dans sa
+         propre plage d'entrée. Aucun attribut `style`, donc compatible avec
+         une CSP stricte. */
+      .tp-stagger > *:nth-child(2) {
+        animation-range: entry 6% entry 64%;
+      }
+      .tp-stagger > *:nth-child(3) {
+        animation-range: entry 12% entry 70%;
+      }
+      .tp-stagger > *:nth-child(4) {
+        animation-range: entry 18% entry 76%;
+      }
+      .tp-stagger > *:nth-child(n + 5) {
+        animation-range: entry 24% entry 82%;
+      }
+    }
+  }
+
+  @keyframes tp-rise {
+    from {
+      opacity: 0;
+      translate: 0 1.75rem;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes tp-unmask {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0 0 -0.35em 0);
+    }
+  }
+}

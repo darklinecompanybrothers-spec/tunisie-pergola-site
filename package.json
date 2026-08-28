@@ -1,0 +1,28 @@
+{
+  "name": "tunisie-pergola-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tunisie Pergola — site statique Astro (prévisualisation client, non déployé).",
+  "scripts": {
+    "photos:derive": "node scripts/derive-photos.mjs",
+    "brand": "node scripts/build-brand.mjs",
+    "dev": "astro dev",
+    "check": "astro check",
+    "typecheck": "tsc --noEmit",
+    "build": "astro build && node scripts/audit-build.mjs",
+    "preview": "astro preview",
+    "audit": "node scripts/audit-build.mjs",
+    "verify": "npm run typecheck && npm run check && npm run build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "7.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@fontsource-variable/manrope": "5.3.0",
+    "@fontsource-variable/syne": "5.3.0",
+    "typescript": "5.9.3"
+  }
+}

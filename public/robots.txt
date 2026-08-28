@@ -1,0 +1,10 @@
+# Tunisie Pergola — https://tunisiepergola.tn
+# Tout est indexable : le site ne compte ni espace privé, ni duplicat, ni page
+# satellite à masquer. La seule exclusion est la page d'erreur, qui n'a rien à
+# apporter à un index et porte déjà `noindex`.
+
+User-agent: *
+Allow: /
+Disallow: /404/
+
+Sitemap: https://tunisiepergola.tn/sitemap-index.xml

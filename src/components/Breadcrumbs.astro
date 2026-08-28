@@ -1,0 +1,35 @@
+---
+/**
+ * Fil d'Ariane visible. Le balisage `BreadcrumbList` correspondant est émis
+ * par `Seo.astro` à partir de la même chaîne : la donnée structurée décrit
+ * toujours ce que l'utilisateur voit réellement.
+ */
+import { trail, type RoutePath } from '../data/pages';
+
+interface Props {
+  route: RoutePath;
+}
+
+const { route } = Astro.props;
+const items = trail(route);
+---
+
+{
+  items.length > 1 && (
+    <nav class="tp-crumbs" aria-label="Fil d’Ariane">
+      <ol>
+        {items.map((item, index) =>
+          index === items.length - 1 ? (
+            <li>
+              <span aria-current="page">{item.label}</span>
+            </li>
+          ) : (
+            <li>
+              <a href={item.path}>{item.label}</a>
+            </li>
+          )
+        )}
+      </ol>
+    </nav>
+  )
+}

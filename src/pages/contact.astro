@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import LeadForm from '../components/LeadForm.astro';
+import ContactChannels from '../components/ContactChannels.astro';
+import { SITE } from '../data/site';
+---
+
+<Base route="/contact/">
+  <PageHead
+    route="/contact/"
+    eyebrow="Contact"
+    title="Votre espace mérite une réponse précise."
+    lede="Décrivez le lieu, les dimensions approximatives et l’usage recherché. L’équipe chargée du suivi commercial vous répond sous 24 heures."
+    theme="glass"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-formulaire">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <h2 class="tp-mask" id="tp-formulaire">Le projet en quelques champs.</h2>
+        <p class="tp-text-soft">
+          Plus la description est concrète, plus la réponse l’est aussi. Une estimation de
+          dimensions suffit — personne ne vous demandera un plan.
+        </p>
+
+        <hr class="tp-rule--accent" />
+
+        {/* Dit avant la demande, pas après. La visite et l'étude sont des
+            services payants : l'écrire ici évite la conversation gênante au
+            téléphone et fait le tri en amont. Aucun montant n'est publié — les
+            chiffres cités par le client ne sont pas rattachés de façon sûre à
+            ce qu'ils couvrent (CLIENT-BRIEF §2 ter). */}
+        <dl class="tp-nap">
+          <div>
+            <dt>Délai</dt>
+            <dd>{SITE.delay.phrase}</dd>
+          </div>
+          <div>
+            <dt>Visite sur place</dt>
+            <dd>{SITE.study.visite}</dd>
+          </div>
+          <div>
+            <dt>Étude</dt>
+            <dd>{SITE.study.conception}</dd>
+          </div>
+        </dl>
+
+        <hr class="tp-rule--accent" />
+
+        <dl class="tp-nap">
+          <div>
+            <dt>Adresse</dt>
+            <dd>{SITE.address.inline}</dd>
+          </div>
+          <div>
+            <dt>Téléphone et WhatsApp</dt>
+            <dd>
+              <a href={SITE.contact.phoneHref} class="tp-tabular" data-track="phone"
+                >{SITE.contact.phoneDisplay}</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt>E-mail</dt>
+            <dd><a href={SITE.contact.emailHref}>{SITE.contact.email}</a></dd>
+          </div>
+          <div>
+            <dt>Réseau</dt>
+            <dd>
+              <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
+                >Page Facebook<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+              >
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="tp-span-body">
+        <LeadForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-dark" aria-labelledby="tp-direct">
+    <div class="tp-shell tp-cta">
+      <div class="tp-stack">
+        <p class="tp-eyebrow">Sans formulaire</p>
+        <h2 class="tp-cta__title tp-mask" id="tp-direct">Appeler, ou écrire sur WhatsApp.</h2>
+        <p class="tp-lede">
+          Le même numéro répond aux deux. C’est souvent le plus rapide pour une question courte
+          avant de décrire un projet complet.
+        </p>
+      </div>
+
+      <ContactChannels withAddress />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,146 @@
+---
+/**
+ * Le déroulé — quatre temps d'un projet, traversés horizontalement.
+ * =================================================================
+ *
+ * POURQUOI HORIZONTALE, ET POURQUOI ICI
+ * La référence fait défiler une bande d'images en travers de l'écran pendant
+ * qu'on descend (`.home-mission__gallery` : une piste en `flex`, chaque image
+ * large d'un écran, poussée par le défilement). Reprendre ce mouvement pour
+ * montrer quatre photographies de plus n'aurait rien apporté : la page en
+ * possède déjà une galerie et une rivière.
+ *
+ * Ce que la page AFFIRMAIT sans jamais le montrer, c'est son propre procédé.
+ * « Concevoir · Fournir · Poser » vivait en trois colonnes de texte, sous le
+ * mot d'un annonceur. Cette bande est ce bloc, rendu à ses preuves : le relevé
+ * tracé sur le site, l'ensemble de lames assemblé avant le départ, le levage,
+ * puis la terrasse occupée. Ce ne sont pas quatre illustrations, c'est une
+ * chronologie — et l'axe horizontal devient le temps.
+ *
+ * Un quatrième temps a été ajouté aux trois du procédé : « Utiliser ». Le site
+ * dit dès son manifeste que le vrai sujet est le déplacement d'usage, pas la
+ * structure. Terminer sur le chantier laisserait le récit à mi-chemin.
+ *
+ * CE QUE ÇA RÈGLE AUSSI, COMMERCIALEMENT
+ * Le client facture la visite et l'étude avant engagement. Une page qui montre
+ * qu'un projet commence par un relevé coté — et non par un modèle choisi dans
+ * une liste — rend cette facturation lisible au lieu de la faire découvrir au
+ * téléphone.
+ *
+ * LE RYTHME
+ * `data-scene-slots="4"` fait TENIR chaque temps avant de rejoindre le suivant.
+ * Sans cela, une bande horizontale n'est qu'un travelling : on la traverse sans
+ * jamais rien lire. Avec, elle se pose quatre fois. Le moteur publie en retour
+ * l'index atteint dans `data-slot`, ce qui allume le repère correspondant.
+ *
+ * REPLI
+ * Sous 62 rem et sous `prefers-reduced-motion`, la scène se dépingle et la
+ * piste redevient une liste verticale ordinaire : même texte, mêmes
+ * photographies, même ordre. Rien n'est réservé au mouvement.
+ */
+import Shot from './Shot.astro';
+import type { ImageMetadata } from 'astro';
+
+import releve from '../assets/photos/derived/etude-relevee-sur-site.jpg';
+import elements from '../assets/photos/derived/ensemble-lames-avant-pose.jpg';
+import pose from '../assets/photos/derived/pose-couverture-bord-de-piscine.jpg';
+import usage from '../assets/photos/derived/pergola-lames-terrasse-repas-piscine.jpg';
+
+interface Temps {
+  readonly index: string;
+  readonly titre: string;
+  /** Ce que montre l'image, en deux mots — le sous-titre du temps. */
+  readonly piece: string;
+  readonly texte: string;
+  readonly photo: ImageMetadata;
+  readonly alt: string;
+  readonly ratio: '4-3' | '3-4' | '3-2' | '1-1' | '16-9';
+}
+
+const TEMPS: readonly Temps[] = [
+  {
+    index: '01',
+    titre: 'Concevoir',
+    piece: 'Le relevé',
+    texte:
+      'Lire le lieu avant de dessiner : l’orientation, les usages déjà là, ce que la lumière fait au fil de la journée, et l’architecture à laquelle la structure devra répondre. Le tracé se fait sur le site existant, pas sur un modèle.',
+    photo: releve,
+    alt: 'Étude au trait tracée par-dessus une photographie du site existant, montrant l’implantation de la structure et les cotes relevées.',
+    ratio: '16-9'
+  },
+  {
+    index: '02',
+    titre: 'Fournir',
+    piece: 'Les éléments',
+    texte:
+      'Préparer la solution retenue et l’amener sur place, avec les éléments de structure, de couverture et de finition prévus pour ce projet précis. Ce qui arrive sur le chantier a déjà été assemblé une fois.',
+    photo: elements,
+    alt: 'Ensemble de lames claires assemblé à plat au sol dans un local, rayonnages et matériel rangés à l’arrière-plan.',
+    ratio: '3-4'
+  },
+  {
+    index: '03',
+    titre: 'Poser',
+    piece: 'Le chantier',
+    texte:
+      'Monter la structure sur site, avec les moyens que le lieu impose — accès, levage, et un environnement souvent déjà fini qu’il faut laisser intact.',
+    photo: pose,
+    alt: 'Pose d’une couverture sombre à sous-face bois au bord d’une piscine, engin de levage et ouvriers sur la structure.',
+    ratio: '3-4'
+  },
+  {
+    index: '04',
+    titre: 'Utiliser',
+    piece: 'La structure',
+    texte:
+      'C’est là que le projet se juge : non pas à la structure, mais au temps qu’on passe dessous. Un déjeuner qui s’étire, un bord de piscine devenu une pièce de la maison.',
+    photo: usage,
+    alt: 'Pergola à lames au-dessus d’une longue table et d’un salon d’extérieur, piscine à gauche et jardin en pente à l’arrière-plan.',
+    ratio: '4-3'
+  }
+];
+---
+
+<section
+  class="tp-story tp-light"
+  data-scene="pin"
+  data-scene-slots={String(TEMPS.length)}
+  aria-labelledby="tp-deroule"
+>
+  <div class="tp-story__stage">
+    <div class="tp-shell tp-story__head">
+      <p class="tp-eyebrow">Le déroulé</p>
+      <h2 class="tp-story__lede" id="tp-deroule">D’un relevé à une structure.</h2>
+    </div>
+
+    <div class="tp-story__viewport">
+      <ol class="tp-story__track" role="list">
+        {
+          TEMPS.map((temps) => (
+            <li class="tp-story__temps">
+              <div class="tp-shell tp-story__grid">
+                <div class="tp-story__texte">
+                  <p class="tp-story__n">{temps.index}</p>
+                  <h3 class="tp-story__titre">{temps.titre}</h3>
+                  <p class="tp-story__piece">{temps.piece}</p>
+                  <p class="tp-text-soft">{temps.texte}</p>
+                </div>
+
+                <div class="tp-story__vue">
+                  <Shot photo={temps.photo} alt={temps.alt} ratio={temps.ratio} format="half" />
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    {/* Le repère du temps atteint. Il double la piste sans la commander :
+        `data-slot` vient du moteur, et sans JavaScript aucun repère n'est
+        allumé — ce qui reste un état parfaitement lisible. */}
+    <div class="tp-shell tp-story__rail" aria-hidden="true">
+      {TEMPS.map((temps) => <span class="tp-story__marque">{temps.index}</span>)}
+    </div>
+  </div>
+</section>

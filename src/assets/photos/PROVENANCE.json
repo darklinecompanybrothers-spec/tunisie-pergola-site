@@ -1,0 +1,1657 @@
+{
+  "note": "Provenance des photographies publiées. Originaux non modifiés dans src/assets/photos/source/, copiés depuis docs/clients/tunisie-pergola/assets/facebook/photos/original/. Le recadrage, quand il existe, sort du cadre un ancien marquage incrusté — bandeau de marque ou numéro de téléphone caduc — sans rien effacer ni retoucher. Fichier écrit par scripts/derive-photos.mjs : ne pas le modifier à la main.",
+  "sourcePage": "https://www.facebook.com/Tunisie.Pergola77",
+  "generatedOn": "2026-08-27",
+  "published": 68,
+  "excluded": [
+    {
+      "source": "facebook-45445454 (a vous de decider de la couleur à nous de concrétiser ).jpg",
+      "motif": "Nuancier RAL — document tiers, il n’appartient pas à la marque."
+    },
+    {
+      "source": "facebook-conception.jpg",
+      "motif": "Projection portant l’enseigne d’un autre commerce."
+    },
+    {
+      "source": "facebook-5245535643544722.jpg",
+      "motif": "Doublon strict de facebook-4564543543521.jpg — empreinte identique."
+    }
+  ],
+  "photos": [
+    {
+      "file": "pergola-lames-terrasse-repas-piscine.jpg",
+      "width": 960,
+      "height": 935,
+      "legende": "Pergola à lames au-dessus d’une terrasse aménagée en salle à manger et en salon, en bordure de piscine.",
+      "alt": "Pergola à lames au-dessus d’une longue table et d’un salon d’extérieur, piscine à gauche et jardin en pente à l’arrière-plan.",
+      "source": {
+        "file": "facebook-1167612642050835545.jpg",
+        "sha256": "d1e0133aa1e356ac603d7c7f0ff9b7ce5d10f884c13a4c816b23e7fe4b26fded",
+        "originalSize": "960×935",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": true
+    },
+    {
+      "file": "lames-contre-plongee-ciel.jpg",
+      "width": 720,
+      "height": 720,
+      "legende": "Toiture à lames vue en contre-plongée, ossature et lames se détachant sur le ciel.",
+      "alt": "Vue en contre-plongée d’une toiture à lames claires montrant l’ossature et l’espacement régulier des lames sur fond de ciel bleu.",
+      "source": {
+        "file": "facebook-1167612642050835365.jpg",
+        "sha256": "5a49097acdf39b2a7ba143decf75229ee1e67d255faf0d7a03625a68ef7c1cc9",
+        "originalSize": "720×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "cour-couverte-lames-eclairage-mural.jpg",
+      "width": 720,
+      "height": 829,
+      "legende": "Cour couverte par un plafond à lames sombres, avec bardage vertical et éclairage mural en applique.",
+      "alt": "Cour couverte d’un plafond à lames sombres, bardage vertical à lattes sur les murs, appliques allumées et bacs plantés.",
+      "source": {
+        "file": "facebook-1167612642050835.jpg",
+        "sha256": "0e80a7e7613455ded8175d630d0b6e600bdd89aab273ada6eb1cdaf1ac1c1a94",
+        "originalSize": "720×829",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "pergola-lames-salon-exterieur.jpg",
+      "width": 720,
+      "height": 740,
+      "legende": "Pergola à lames au-dessus d’un salon d’extérieur, en prolongement direct de la pièce de vie.",
+      "alt": "Pergola à lames sombres couvrant un salon d’extérieur en mobilier clair, ouvert sur une pièce de vie par de larges baies vitrées.",
+      "source": {
+        "file": "facebook-117644254783451154.jpg",
+        "sha256": "d1ee9898be8cc7ab1cb0228095181f5e41fc5594f3c8dd56d9744b13cfee38b6",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 720,
+        "height": 740
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "terrasse-couverte-immeuble-soiree.jpg",
+      "width": 720,
+      "height": 592,
+      "legende": "Terrasse couverte au pied d’un immeuble résidentiel, en fin de journée.",
+      "alt": "Terrasse de rez-de-chaussée couverte par une structure sombre le long d’un immeuble, mobilier tressé et éclairages allumés en fin de journée.",
+      "source": {
+        "file": "facebook-1176442547834511534.jpg",
+        "sha256": "717bb717d5a1eb42edfc4b0dac6e0d4c98b5affb07d976a6af8f32c245d3a629",
+        "originalSize": "720×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 720,
+        "height": 592
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pergola-lames-salon-brasero.jpg",
+      "width": 638,
+      "height": 960,
+      "legende": "Pergola à lames au-dessus d’un salon d’extérieur avec braséro, ouverte sur la pelouse.",
+      "alt": "Pergola à lames sombres couvrant un salon d’extérieur avec canapés et table-braséro, mur sombre à gauche et pelouse arborée au fond.",
+      "source": {
+        "file": "facebook-134310890116787445.jpg",
+        "sha256": "b15d420eb1de0ab0ed901f5edac5b206992f439b18c36a1105f59d5ff2b4e705",
+        "originalSize": "638×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "patio-lames-bois-banquettes.jpg",
+      "width": 720,
+      "height": 896,
+      "legende": "Patio fermé de murs blancs, couvert par une structure sombre à lames aspect bois, avec banquettes maçonnées.",
+      "alt": "Patio aux murs blancs couvert d’une structure sombre à lames aspect bois, banquettes maçonnées plantées en bordure et sol en lames de bois.",
+      "source": {
+        "file": "facebook-117644267450116554364.jpg",
+        "sha256": "eca2ba3414656e62701dab492be26fb800eb58ecd510cd7d89151074554990a7",
+        "originalSize": "720×896",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "sous-face-lames-bois-bord-bassin.jpg",
+      "width": 1536,
+      "height": 2048,
+      "legende": "Sous-face à lames aspect bois vue depuis la terrasse, bassin en contrebas.",
+      "alt": "Sous-face d’une couverture à lames aspect bois vue depuis le sol, poteau blanc au premier plan et petit bassin bleu en contrebas.",
+      "source": {
+        "file": "facebook-1179114280900671.jpg",
+        "sha256": "f3ec5d8ad4616dcfd8010e993254ba1f0a34e46e622990b494c8ab5fdd8b8c56",
+        "originalSize": "1536×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "auvent-lames-bois-terrasse-volets.jpg",
+      "width": 1536,
+      "height": 2048,
+      "legende": "Auvent à lames aspect bois au-dessus d’une terrasse, façade équipée de volets roulants.",
+      "alt": "Vue en contre-plongée d’un auvent à lames aspect bois au-dessus d’une terrasse, façade blanche à volets roulants et mobilier de jardin.",
+      "source": {
+        "file": "facebook-1179114327567333.jpg",
+        "sha256": "28211430ec3efa24a9d60fbd692be284f1e479b4c547b883855e5146948fe32a",
+        "originalSize": "1536×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "plafond-lames-eclairage-integre.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Plafond à lames vu du dessous, avec bande lumineuse intégrée en périphérie.",
+      "alt": "Plafond à lames sombres vu du dessous dans une courette, bande lumineuse intégrée en périphérie et façades blanches sur les côtés.",
+      "source": {
+        "file": "facebook-11791143275673331.jpg",
+        "sha256": "d4ff2790d1e9c93bdd28a2d5d680f9bb9a4ed082a997102034dca003e1b188f3",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "pergola-lames-nuit-eclairee.jpg",
+      "width": 640,
+      "height": 1420,
+      "legende": "Pergola à lames claires éclairée de nuit, en limite d’une pièce de vie vitrée.",
+      "alt": "Pergola à lames claires éclairée par en dessous à la tombée de la nuit, adossée à une maison dont les baies vitrées sont allumées.",
+      "source": {
+        "file": "facebook-1176442547834511425.jpg",
+        "sha256": "b7e6f6451857c314fb69acec0a72ae4262bc9e97f7d43f350020bea76630dfff",
+        "originalSize": "640×1420",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": true
+    },
+    {
+      "file": "pergola-lames-nuit-jardin.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Pergola à lames éclairée en soirée, côté jardin.",
+      "alt": "Pergola à lames sombres éclairée par une ligne lumineuse périphérique en soirée, adossée à une maison, pelouse au premier plan.",
+      "source": {
+        "file": "facebook-1180791237399642111.jpg",
+        "sha256": "f118044a398efe484cc12945cae9f5435b7fb578d6b158be76fe4a629f6f1ad0",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "pergola-lames-claires-nuit-baies.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Pergola à lames claires éclairée de nuit devant une pièce de vie entièrement vitrée.",
+      "alt": "Pergola à lames claires avec éclairage périphérique, de nuit, devant une pièce de vie vitrée et éclairée, gazon synthétique au sol.",
+      "source": {
+        "file": "facebook-1252423345.jpg",
+        "sha256": "01399240b076e843a4d54b8baa16e9bb9f1c3bfd7ddd3a2c7c467adb38e18885",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "espace-couvert-lames-eclairage-couleur.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Grand espace couvert par un plafond à lames, éclairage de couleur en soirée.",
+      "alt": "Grand espace couvert par un plafond à lames sombres avec éclairage bleu en périphérie et sol éclairé en rose, arbres en bac de part et d’autre.",
+      "source": {
+        "file": "facebook-12174646370656351.jpg",
+        "sha256": "7f7a8f20a5470ead0dc83a0f0054f6df7199dcd053551d916cfa80bbd8f3e109",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "salle-couverte-lames-eclairage-bleu.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Salle couverte par un plafond à lames, éclairage bleu intégré et façade vitrée.",
+      "alt": "Salle couverte par un plafond à lames sombres avec éclairage bleu intégré, sol clair éclairé en violet, plantes en bac et façade vitrée au fond.",
+      "source": {
+        "file": "facebook-45645435435225.jpg",
+        "sha256": "b3568bbb5ef8f8a5bbc55217a605d4a173edf4fcdc0e0f3772df8b14e6291710",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "terrasse-restaurant-lames-claires.jpg",
+      "width": 720,
+      "height": 718,
+      "legende": "Terrasse de restaurant couverte par un plafond à lames claires, avec éclairage intégré.",
+      "alt": "Terrasse de restaurant couverte d’un plafond à lames claires avec éclairage chaud intégré, tables et chaises en bois sur un sol en terre cuite.",
+      "source": {
+        "file": "facebook-456454354352.jpg",
+        "sha256": "735f39a6ba0f122710f1b21081ae9001b2e51e147195864ea2c0b38791d522e0",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 720,
+        "height": 718
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "grande-terrasse-restaurant-lames.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Grande terrasse de restaurant couverte par une toiture à lames claires, en service.",
+      "alt": "Grande terrasse de restaurant couverte par une toiture à lames claires, nombreuses tables et chaises occupées, haies taillées en bordure.",
+      "source": {
+        "file": "facebook-456454354352212.jpg",
+        "sha256": "7a198cb574942cc00c33925b080d03bdba2c97724bf4ae38d0dccfe139e9762a",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "terrasse-lames-bois-salon-vitre.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Terrasse couverte par des lames aspect bois avec éclairage en corniche, ouverte sur un salon vitré.",
+      "alt": "Terrasse couverte par un plafond à lames aspect bois avec éclairage en corniche, ouverte sur un salon vitré, immeubles à l’arrière-plan.",
+      "source": {
+        "file": "facebook-4564543543521.jpg",
+        "sha256": "862d02cc75a41b63338df99e82b2e98e7983e22d0ddf95cb923cc9b76ddb740a",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "rooftop-lames-panneaux-vitres-mer.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Terrasse en toiture couverte par des lames, fermée par des panneaux vitrés, face à la mer.",
+      "alt": "Terrasse en toiture couverte par une toiture à lames sombres et fermée par des panneaux vitrés teintés, avec vue sur la mer.",
+      "source": {
+        "file": "facebook-4564543543522121.jpg",
+        "sha256": "281dc6fe721886635d238d5b6fc52945f370ec08721980b923d3e1b2270e6bff",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas",
+        "verrieres"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "pergola-lames-rooftop-terrasse-bois.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Pergola à lames indépendante sur une terrasse en toiture, avec panneaux latéraux vitrés.",
+      "alt": "Pergola à lames sombres indépendante à deux travées sur une terrasse en toiture, panneaux latéraux vitrés et sol en lames de bois.",
+      "source": {
+        "file": "facebook-page-cover.jpg",
+        "sha256": "ac72cbcf669c4b3bed72d04bf2f98c442efd35cc629ad5f9210d6a5a50d5bc30",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "terrasse-bois-lames-palmier-mer.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Terrasse en bois couverte par une toiture à lames, ouverte sur un palmier et la mer.",
+      "alt": "Terrasse en lames de bois couverte par une toiture à lames claires portée par des poteaux sombres, ouverte sur un palmier et la mer.",
+      "source": {
+        "file": "facebook-52455356435412.jpg",
+        "sha256": "d2b477b36fc4488eb3c3a1b226d587c389c6155e6528885127830290ffe4cf27",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "maison-deux-pergolas-lames-blanches.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Maison contemporaine équipée de deux pergolas à lames blanches au-dessus de ses ouvertures.",
+      "alt": "Façade de maison contemporaine blanche équipée de deux pergolas à lames blanches au-dessus des ouvertures, pelouse au premier plan.",
+      "source": {
+        "file": "facebook-5245535643541.jpg",
+        "sha256": "6e6d9377960463c4f127c41b9d4768a9ad314ee5a3e45b421b3f9072c6f207d9",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "toiture-lames-bois-vue-dessus.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Toiture à lames aspect bois vue depuis l’étage supérieur.",
+      "alt": "Toiture à lames aspect bois vue de dessus depuis un étage, montrant l’alignement des lames et les bâtiments voisins à l’arrière-plan.",
+      "source": {
+        "file": "facebook-524553564354.jpg",
+        "sha256": "cbe9eccf700e85fd6ca921d36ba49a0d1acb34e1234ca5ac9cbdff3882e4d49e",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "auvent-lames-balcon-ombres.jpg",
+      "width": 1534,
+      "height": 2048,
+      "legende": "Auvent à lames au-dessus d’un balcon, dessinant des ombres régulières sur la façade.",
+      "alt": "Auvent à lames blanches au-dessus d’un balcon à balustres, projetant des ombres régulières sur la façade blanche.",
+      "source": {
+        "file": "facebook-1235797128565719_.jpg",
+        "sha256": "e7b565314e36a51751e14f86c3ff14e3f03ec40429355e14ae9ffa972f824e1c",
+        "originalSize": "1534×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pergola-adossee-lames-terrasse-repas.jpg",
+      "width": 1200,
+      "height": 1120,
+      "legende": "Pergola adossée à lames claires au-dessus d’une terrasse repas.",
+      "alt": "Pergola sombre adossée à une maison, lames claires vues par en dessous, au-dessus d’une terrasse repas.",
+      "source": {
+        "file": "facebook-1339318721546892.jpg",
+        "sha256": "291de065aeb7bfdcbb354a8d0267960e53c3406b9111ee00199a058b7561cca8",
+        "originalSize": "1200×1500",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1200,
+        "height": 1120
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "auvent-entree-sous-face-bois.jpg",
+      "width": 1533,
+      "height": 1560,
+      "legende": "Auvent d’entrée à sous-face couleur bois, avec structure verticale décorative.",
+      "alt": "Auvent d’entrée sombre avec sous-face couleur bois et structure verticale décorative devant la porte d’une maison.",
+      "source": {
+        "file": "facebook-1433944625417634.jpg",
+        "sha256": "7d7190a335835d373424efbe14a2849420fc029e5e612ca2b066eb0c1dd3e27c",
+        "originalSize": "1533×2047",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1533,
+        "height": 1560
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "detail-sous-face-bois-auvent.jpg",
+      "width": 571,
+      "height": 500,
+      "legende": "Détail d’un auvent à sous-face aspect bois et poteaux décoratifs.",
+      "alt": "Détail d’un auvent sombre avec sous-face à aspect bois et poteaux décoratifs ajourés.",
+      "source": {
+        "file": "facebook-1380841577394606.jpg",
+        "sha256": "65fbe5f0dd1cb47e89f191677c68b987df89a48eb413d5f39bb9ab6277813d82",
+        "originalSize": "571×1280",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 292,
+        "width": 571,
+        "height": 500
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "details"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "veranda-vitree-lames-salon.jpg",
+      "width": 1080,
+      "height": 1080,
+      "legende": "Véranda vitrée coiffée d’une toiture à lames, aménagée en salon et ouverte sur le bassin.",
+      "alt": "Véranda entièrement vitrée coiffée d’une toiture à lames sombres, salon en résine tressée, tronc de palmier au premier plan et bassin au fond.",
+      "source": {
+        "file": "facebook-12121212123345.jpg",
+        "sha256": "ad4b6ac91d2331410c74be83d40ee6197c9421927a03b6140bc184ad19cc703c",
+        "originalSize": "1080×1080",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "verrieres"
+      ],
+      "gamme": "verriere",
+      "vedette": true
+    },
+    {
+      "file": "veranda-vitree-interieur-lames.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Intérieur d’une véranda vitrée sous toiture à lames, ouverte sur le jardin et le bassin.",
+      "alt": "Intérieur d’une véranda vitrée sous une toiture à lames sombres, canapé en résine tressée à coussins orange, baies ouvertes sur un bassin.",
+      "source": {
+        "file": "facebook-121212121233451.jpg",
+        "sha256": "dcb0cfc20e4798b2d5900239611eff9fd0b077bc8425a2e5d28bfc41f4a7cc9e",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "verrieres"
+      ],
+      "gamme": "verriere",
+      "vedette": false
+    },
+    {
+      "file": "veranda-vitree-ombres-lames-sol.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Véranda vitrée sous toiture à lames, les lames dessinant des ombres régulières sur le sol.",
+      "alt": "Véranda vitrée sous une toiture à lames sombres, ombres régulières des lames sur le sol carrelé, galets et pas japonais à l’extérieur.",
+      "source": {
+        "file": "facebook-1212121212334511.jpg",
+        "sha256": "120d7ced3ba5b5484838baa59994fb0f61edc3f8844bae3925ffd6187d0175aa",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "verrieres"
+      ],
+      "gamme": "verriere",
+      "vedette": false
+    },
+    {
+      "file": "veranda-ossature-sombre-baies-coulissantes.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Véranda à ossature sombre et baies coulissantes, coiffée d’une toiture à lames claires.",
+      "alt": "Véranda à ossature sombre fermée par des baies coulissantes vitrées, toiture à lames claires, claustra de bois à l’intérieur et champ au fond.",
+      "source": {
+        "file": "facebook-22452354354345.jpg",
+        "sha256": "f08249f9099d0add52a77adc3d796b07e5d8312f97eb8415e4e89ffe65d5fa2f",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "chantiers"
+      ],
+      "services": [
+        "verrieres"
+      ],
+      "gamme": "verriere",
+      "vedette": false
+    },
+    {
+      "file": "veranda-claustras-bois-en-cours.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Véranda à ossature sombre et claustras de bois, en cours d’aménagement.",
+      "alt": "Véranda à ossature sombre avec plafond à lames claires et claustras de bois verticaux, madriers posés au sol pendant l’aménagement.",
+      "source": {
+        "file": "facebook-117911432756733312.jpg",
+        "sha256": "9a66b64b47ea66df258899f45a1f851423735478c48495daf7b05a3e2b967e1f",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "verrieres"
+      ],
+      "gamme": "verriere",
+      "vedette": false
+    },
+    {
+      "file": "toile-plissee-ossature-bois.jpg",
+      "width": 564,
+      "height": 1002,
+      "legende": "Toile plissée tendue sur une ossature, vue par en dessous.",
+      "alt": "Toile beige plissée en accordéon tendue sur une ossature, vue par en dessous sur fond de ciel bleu et de nuages.",
+      "source": {
+        "file": "facebook-1246196570859108.jpg",
+        "sha256": "d520a36bd4dcca6cdc13d0e4f16f703d1379fb891497624765ffdd6a70f9a8cc",
+        "originalSize": "564×1002",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "toile",
+      "vedette": true
+    },
+    {
+      "file": "voile-tendue-entre-murs.jpg",
+      "width": 1280,
+      "height": 960,
+      "legende": "Voile tendue entre deux murs au-dessus d’une terrasse.",
+      "alt": "Voile d’ombrage beige tendue en pointe entre deux murs blancs au-dessus d’une terrasse, vue en contre-plongée.",
+      "source": {
+        "file": "facebook-1180791237399642.jpg",
+        "sha256": "e310aefd073435939d54553154324b90c186ba73417b8ce825ed32b9f95b23f1",
+        "originalSize": "1280×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": "toile",
+      "vedette": false
+    },
+    {
+      "file": "toile-tendue-angle-terrasse.jpg",
+      "width": 960,
+      "height": 1280,
+      "legende": "Toile tendue couvrant l’angle d’une terrasse, le long d’une façade à volets.",
+      "alt": "Toile claire tendue couvrant l’angle d’une terrasse le long d’une façade blanche à volet roulant, vue en contre-plongée.",
+      "source": {
+        "file": "facebook-1180987314046701.jpg",
+        "sha256": "52e3ce0e8e6675f999713f66f155bb670122cfa4779fb9346a681aa51fb18644",
+        "originalSize": "960×1280",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": "toile",
+      "vedette": false
+    },
+    {
+      "file": "toile-tendue-passage-lateral.jpg",
+      "width": 1536,
+      "height": 2048,
+      "legende": "Toile tendue couvrant un passage latéral entre le mur et le jardin.",
+      "alt": "Toile claire tendue sur une ossature couvrant un passage latéral le long d’un mur blanc, olivier et bande de gazon au premier plan.",
+      "source": {
+        "file": "facebook-1179114280900671212.jpg",
+        "sha256": "c7a871c1646a08bc8463317189fbfb8a1c6db3a368aae9ff009a615fdd293a35",
+        "originalSize": "1536×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": "toile",
+      "vedette": false
+    },
+    {
+      "file": "toile-repliable-sur-rails.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Couverture en toile repliable sur rails, vue par en dessous en position déployée.",
+      "alt": "Couverture en toile sombre repliable sur rails vue par en dessous en position déployée, au-dessus d’un passage commercial.",
+      "source": {
+        "file": "facebook-4564543543522.jpg",
+        "sha256": "18966f2e5c41fb4dab886603c1315ce19aabad3091b2aa1b06d8e1ea1afba397",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "toile",
+      "vedette": false
+    },
+    {
+      "file": "toile-repliee-corniche-lumineuse.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Toile repliée en attente, sous une corniche lumineuse.",
+      "alt": "Couverture en toile sombre repliée le long de son rail sous une corniche lumineuse, écran enroulable descendu sur le côté droit.",
+      "source": {
+        "file": "facebook-45645435435221.jpg",
+        "sha256": "0a08b000fd18c83002c2a8b31811e24ce0651ef32372abd1fee2012b5ae6f0cb",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "toile",
+      "vedette": false
+    },
+    {
+      "file": "marquise-cintree-passage-jardin.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Marquise cintrée fixée en façade au-dessus d’un passage de jardin.",
+      "alt": "Marquise cintrée translucide fixée en façade au-dessus d’un passage dallé, jardin et pelouse de part et d’autre.",
+      "source": {
+        "file": "facebook-1176442674501165544.jpg",
+        "sha256": "c975a06d3d52056fca39c5d1ca06777ecf8fadc7509367e9f33d1eacdf9f6baa",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "marquise-cintree-entree-principale.jpg",
+      "width": 1536,
+      "height": 2048,
+      "legende": "Marquise cintrée au-dessus de l’allée menant à l’entrée principale.",
+      "alt": "Marquise cintrée translucide couvrant l’allée qui mène à une porte d’entrée en bois, mur blanc et pelouse de part et d’autre.",
+      "source": {
+        "file": "facebook-117911428090067112.jpg",
+        "sha256": "b351d2f9aeb6dd44e38da4c5188413c8fb2456f6c70fb3050267f1a407217024",
+        "originalSize": "1536×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "realisations",
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "couverture-pleine-pose-toiture.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Pose d’une couverture pleine sur une ossature, en toiture.",
+      "alt": "Deux personnes posant des panneaux de couverture nervurés sur une ossature métallique en toiture, ville à l’horizon.",
+      "source": {
+        "file": "facebook-11244545453.jpg",
+        "sha256": "6d7d81a54d149d8ccc1a1d58cdfa207ef7f96add1759235630ada36715b4a6bc",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": "fixe",
+      "vedette": false
+    },
+    {
+      "file": "couverture-pleine-terrasse-toiture.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Couverture pleine en cours de pose sur une terrasse en toiture.",
+      "alt": "Ouvrier debout sur une couverture pleine nervurée en cours de pose sur une terrasse en toiture, ville à l’horizon.",
+      "source": {
+        "file": "facebook-11809873140467011.jpg",
+        "sha256": "85fe72f6b903121236e5d025d7d9d9f29ea6536bed69b200e0922081418a0dc4",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": "fixe",
+      "vedette": false
+    },
+    {
+      "file": "pose-couverture-bord-de-piscine.jpg",
+      "width": 1152,
+      "height": 1430,
+      "legende": "Pose d’une couverture à sous-face bois au bord d’une piscine, avec engin de levage.",
+      "alt": "Pose d’une couverture sombre à sous-face bois au bord d’une piscine, engin de levage et ouvriers sur la structure.",
+      "source": {
+        "file": "facebook-1436625815149515.jpg",
+        "sha256": "3b5608bb33058d5613008840fdbf3708fa40118e6e294543950a1a5419af5839",
+        "originalSize": "1152×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1152,
+        "height": 1430
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "auvent-lames-balcon-en-cours.jpg",
+      "width": 1534,
+      "height": 2048,
+      "legende": "Auvent à lames en cours de pose au-dessus d’un balcon.",
+      "alt": "Auvent à lames blanches en cours de pose au-dessus d’un balcon, échelles appuyées contre la façade de l’immeuble.",
+      "source": {
+        "file": "facebook-1235797691898996.jpg",
+        "sha256": "c3803f8080a5e859cd62c99586eb0d8d6e9ebed38b0599c09f4fcf6b894ed259",
+        "originalSize": "1534×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "structure-en-cours-de-pose-cour.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Structure en cours de pose dans une cour, équipe et matériel visibles.",
+      "alt": "Structure sombre en cours de pose dans une cour, étais, échelle et membres de l’équipe autour du chantier.",
+      "source": {
+        "file": "facebook-1317571683721596.jpg",
+        "sha256": "3b7cdb711b07570aac87eee877887609b7a23c6ff3a75880665969b8c3b77a14",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "grande-structure-claire-vue-large.jpg",
+      "width": 2040,
+      "height": 830,
+      "legende": "Grande structure claire en cours de pose, vue large.",
+      "alt": "Grande structure claire en cours de pose au-dessus d’une cour, vue large horizontale montrant toute la portée.",
+      "source": {
+        "file": "facebook-1343108901167874.jpg",
+        "sha256": "c4e012b71ce8ca75ee1b8ee381582e8b1f304ea0198eb1fa822e884b31f47ec3",
+        "originalSize": "2040×1530",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 2040,
+        "height": 830
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "structure-claire-vue-etage.jpg",
+      "width": 1533,
+      "height": 1640,
+      "legende": "Structure claire vue depuis un étage pendant le chantier.",
+      "alt": "Structure claire à lames vue depuis un étage pendant le chantier, au-dessus d’une cour en travaux.",
+      "source": {
+        "file": "facebook-1343108934501204.jpg",
+        "sha256": "4beefb8a6842c49755d124521f42e40c2d947dde89e8f75729b92091f1771cb1",
+        "originalSize": "1533×2047",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1533,
+        "height": 1640
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "detail-structure-claire-chantier.jpg",
+      "width": 1533,
+      "height": 1560,
+      "legende": "Détail sous une grande structure claire, chantier en cours.",
+      "alt": "Détail sous une grande structure claire à lames, échelle et matériel de chantier visibles au sol.",
+      "source": {
+        "file": "facebook-1343108994501198.jpg",
+        "sha256": "79d0dd399065541adb697af11c006bc445e922d48abe821da0f13b1c6bddb9bd",
+        "originalSize": "1533×2047",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1533,
+        "height": 1560
+      },
+      "cropReason": "Ancien marquage incrusté — dont un numéro de téléphone caduc — sorti du cadre.",
+      "categories": [
+        "chantiers",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "ossature-claire-terrasse-villa.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Ossature claire posée au-dessus de la terrasse d’une villa.",
+      "alt": "Ossature claire à lames posée au-dessus de la terrasse d’une villa, échelles en place et ciel dégagé.",
+      "source": {
+        "file": "facebook-1176442547834511.jpg",
+        "sha256": "53c77ede5c1ce281e977c91c54c2975b2b52309d009f1630c157f77a25a62a7a",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "ossature-claire-palmiers-en-cours.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Ossature claire en cours de pose, dans un jardin planté de palmiers.",
+      "alt": "Ossature claire à lames en cours de pose au-dessus d’une terrasse, palmiers et bâtiment à l’arrière-plan, échelle appuyée à la structure.",
+      "source": {
+        "file": "facebook-1176442674501165.jpg",
+        "sha256": "41a8aa1c78721184f2e53ea245f4507589b06fb521ccd93773013188644c2a98",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "montage-ossature-echafaudage.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Montage d’une ossature claire depuis un échafaudage roulant.",
+      "alt": "Montage d’une ossature claire depuis un échafaudage roulant, palmiers et espace planté à l’arrière-plan.",
+      "source": {
+        "file": "facebook-1176442674501165474.jpg",
+        "sha256": "48057fc4d0512232c6eeae689e380fd2ccfbca8e29c61059be17e599470d6b72",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pose-structure-claire-jardin-hotel.jpg",
+      "width": 2048,
+      "height": 1536,
+      "legende": "Pose d’une structure claire au-dessus d’une terrasse, dans un jardin planté.",
+      "alt": "Pose d’une structure claire au-dessus d’une longue terrasse, ouvriers sur la toiture et sur une échelle, palmiers et transats sur la pelouse.",
+      "source": {
+        "file": "facebook-1190229206455845.jpg",
+        "sha256": "b47d7ffa31b522eae132015143b0694634c667d7f21bdc60f081c7a84399a30c",
+        "originalSize": "2048×1536",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pose-ossature-terrasse-immeuble.jpg",
+      "width": 1152,
+      "height": 2048,
+      "legende": "Pose d’une ossature claire sur la terrasse d’un immeuble.",
+      "alt": "Ouvrier posant une ossature claire sur la terrasse d’un immeuble, jardinière plantée en bordure et façades voisines à l’arrière-plan.",
+      "source": {
+        "file": "facebook-1207881681357264.jpg",
+        "sha256": "b546a1c7b3c4d859a9397a9a04b9d026b930b407af61832e5f47d164ce158b8a",
+        "originalSize": "1152×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "assemblage-ossature-toiture-ville.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Assemblage d’une ossature en toiture, au-dessus de la ville.",
+      "alt": "Deux personnes assemblant une ossature métallique sur une terrasse en toiture, ville et voie rapide à l’arrière-plan.",
+      "source": {
+        "file": "facebook-11807912373996421.jpg",
+        "sha256": "8367339eee56fccb728ec268c8e6d1206fc4727a1dbc92ed58e913d64ae7ed51",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pose-auvent-facade-ancienne.jpg",
+      "width": 2040,
+      "height": 1530,
+      "legende": "Pose d’un auvent clair contre une façade ancienne.",
+      "alt": "Ouvrier sur une échelle posant un auvent clair contre une façade ancienne à moulures, unité de climatisation fixée au mur.",
+      "source": {
+        "file": "facebook-1217464637065635.jpg",
+        "sha256": "a12db4a7fee913f7014e587f256856548f08c8515305cab2f4440bb959cfed32",
+        "originalSize": "2040×1530",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pose-structure-patio-arcades.jpg",
+      "width": 719,
+      "height": 960,
+      "legende": "Pose d’une structure dans un patio à arcades.",
+      "alt": "Ouvrier sur une échelle posant une structure dans un patio à arcades, plantes en pot au premier plan.",
+      "source": {
+        "file": "facebook-1217473703731395.jpg",
+        "sha256": "c2654d8c6c2bbaef9655f8c75847ff268422823b5ac16adfe87c4db9898ff6a8",
+        "originalSize": "719×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "pose-pergola-lames-claires-jardin.jpg",
+      "width": 1536,
+      "height": 2048,
+      "legende": "Pergola à lames claires en cours de pose au-dessus d’une terrasse de jardin.",
+      "alt": "Pergola à lames claires en cours de pose au-dessus d’une terrasse, caisse à outils et matériel posés sur la couverture.",
+      "source": {
+        "file": "facebook-332323231.jpg",
+        "sha256": "f53f9d5b61b6748031ed644ebf01a6c7d77d1bf0c3172f4eabc8d8e561b83024",
+        "originalSize": "1536×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "structure-lames-bois-protections.jpg",
+      "width": 960,
+      "height": 720,
+      "legende": "Structure à sous-face bois en fin de pose, poteaux encore sous protection.",
+      "alt": "Structure sombre à sous-face aspect bois en fin de pose, poteaux encore enveloppés de film de protection devant un mur en parpaings.",
+      "source": {
+        "file": "facebook-1176442547834511142.jpg",
+        "sha256": "4795a92733d43489774ca573e117e585cdca6675b3dd0871921fcbb89fcce675",
+        "originalSize": "960×720",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "ossature-cintree-avant-levage.jpg",
+      "width": 1152,
+      "height": 2048,
+      "legende": "Ossature cintrée posée au sol avant levage.",
+      "alt": "Ossature cintrée claire posée au sol sur une pelouse avant levage, échelle rouge appuyée contre le mur.",
+      "source": {
+        "file": "facebook-117911432756733321.jpg",
+        "sha256": "a4e2691ece8f8f51273911298d67da66fd95c97dfb05a03031f01943e05e9ea2",
+        "originalSize": "1152×2048",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers"
+      ],
+      "services": [
+        "abris"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "ensemble-lames-avant-pose.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Ensemble de lames assemblé à plat, avant transport et pose.",
+      "alt": "Ensemble de lames claires assemblé à plat au sol dans un local, rayonnages et matériel rangés à l’arrière-plan.",
+      "source": {
+        "file": "facebook-116761264205083544.jpg",
+        "sha256": "5a05ac0308d4339f628793ed779a43dc79e6af7d8caae64933b762cead3ca56a",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "ensemble-lames-a-plat-local.jpg",
+      "width": 720,
+      "height": 960,
+      "legende": "Ensemble de lames posé à plat, prêt à être repris.",
+      "alt": "Grand ensemble de lames métalliques posé à plat au sol dans un local, mur sombre et étagères à l’arrière-plan.",
+      "source": {
+        "file": "facebook-1176442674501165445.jpg",
+        "sha256": "62087cbe9259b68e7bebc36fd356971a5f383493140ddcd59f09ec941deea1b1",
+        "originalSize": "720×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "chantiers",
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "profiles-avant-assemblage.jpg",
+      "width": 540,
+      "height": 960,
+      "legende": "Profilés rangés avant assemblage.",
+      "alt": "Faisceau de profilés sombres rangés côte à côte avant assemblage, vus en enfilade.",
+      "source": {
+        "file": "facebook-11791142809006711.jpg",
+        "sha256": "1e7e101796014f70749a03c72db0351277ff35bfa8fe20562639f1bae28f3c24",
+        "originalSize": "540×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": null,
+      "vedette": false
+    },
+    {
+      "file": "detail-articulation-lame.jpg",
+      "width": 960,
+      "height": 960,
+      "legende": "Détail de l’articulation d’une lame et de la tringle qui la commande.",
+      "alt": "Détail en noir et blanc de l’articulation boulonnée d’une lame et de la tringle qui commande son basculement.",
+      "source": {
+        "file": "facebook-11809873140467014545.jpg",
+        "sha256": "7010505a14dc6e2342a5a6661227086ec871e3c191b7fb206cb7a70bcbba094b",
+        "originalSize": "960×960",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": true
+    },
+    {
+      "file": "detail-lames-ciel.jpg",
+      "width": 960,
+      "height": 640,
+      "legende": "Détail des lames et de leur profil, vues à contre-jour.",
+      "alt": "Détail rapproché de lames claires vues à contre-jour sur fond de ciel bleu, au-dessus d’une couverture nervurée sombre.",
+      "source": {
+        "file": "facebook-5245535643542.jpg",
+        "sha256": "1bed1f3268dd6af2c8ca2f1c786d2e3921c823c03e6083591d29782de3266dc3",
+        "originalSize": "960×640",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "details"
+      ],
+      "services": [
+        "pergolas"
+      ],
+      "gamme": "bioclimatique",
+      "vedette": false
+    },
+    {
+      "file": "etude-relevee-sur-site.jpg",
+      "width": 960,
+      "height": 599,
+      "legende": "Étude tracée sur une vue du site existant, avec les cotes relevées.",
+      "alt": "Étude au trait tracée par-dessus une photographie du site existant, montrant l’implantation de la structure et les cotes relevées.",
+      "source": {
+        "file": "facebook-plan.jpg",
+        "sha256": "6e1b96ff32d70dbaaef44bd9b95dffa39e99aee0f7dcbe51ac3f584450c84c60",
+        "originalSize": "960×599",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "conception"
+      ],
+      "services": [],
+      "gamme": "conception",
+      "vedette": true
+    },
+    {
+      "file": "projection-structure-longue-terrasse.jpg",
+      "width": 960,
+      "height": 540,
+      "legende": "Projection d’une structure longue au-dessus d’une terrasse, avant réalisation.",
+      "alt": "Projection en volume d’une structure sombre à lames couvrant une longue terrasse avec banquettes, le long d’un bâtiment clair.",
+      "source": {
+        "file": "facebook-52455356435447.jpg",
+        "sha256": "7922e5ec9df88c2eb1e2228d5d56c1e3003312531312c2684673d72d9c22b06a",
+        "originalSize": "960×540",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "conception"
+      ],
+      "services": [],
+      "gamme": "conception",
+      "vedette": false
+    },
+    {
+      "file": "projection-abri-jardin-banquettes.jpg",
+      "width": 960,
+      "height": 540,
+      "legende": "Projection d’un abri au-dessus d’un espace de repos en jardin.",
+      "alt": "Projection en volume d’un abri sombre à couverture pleine au-dessus d’un espace de repos avec banquettes, sur une pelouse plantée de palmiers.",
+      "source": {
+        "file": "facebook-524553564354471.jpg",
+        "sha256": "a93ae946a323f267af7e6aa949031d222dd1b58982d591b38cda1fccc3517670",
+        "originalSize": "960×540",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "conception"
+      ],
+      "services": [],
+      "gamme": "conception",
+      "vedette": false
+    },
+    {
+      "file": "projection-structure-espace-partage.jpg",
+      "width": 960,
+      "height": 540,
+      "legende": "Projection d’une structure au-dessus d’un espace partagé.",
+      "alt": "Projection en volume d’une structure sombre à lames au-dessus d’un espace partagé avec bancs et cheminements, haies et palmiers en bordure.",
+      "source": {
+        "file": "facebook-524553564354472.jpg",
+        "sha256": "2c276d4e8080c5d9a8d2c700cadb8c26fbd91f66b535539361db759ee71fbab8",
+        "originalSize": "960×540",
+        "url": "https://www.facebook.com/Tunisie.Pergola77"
+      },
+      "crop": null,
+      "cropReason": null,
+      "categories": [
+        "conception"
+      ],
+      "services": [],
+      "gamme": "conception",
+      "vedette": false
+    }
+  ],
+  "pageImagesNote": "Images d’habillage de page. Elles ne sont PAS des réalisations, ne proviennent pas nécessairement des publications Facebook, et n’entrent ni dans la galerie ni dans le nombre annoncé sur /realisations/. Chacune porte sa propre provenance.",
+  "pageImages": [
+    {
+      "file": "hero-pergola-lames-terrasse-piscine-crepuscule.jpg",
+      "width": 1672,
+      "height": 941,
+      "legende": "Pergola à lames au-dessus d’une terrasse de piscine, au crépuscule.",
+      "alt": "Pergola à lames sombres au-dessus d’une terrasse de piscine à débordement au crépuscule, oliviers, mur en pierre et vallée en contrebas.",
+      "source": {
+        "file": "HERO.png",
+        "sha256": "80501c13a4695c8330d55aab774f00c43f448a7d2f633ce1f6ed8313b4d66095",
+        "originalSize": "1672×941"
+      },
+      "crop": null,
+      "cropReason": null,
+      "provenance": "Visuel d’ambiance fourni par le client le 27 août 2026, hors publications Facebook. Non présenté comme une réalisation livrée."
+    }
+  ]
+}

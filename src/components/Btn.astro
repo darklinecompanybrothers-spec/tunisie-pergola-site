@@ -1,0 +1,84 @@
+---
+/**
+ * Le contrôle principal du site — « la lame ».
+ *
+ * Ce n'est pas un rectangle qui change de couleur. Au repos, une plaque posée
+ * sur une lèvre d'ombre décalée. Au survol et au focus clavier, six lames de
+ * pergola se referment de gauche à droite sur la plaque, l'étiquette passe sur
+ * l'autre encre et la flèche s'allonge. À l'activation, la lèvre se rétracte :
+ * le bouton s'enfonce réellement dans la page.
+ *
+ * Six lames, pas cinq : c'est le nombre exact du monogramme. Le composant
+ * existe pour que ce détail — et les cinq états — ne puissent pas diverger d'un
+ * bouton à l'autre.
+ *
+ * `href` produit un lien, `type` un bouton. Aucun des deux ensemble.
+ */
+interface Props {
+  href?: string | undefined;
+  type?: 'submit' | 'button' | undefined;
+  tone?: 'primary' | 'ghost' | 'quiet';
+  /** Ouvre dans un nouvel onglet — ajoute le `rel` et la mention lecteur d'écran. */
+  external?: boolean | undefined;
+  /** Valeur de `data-track`, lue par le suivi d'origine des demandes. */
+  track?: string | undefined;
+  /** Attribut de repérage utilisé par le script du formulaire. */
+  submitHook?: boolean | undefined;
+  class?: string | undefined;
+  'aria-label'?: string | undefined;
+}
+
+const {
+  href,
+  type,
+  tone = 'primary',
+  external = false,
+  track,
+  submitHook = false,
+  class: className,
+  'aria-label': ariaLabel
+} = Astro.props;
+
+if (!href && !type) {
+  throw new Error('Btn.astro — il faut soit `href` (lien) soit `type` (bouton).');
+}
+
+const BLADES = [0, 1, 2, 3, 4, 5];
+const classes = ['tp-btn', `tp-btn--${tone}`, className];
+---
+
+{
+  href ? (
+    <a
+      class:list={classes}
+      href={href}
+      data-track={track}
+      aria-label={ariaLabel}
+      rel={external ? 'noopener noreferrer' : undefined}
+      target={external ? '_blank' : undefined}
+    >
+      <span class="tp-btn__blades" aria-hidden="true">
+        {BLADES.map(() => (
+          <span />
+        ))}
+      </span>
+      <span class="tp-btn__label">
+        <slot />
+      </span>
+      <span class="tp-btn__arrow" aria-hidden="true" />
+      {external && <span class="tp-visually-hidden"> (nouvel onglet)</span>}
+    </a>
+  ) : (
+    <button class:list={classes} type={type} aria-label={ariaLabel} data-submit={submitHook ? '' : undefined}>
+      <span class="tp-btn__blades" aria-hidden="true">
+        {BLADES.map(() => (
+          <span />
+        ))}
+      </span>
+      <span class="tp-btn__label">
+        <slot />
+      </span>
+      <span class="tp-btn__arrow" aria-hidden="true" />
+    </button>
+  )
+}

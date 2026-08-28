@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Shot from '../components/Shot.astro';
+import { SITE } from '../data/site';
+
+import chantierPhoto from '../assets/photos/derived/structure-en-cours-de-pose-cour.jpg';
+import posePhoto from '../assets/photos/derived/pose-couverture-bord-de-piscine.jpg';
+import bandePhoto from '../assets/photos/derived/grande-structure-claire-vue-large.jpg';
+import headPhoto from '../assets/photos/derived/structure-claire-vue-etage.jpg';
+---
+
+<Base route="/a-propos/">
+  <PageHead
+    route="/a-propos/"
+    eyebrow="À propos"
+    title="Concevoir, fournir, poser."
+    lede={`${SITE.name} est basée à ${SITE.address.city} et intervient dans plusieurs régions de Tunisie pour des pergolas, des verrières, des abris et des abris de jardin.`}
+    theme="shelter"
+    photo={headPhoto}
+    photoAlt="Structure blanche vue depuis un étage pendant le chantier, poteaux et traverses en place."
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-histoire">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Le point de départ</p>
+        <h2 class="tp-mask" id="tp-histoire">Le lieu commande.</h2>
+      </div>
+
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          {SITE.name} conçoit, fournit et installe des structures qui donnent une nouvelle fonction
+          aux espaces extérieurs. Terrasse, jardin, entrée, rooftop ou bord de piscine : chaque
+          projet part du lieu, de ses usages et de sa lumière pour créer un abri cohérent avec
+          l’architecture existante.
+        </p>
+        <p>
+          Un même besoin — « couvrir cette terrasse » — n’appelle pas la même réponse selon
+          l’orientation, la hauteur disponible, la façade à laquelle il faut se raccorder et ce
+          qu’on veut réellement faire sous la structure. C’est cette lecture du lieu qui précède le
+          dessin.
+        </p>
+        <p>
+          Sur Facebook, la page {SITE.name} réunissait {SITE.social.facebookFollowersLabel} le {
+            SITE.social.facebookObservedOn
+          }. Les publications y montrent les projets au fil des chantiers.
+          <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
+            >Voir la page<span class="tp-visually-hidden"> Facebook (nouvel onglet)</span></a
+          >.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--flush-top tp-light">
+    <div class="tp-bleed tp-grow tp-reveal" data-scene="enter">
+      <Shot
+        photo={bandePhoto}
+        alt="Trame d’une grande structure blanche en cours de pose, vue large depuis le dessous de la couverture."
+        legende="Grande structure blanche en cours de pose, vue large sur la trame de la couverture."
+        ratio="21-9"
+        format="full"
+      />
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-methode">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">La façon de travailler</p>
+          <h2 class="tp-mask" id="tp-methode">Trois temps, un seul interlocuteur.</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">
+          Le périmètre annoncé par l’entreprise est celui-ci, et rien de plus : cadrer le besoin,
+          préparer la solution, accompagner sa mise en place.
+        </p>
+      </div>
+
+      <ol class="tp-cols tp-stagger" role="list">
+        <li class="tp-stack tp-reveal">
+          <p class="tp-index">01 — Concevoir</p>
+          <p class="tp-text-soft">
+            Comprendre l’espace avant de proposer une forme : ce qu’on y fait aujourd’hui, ce qu’on
+            aimerait y faire, comment la lumière se déplace, à quoi la structure devra se raccorder.
+          </p>
+        </li>
+        <li class="tp-stack tp-reveal">
+          <p class="tp-index">02 — Fournir</p>
+          <p class="tp-text-soft">
+            Préparer et amener sur place les éléments de structure, de couverture et de finition
+            retenus pour ce projet précis.
+          </p>
+        </li>
+        <li class="tp-stack tp-reveal">
+          <p class="tp-index">03 — Poser</p>
+          <p class="tp-text-soft">
+            Monter la structure sur site. Les photographies de chantier publiées montrent cette
+            étape telle qu’elle se déroule : étais, engins de levage, ajustements.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-chantier">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Le chantier</p>
+        <h2 class="tp-mask" id="tp-chantier">Ce que la photo finale ne montre pas.</h2>
+        <p class="tp-text-soft">
+          Le portfolio public de l’entreprise mêle volontairement structures terminées et étapes de
+          pose. C’est un choix utile : il rend visible le travail réel derrière une ligne nette.
+        </p>
+        <p><Btn href="/realisations/" tone="quiet">Voir les réalisations</Btn></p>
+      </div>
+
+      <div class="tp-span-body tp-reveal">
+        <div class="tp-cols">
+          <Shot
+            photo={chantierPhoto}
+            alt="Structure anthracite en cours de pose dans une cour, étais, échelle et membres de l’équipe autour du chantier."
+            legende="Structure anthracite en cours de pose dans une cour."
+            ratio="4-3"
+            format="third"
+          />
+          <Shot
+            photo={posePhoto}
+            alt="Équipe posant une couverture anthracite à sous-face bois au bord d’une piscine, avec un engin de levage en place."
+            legende="Pose d’une couverture au bord d’une piscine, engin de levage en place."
+            ratio="4-5"
+            format="third"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-ou">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Où</p>
+        <h2 class="tp-mask" id="tp-ou">Basée à {SITE.address.city}.</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          L’adresse publique de l’entreprise est {SITE.address.inline}. Les zones desservies
+          déclarées couvrent {SITE.areaServed.length} villes, du nord au sud du pays.
+        </p>
+        <p>
+          <Btn href="/zones-intervention/" tone="quiet">Voir les zones d’intervention</Btn>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

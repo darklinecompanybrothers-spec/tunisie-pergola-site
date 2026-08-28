@@ -1,0 +1,28 @@
+---
+/**
+ * L'obturateur — le mécanisme central du site.
+ *
+ * Huit lames posées à l'obliquité exacte du monogramme (72 pour 92). Elles se
+ * referment ou s'écartent selon la progression de la scène qui les porte, et
+ * servent à trois choses :
+ *   • révéler une photographie comme la lumière passe entre les lames;
+ *   • passer d'une scène sombre à une scène claire sans coupure nette;
+ *   • rappeler, partout dans le site, le geste du produit lui-même.
+ *
+ * La grille de lames déborde volontairement de son cadre : seules les lames
+ * intérieures sont visibles, donc le pavage reste régulier jusqu'aux bords.
+ * Décoratif de bout en bout — rien n'y est lisible.
+ */
+interface Props {
+  /** `veil` couvre puis s'ouvre. `seam` fait la couture entre deux scènes. */
+  role?: 'veil' | 'seam';
+  class?: string | undefined;
+}
+
+const { role = 'veil', class: className } = Astro.props;
+const BLADES = [0, 1, 2, 3, 4, 5, 6, 7];
+---
+
+<span class:list={['tp-shutter', `tp-shutter--${role}`, className]} aria-hidden="true">
+  <span class="tp-shutter__rack">{BLADES.map(() => <span />)}</span>
+</span>

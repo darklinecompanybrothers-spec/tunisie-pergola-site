@@ -1,0 +1,43 @@
+---
+/**
+ * Monogramme TP.
+ *
+ * Un titre accessible n'est fourni que lorsque le symbole porte réellement
+ * l'identité (en-tête, pied de page). Partout ailleurs — décor, filigrane,
+ * ouverture — il est masqué aux technologies d'assistance, parce qu'il ne dit
+ * rien de plus que le texte qui l'entoure.
+ *
+ * `parts` expose chaque pièce du dessin (`data-part`) pour que la scénographie
+ * puisse la déplacer. La géométrie, elle, ne change jamais : une seule source,
+ * `src/data/brand-marks.mjs`, relevée sur le concept validé.
+ */
+import { MARK_VIEWBOX, markColor, markMono } from '../../data/brand-marks.mjs';
+
+interface Props {
+  /** `color` = structure + lames cuivre. `mono` = une seule encre. */
+  variant?: 'color' | 'mono';
+  /** Découpe le dessin en pièces adressables pour la narration au défilement. */
+  parts?: boolean | undefined;
+  /** Nom accessible. Absent = symbole décoratif. */
+  title?: string | undefined;
+  class?: string | undefined;
+}
+
+const { variant = 'mono', parts = false, title, class: className } = Astro.props;
+const body = variant === 'color' ? markColor({ parts }) : markMono();
+const titleId = title ? `tp-mark-${Math.random().toString(36).slice(2, 9)}` : undefined;
+---
+
+{
+  title ? (
+    <svg
+      class={className}
+      viewBox={MARK_VIEWBOX}
+      role="img"
+      aria-labelledby={titleId}
+      set:html={`<title id="${titleId}">${title}</title>${body}`}
+    />
+  ) : (
+    <svg class={className} viewBox={MARK_VIEWBOX} aria-hidden="true" focusable="false" set:html={body} />
+  )
+}

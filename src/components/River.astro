@@ -1,0 +1,62 @@
+---
+/**
+ * La rivière — les réalisations traversent la scène.
+ * ==================================================
+ *
+ * MÉCANIQUE (adaptée de la « gallery animation » de la référence)
+ * Trois colonnes de photographies qui remontent à des vitesses différentes et
+ * passent par-dessus un titre resté fixe. Ce n'est pas une grille qui apparaît :
+ * c'est un flux qui traverse. Le titre est recouvert puis redécouvert — c'est
+ * voulu, et c'est ce décalage qui donne la profondeur.
+ *
+ * Les décalages de départ et les vitesses sont volontairement premiers entre
+ * eux : deux colonnes ne repassent jamais au même endroit au même moment.
+ *
+ * Le nombre de photographies n'est pas figé. Elles sont réparties en
+ * round-robin depuis la collection : le jour où le client en envoie dix de
+ * plus, elles entrent dans le flux sans qu'une ligne change ici.
+ *
+ * Pas de légendes dans le flux — elles seraient illisibles en mouvement et
+ * elles existent, complètes, sur `/realisations/`. Les textes alternatifs, eux,
+ * restent portés par chaque image.
+ */
+import { getCollection } from 'astro:content';
+import Shot from './Shot.astro';
+
+interface Props {
+  /** Nombre maximal de photographies mises en mouvement. */
+  limit?: number | undefined;
+}
+
+const { limit = 9 } = Astro.props;
+
+const entries = (await getCollection('realisations'))
+  .sort((a, b) => a.data.ordre - b.data.ordre)
+  .slice(0, limit);
+
+const COLONNES = 3;
+const colonnes: (typeof entries)[] = Array.from({ length: COLONNES }, () => []);
+entries.forEach((entry, index) => {
+  const colonne = colonnes[index % COLONNES];
+  if (colonne) colonne.push(entry);
+});
+---
+
+<div class="tp-river">
+  {
+    colonnes.map((colonne, index) => (
+      <div class:list={['tp-river__col', `tp-river__col--${index + 1}`]}>
+        {colonne.map((entry) => (
+          <div class="tp-river__cell">
+            <Shot
+              photo={entry.data.photo}
+              alt={entry.data.alt}
+              ratio={entry.data.ratio}
+              format="third"
+            />
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</div>

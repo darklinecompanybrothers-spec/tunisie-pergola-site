@@ -1,0 +1,206 @@
+@layer tokens {
+  /* ==========================================================================
+     Tunisie Pergola — jetons de design
+     Identité v1 (proposition DCB). Aucune couleur de marque n'est écrite en
+     dur ailleurs que dans ce fichier : une validation client se répercute ici
+     et nulle part ailleurs.
+     ========================================================================== */
+
+  :root {
+    /* --- Palette de marque ------------------------------------------------ */
+    --tp-anthracite: #151a1c;
+    --tp-copper: #b86f44;
+    --tp-ivory: #f4f0e8;
+    --tp-sea: #89aec0;
+    --tp-white: #ffffff;
+
+    /* --- Déclinaisons calculées pour l'accessibilité ----------------------
+       Contrastes mesurés (WCAG 2.1) :
+         anthracite / ivoire ............ 15,4:1   AAA
+         ivoire / anthracite ............ 15,4:1   AAA
+         cuivre / anthracite ............  4,5:1   AA texte courant
+         cuivre / ivoire ................  3,4:1   AA grandes tailles seulement
+         cuivre-encre / ivoire ..........  4,9:1   AA texte courant
+         encre-douce / ivoire ...........  6,9:1   AA
+         clair-doux / anthracite ........  8,1:1   AAA
+         bleu / anthracite ..............  7,4:1   AA  (jamais sur fond clair)
+       `--tp-copper-ink` est le cuivre-bois assombri : même famille, réservé au
+       texte courant sur fond clair où le cuivre de marque échoue. */
+    --tp-copper-ink: #9a5733;
+    --tp-copper-light: #d08c5c;
+    --tp-anthracite-raised: #1e2528;
+    /* Surface de saisie sur fond sombre : assez claire pour qu'un champ de
+       formulaire se distingue de la scène sans devenir une carte. */
+    --tp-anthracite-field: #262f32;
+    --tp-anthracite-deep: #0e1213;
+    --tp-anthracite-night: #070a0b;
+    --tp-ivory-deep: #e8e2d6;
+    --tp-ink-soft: #4a5356;
+    --tp-light-soft: #a9b2b4;
+
+    /* Violet du studio — relevé sur le symbole DARKLINE lui-même (`#802fd8`,
+       le pixel le plus saturé du fichier), puis éclairci pour tenir le
+       contraste sur le fond du pied de page : 6,5:1 contre 3,1:1 pour le
+       violet brut. Il n'appartient PAS à la palette Tunisie Pergola et ne sert
+       qu'à la signature `.tp-sign`. */
+    --tp-darkline: color-mix(in srgb, #802fd8 62%, #ffffff);
+
+    /* --- Rôles ------------------------------------------------------------ */
+    --tp-surface: var(--tp-ivory);
+    --tp-surface-raised: var(--tp-white);
+    --tp-text: var(--tp-anthracite);
+    --tp-text-soft: var(--tp-ink-soft);
+    --tp-accent: var(--tp-copper-ink);
+    --tp-accent-display: var(--tp-copper);
+    --tp-line: color-mix(in srgb, var(--tp-anthracite) 16%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 34%, transparent);
+    --tp-focus: var(--tp-copper);
+
+    /* Le symbole hérite des rôles : il change avec la scène, sans variante. */
+    --tp-mark-structure: currentColor;
+    --tp-mark-lames: var(--tp-accent-display);
+
+    /* --- Typographie ------------------------------------------------------
+       Deux familles libres, sous-licence OFL, auto-hébergées, une seule
+       graisse variable chacune. */
+    --tp-font-display: 'Syne Variable', 'Syne', 'Trebuchet MS', ui-sans-serif, system-ui,
+      sans-serif;
+    --tp-font-text: 'Manrope Variable', 'Manrope', 'Segoe UI', ui-sans-serif, system-ui,
+      sans-serif;
+
+    /* Échelle fluide. Les bornes sont choisies pour que la ligne la plus
+       longue du site tienne à 320 px sans débordement horizontal. */
+    --tp-text-xs: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
+    --tp-text-sm: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+    --tp-text-base: clamp(1rem, 0.97rem + 0.16vw, 1.125rem);
+    --tp-text-md: clamp(1.0625rem, 1rem + 0.3vw, 1.3125rem);
+    --tp-text-lg: clamp(1.25rem, 1.14rem + 0.55vw, 1.75rem);
+    --tp-text-xl: clamp(1.5rem, 1.26rem + 1.2vw, 2.5rem);
+    --tp-text-2xl: clamp(1.875rem, 1.4rem + 2.4vw, 3.75rem);
+    --tp-text-3xl: clamp(2.25rem, 1.5rem + 3.75vw, 5rem);
+    --tp-display: clamp(2.2rem, 1.1rem + 5.4vw, 4.35rem);
+    --tp-manifesto: clamp(2.7rem, 1rem + 9vw, 9.5rem);
+    /* Deux échelles monumentales, calibrées pour tenir sans césure à 320 px :
+       `--tp-headline` porte la promesse du premier écran, `--tp-monument` les
+       mots qui deviennent de l'architecture (titres de scène, noms de villes,
+       chiffres d'index). */
+    --tp-headline: clamp(2rem, 0.55rem + 5.1vw, 4.6rem);
+    --tp-monument: clamp(3.2rem, 0.4rem + 12vw, 12rem);
+    --tp-numeral: clamp(3.5rem, 1rem + 11vw, 10rem);
+
+    --tp-leading-tight: 0.95;
+    --tp-leading-snug: 1.12;
+    --tp-leading-body: 1.62;
+
+    --tp-track-display: -0.025em;
+    --tp-track-eyebrow: 0.22em;
+
+    /* --- Rythme ----------------------------------------------------------- */
+    --tp-gutter: clamp(1.25rem, 5vw, 4rem);
+    --tp-shell: 90rem;
+    --tp-measure: 62ch;
+    --tp-scene-y: clamp(4.5rem, 11vw, 10.5rem);
+    --tp-gap-xs: clamp(0.5rem, 1vw, 0.75rem);
+    --tp-gap-sm: clamp(0.75rem, 1.6vw, 1.25rem);
+    --tp-gap-md: clamp(1.25rem, 3vw, 2.5rem);
+    --tp-gap-lg: clamp(2rem, 5vw, 4.5rem);
+    --tp-gap-xl: clamp(3rem, 8vw, 7rem);
+
+    /* --- Contrôles -------------------------------------------------------- */
+    --tp-hit: 2.75rem; /* 44 px — cible tactile minimale */
+    /* Hauteur de la barre flottante. Toutes les têtes de page la réservent :
+       aucun contenu ne peut passer dessous. */
+    --tp-header-h: 4.5rem;
+    --tp-radius: 0;
+    --tp-radius-soft: 2px;
+
+    /* --- Mouvement -------------------------------------------------------- */
+    --tp-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --tp-ease-mask: cubic-bezier(0.65, 0, 0.35, 1);
+    --tp-ease-blade: cubic-bezier(0.16, 1, 0.3, 1);
+    --tp-speed-fast: 180ms;
+    --tp-speed: 460ms;
+    --tp-speed-slow: 900ms;
+
+    /* --- Obliquité de marque ---------------------------------------------
+       Le plan de toiture du monogramme descend de 92 pour 72 : c'est le seul
+       angle du site. Toutes les lames, les masques et les transitions de scène
+       s'y conforment, ce qui donne à l'ensemble sa signature géométrique. */
+    --tp-rake: 38.06deg; /* atan(72 / 92) */
+    --tp-rake-x: 0.7826; /* 72 / 92 */
+  }
+
+  /* --- Progression de scène ----------------------------------------------
+     Deux nombres, écrits par `scripts/scene.ts` pendant le défilement.
+
+       --tp-p  progression d'ENTRÉE   valeur au repos 1 → contenu en place
+       --tp-x  progression de SORTIE  valeur au repos 0 → scène composée
+
+     Les valeurs par défaut sont donc l'état LISIBLE. Sans JavaScript, sans
+     `@property`, ou avec `prefers-reduced-motion`, la page est exactement dans
+     l'état d'arrivée : le pire cas est un site sans mouvement, jamais un site
+     vide. */
+  @property --tp-p {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 1;
+  }
+
+  @property --tp-x {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+
+  /* Scène sombre : les rôles basculent, les composants ne changent pas.
+
+     `color-scheme` est déclaré ici parce qu'il ne concerne pas nos composants
+     mais tout ce que le NAVIGATEUR dessine lui-même à l'intérieur de la scène :
+     le menu déroulant d'un `<select>`, la barre de défilement d'une zone de
+     texte, la poignée de redimensionnement, le remplissage automatique, les
+     sélecteurs de date. Sans lui, ces éléments restent clairs au milieu d'une
+     scène sombre — et le menu d'un `<select>` devient illisible. */
+  .tp-dark {
+    color-scheme: dark;
+    --tp-surface: var(--tp-anthracite);
+    --tp-surface-raised: var(--tp-anthracite-field);
+    --tp-text: var(--tp-ivory);
+    --tp-text-soft: var(--tp-light-soft);
+    --tp-accent: var(--tp-copper);
+    --tp-accent-display: var(--tp-copper);
+    --tp-line: color-mix(in srgb, var(--tp-ivory) 18%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-ivory) 38%, transparent);
+
+    color: var(--tp-text);
+    background-color: var(--tp-surface);
+  }
+
+  .tp-light {
+    color-scheme: light;
+    --tp-surface: var(--tp-ivory);
+    --tp-surface-raised: var(--tp-white);
+    --tp-text: var(--tp-anthracite);
+    --tp-text-soft: var(--tp-ink-soft);
+    --tp-accent: var(--tp-copper-ink);
+    --tp-accent-display: var(--tp-copper);
+    --tp-line: color-mix(in srgb, var(--tp-anthracite) 16%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 34%, transparent);
+
+    color: var(--tp-text);
+    background-color: var(--tp-surface);
+  }
+
+  @media (min-width: 62rem) {
+    :root {
+      --tp-header-h: 5.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --tp-speed-fast: 1ms;
+      --tp-speed: 1ms;
+      --tp-speed-slow: 1ms;
+    }
+  }
+}

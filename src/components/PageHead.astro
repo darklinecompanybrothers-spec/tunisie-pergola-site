@@ -1,0 +1,78 @@
+---
+/**
+ * Ouverture des pages internes.
+ *
+ * Chaque route a sa mise en scène, mais toutes partagent la même grammaire :
+ * scène sombre plein cadre, photographie tenue loin derrière, monogramme en
+ * filigrane, trame propre à la famille, puis fil d'Ariane, sur-titre, H1 et
+ * chapô posés en bas de l'écran. C'est ce qui permet à la barre flottante
+ * d'avoir toujours son contraste, dès le premier pixel de chaque page.
+ *
+ * `theme` change la trame, donc la lumière de la page :
+ *   slats    lames obliques — l'ombre portée      (/pergolas/, /realisations/)
+ *   glass    résille verticale claire — la lumière (/verrieres/, /contact/)
+ *   shelter  masse protectrice qui descend         (/abris/, /a-propos/)
+ *   grid     graticule d'horizons et niveau cuivre (/zones-intervention/, /politique-confidentialite/)
+ *   plain    aucune trame
+ *
+ * Un seul H1 par page, toujours ici.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Mark from './brand/Mark.astro';
+import type { RoutePath } from '../data/pages';
+
+interface Props {
+  route: RoutePath;
+  eyebrow: string;
+  title: string;
+  lede?: string | undefined;
+  theme?: 'slats' | 'glass' | 'shelter' | 'grid' | 'plain';
+  /** Photographie de fond. Son texte alternatif est obligatoire avec elle. */
+  photo?: ImageMetadata | undefined;
+  photoAlt?: string | undefined;
+}
+
+const { route, eyebrow, title, lede, theme = 'plain', photo, photoAlt } = Astro.props;
+
+if (photo && !photoAlt) {
+  throw new Error(`PageHead — ${route} : une photographie de fond exige un texte alternatif.`);
+}
+---
+
+<section class:list={['tp-pagehead', 'tp-dark', `tp-pagehead--${theme}`]} data-scene="through">
+  {
+    photo && photoAlt && (
+      <div class="tp-pagehead__plate">
+        <Picture
+          src={photo}
+          alt={photoAlt}
+          widths={[640, 960, 1280, 1600]}
+          sizes="100vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpeg"
+          quality={68}
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+        />
+      </div>
+    )
+  }
+
+  <Mark class="tp-pagehead__mark" variant="color" />
+
+  {theme !== 'plain' && <span class="tp-pagehead__weave" aria-hidden="true" />}
+
+  <div class="tp-shell tp-stack tp-stack--md">
+    <Breadcrumbs route={route} />
+
+    <div class="tp-stack">
+      <p class="tp-eyebrow">{eyebrow}</p>
+      <h1 class="tp-mask">{title}</h1>
+    </div>
+
+    {lede && <p class="tp-pagehead__lede tp-reveal">{lede}</p>}
+  </div>
+</section>

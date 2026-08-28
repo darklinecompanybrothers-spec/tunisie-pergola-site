@@ -1,0 +1,34 @@
+---
+/**
+ * Mot-symbole « TUNISIE PERGOLA », dessiné et non composé.
+ *
+ * Il ne dépend d'aucune police : le logo reste identique même si le
+ * chargement des webfonts échoue, et il n'y a rien à substituer.
+ */
+import { drawText, WORDMARK_TEXT, CAP_HEIGHT } from '../../data/brand-marks.mjs';
+
+interface Props {
+  /** Nom accessible. Absent = décoratif (le texte voisin porte déjà le nom). */
+  title?: string | undefined;
+  class?: string | undefined;
+}
+
+const { title, class: className } = Astro.props;
+const word = drawText(WORDMARK_TEXT);
+const viewBox = `0 0 ${word.width} ${CAP_HEIGHT}`;
+const titleId = title ? `tp-word-${Math.random().toString(36).slice(2, 9)}` : undefined;
+---
+
+{
+  title ? (
+    <svg
+      class={className}
+      viewBox={viewBox}
+      role="img"
+      aria-labelledby={titleId}
+      set:html={`<title id="${titleId}">${title}</title>${word.markup}`}
+    />
+  ) : (
+    <svg class={className} viewBox={viewBox} aria-hidden="true" focusable="false" set:html={word.markup} />
+  )
+}

@@ -1,0 +1,210 @@
+---
+/**
+ * Formulaire de projet → circuit de réception DCB.
+ *
+ * Sans JavaScript, c'est un formulaire HTML ordinaire qui poste directement
+ * vers le formulaire DCB vérifié : les champs portant un identifiant `entry.*`
+ * partent, la validation native s'applique, rien n'est mort. Avec JavaScript,
+ * l'envoi devient discret, les champs de qualification sont repliés dans le
+ * champ de détails, et l'erreur reste sur la page avec les valeurs saisies.
+ *
+ * Aucune clé, aucun jeton : l'adresse publique du formulaire DCB est déjà
+ * exposée par le site DCB, et rien d'autre ne quitte le navigateur.
+ */
+import Btn from './Btn.astro';
+import { SITE } from '../data/site';
+
+const { entry, action, packValue, servicePrefix } = SITE.leadForm;
+
+const PROJETS = ['Pergola', 'Verrière', 'Abri ou abri de jardin', 'Auvent d’entrée', 'Je ne sais pas encore'];
+
+const USAGES = [
+  'Terrasse',
+  'Jardin',
+  'Entrée',
+  'Rooftop',
+  'Bord de piscine',
+  'Espace professionnel',
+  'Autre'
+];
+
+const ECHEANCES = ['Dès que possible', 'Dans 1 à 3 mois', 'Dans 3 à 6 mois', 'Pas encore décidé'];
+---
+
+<form
+  class="tp-form"
+  id="tp-projet"
+  method="post"
+  action={action}
+  data-lead-form
+  data-service-prefix={servicePrefix}
+  data-entry-name={entry.name}
+  data-entry-email={entry.email}
+  data-entry-phone={entry.phone}
+  data-entry-service={entry.service}
+  data-entry-pack={entry.pack}
+  data-entry-details={entry.details}
+  data-action={action}
+  data-whatsapp={SITE.contact.whatsappHref}
+  data-phone={SITE.contact.phoneDisplay}
+  data-phone-href={SITE.contact.phoneHref}
+>
+  <div class="tp-summary" id="tp-form-erreurs" role="alert" tabindex="-1">
+    <h3>Votre demande n’est pas encore partie</h3>
+    <ul></ul>
+  </div>
+
+  <input type="hidden" name={entry.pack} value={packValue} />
+
+  <div class="tp-form__grid">
+    <p class="tp-field">
+      <label for="tp-nom">Nom et prénom</label>
+      <input
+        class="tp-input"
+        type="text"
+        id="tp-nom"
+        name={entry.name}
+        autocomplete="name"
+        maxlength="80"
+        required
+        aria-describedby="tp-nom-err"
+      />
+      <span class="tp-error" id="tp-nom-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-tel">Téléphone</label>
+      <input
+        class="tp-input"
+        type="tel"
+        id="tp-tel"
+        name={entry.phone}
+        autocomplete="tel"
+        inputmode="tel"
+        maxlength="24"
+        required
+        aria-describedby="tp-tel-hint tp-tel-err"
+      />
+      <span class="tp-field__hint" id="tp-tel-hint">Le numéro sur lequel vous êtes joignable.</span>
+      <span class="tp-error" id="tp-tel-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-ville">Ville</label>
+      <input
+        class="tp-input"
+        type="text"
+        id="tp-ville"
+        name="tp-ville"
+        list="tp-villes"
+        autocomplete="address-level2"
+        maxlength="60"
+        required
+        aria-describedby="tp-ville-err"
+      />
+      <datalist id="tp-villes">
+        {SITE.areaServed.map((ville) => <option value={ville}></option>)}
+      </datalist>
+      <span class="tp-error" id="tp-ville-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-email">E-mail <span class="tp-field__optional">(facultatif)</span></label>
+      <input
+        class="tp-input"
+        type="email"
+        id="tp-email"
+        name={entry.email}
+        autocomplete="email"
+        maxlength="120"
+        aria-describedby="tp-email-err"
+      />
+      <span class="tp-error" id="tp-email-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-projet-type">Type de projet</label>
+      <select class="tp-select" id="tp-projet-type" name={entry.service} required aria-describedby="tp-projet-type-err">
+        <option value="">Choisir…</option>
+        {PROJETS.map((projet) => <option value={`${servicePrefix} — ${projet}`}>{projet}</option>)}
+      </select>
+      <span class="tp-error" id="tp-projet-type-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-usage">Usage recherché</label>
+      <select class="tp-select" id="tp-usage" name="tp-usage" required aria-describedby="tp-usage-err">
+        <option value="">Choisir…</option>
+        {USAGES.map((usage) => <option value={usage}>{usage}</option>)}
+      </select>
+      <span class="tp-error" id="tp-usage-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-dimensions">Dimensions approximatives</label>
+      <input
+        class="tp-input"
+        type="text"
+        id="tp-dimensions"
+        name="tp-dimensions"
+        maxlength="60"
+        required
+        placeholder="environ 4 m × 6 m"
+        aria-describedby="tp-dimensions-hint tp-dimensions-err"
+      />
+      <span class="tp-field__hint" id="tp-dimensions-hint"
+        >Une estimation suffit, même approximative.</span
+      >
+      <span class="tp-error" id="tp-dimensions-err"></span>
+    </p>
+
+    <p class="tp-field">
+      <label for="tp-echeance">Échéance souhaitée <span class="tp-field__optional">(facultatif)</span></label>
+      <select class="tp-select" id="tp-echeance" name="tp-echeance">
+        <option value="">Choisir…</option>
+        {ECHEANCES.map((echeance) => <option value={echeance}>{echeance}</option>)}
+      </select>
+    </p>
+
+    <p class="tp-field tp-field--full">
+      <label for="tp-message">Votre projet</label>
+      <textarea
+        class="tp-textarea"
+        id="tp-message"
+        name={entry.details}
+        rows="5"
+        maxlength="2000"
+        required
+        aria-describedby="tp-message-hint tp-message-err"></textarea>
+      <span class="tp-field__hint" id="tp-message-hint"
+        >Le lieu, ce que vous voulez en faire, et tout ce qui vous semble utile.</span
+      >
+      <span class="tp-error" id="tp-message-err"></span>
+    </p>
+  </div>
+
+  <div class="tp-consent">
+    <input type="checkbox" id="tp-consent" name="tp-consent" value="oui" required aria-describedby="tp-consent-err" />
+    <label for="tp-consent">
+      J’accepte que les informations saisies soient utilisées pour me recontacter au sujet de ma
+      demande. <a href="/politique-confidentialite/">Politique de confidentialité</a>.
+      <span class="tp-error" id="tp-consent-err"></span>
+    </label>
+  </div>
+
+  <div class="tp-actions">
+    <Btn type="submit" submitHook>Envoyer ma demande</Btn>
+  </div>
+
+  <p class="tp-status" data-status role="status" aria-live="polite"></p>
+</form>
+
+<div class="tp-sent" id="tp-envoye" tabindex="-1" hidden data-sent-panel>
+  <h3>Demande transmise</h3>
+  <p>
+    Votre demande est partie vers l’équipe chargée du suivi commercial. {SITE.responsePromise}.
+  </p>
+  <p class="tp-text-soft">
+    Sans nouvelle d’ici là, appelez ou écrivez sur WhatsApp au <a href={SITE.contact.phoneHref}>{SITE.contact.phoneDisplay}</a>.
+  </p>
+</div>

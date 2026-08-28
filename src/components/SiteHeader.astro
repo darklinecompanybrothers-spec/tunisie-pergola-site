@@ -1,0 +1,116 @@
+---
+/**
+ * En-tête et navigation.
+ *
+ * Deux règles ont guidé la construction :
+ *   • aucun contrôle mort sans JavaScript — le sous-menu Services est un
+ *     `<details>` natif, et le bouton menu est un lien vers le panneau, que
+ *     `:target` sait afficher tout seul;
+ *   • le script ne fait qu'améliorer : fermeture par Échap, clic extérieur,
+ *     `inert` sur l'arrière-plan et retour du focus.
+ */
+import Mark from './brand/Mark.astro';
+import Wordmark from './brand/Wordmark.astro';
+import Btn from './Btn.astro';
+import { SITE } from '../data/site';
+import { PRIMARY_LINKS, SERVICE_LINKS, MOBILE_LINKS } from '../data/pages';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href;
+const servicesOpen = SERVICE_LINKS.some((link) => isCurrent(link.href));
+---
+
+<header class="tp-header" id="tp-top">
+  <div class="tp-shell tp-header__bar">
+    <a class="tp-logo" href="/" aria-label={`${SITE.name} — accueil`}>
+      <Mark class="tp-logo__mark" variant="color" />
+      <Wordmark class="tp-logo__word" />
+    </a>
+
+    <nav class="tp-nav" aria-label="Navigation principale">
+      <ul class="tp-nav__list">
+        <li>
+          <a
+            class="tp-nav__link"
+            href="/realisations/"
+            aria-current={isCurrent('/realisations/') ? 'page' : undefined}>Réalisations</a
+          >
+        </li>
+        <li>
+          <details class="tp-nav__group">
+            <summary class="tp-nav__summary" data-current={servicesOpen ? '' : undefined}
+              >Services</summary
+            >
+            <ul class="tp-nav__panel">
+              {
+                SERVICE_LINKS.map((link) => (
+                  <li>
+                    <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                      {link.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
+        {
+          PRIMARY_LINKS.filter((link) => link.href !== '/realisations/').map((link) => (
+            <li>
+              <a
+                class="tp-nav__link"
+                href={link.href}
+                aria-current={isCurrent(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Btn href="/contact/" class="tp-btn--compact">Parler de votre projet</Btn>
+    </nav>
+
+    <a class="tp-burger" href="#tp-menu" data-menu-open>
+      <span class="tp-burger__glyph" aria-hidden="true"></span>
+      Menu
+    </a>
+  </div>
+</header>
+
+<div class="tp-menu" id="tp-menu" aria-label="Menu du site">
+  <div class="tp-shell">
+    <div class="tp-menu__top">
+      <a class="tp-logo" href="/" aria-label={`${SITE.name} — accueil`}>
+        <Mark class="tp-logo__mark" variant="color" />
+        <Wordmark class="tp-logo__word" />
+      </a>
+      <a class="tp-menu__close" href="#tp-top" data-menu-close>Fermer</a>
+    </div>
+
+    <nav aria-label="Navigation du menu">
+      <ul class="tp-menu__list">
+        {
+          MOBILE_LINKS.map((link) => (
+            <li>
+              <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <Btn href="/contact/">Parler de votre projet</Btn>
+
+    <div class="tp-menu__meta">
+      <a href={SITE.contact.phoneHref} data-track="phone">{SITE.contact.phoneDisplay}</a>
+      <a href={SITE.contact.whatsappHref} rel="noopener noreferrer" target="_blank" data-track="whatsapp"
+        >WhatsApp<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+      >
+      <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>
+      <p>{SITE.address.inline}</p>
+    </div>
+  </div>
+</div>

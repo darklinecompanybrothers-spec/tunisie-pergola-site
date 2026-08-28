@@ -1,0 +1,119 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../data/site';
+
+/**
+ * Page prudente par construction.
+ *
+ * La verrière fait partie de l'activité déclarée par l'entreprise, mais aucune
+ * photographie de verrière ne figure dans le dossier client. Cette page ne
+ * publie donc aucun visuel : ni image de banque, ni rendu, ni photo d'une
+ * autre famille présentée comme une verrière. La typographie et la structure
+ * portent seules la page, et une question franche remplace l'argumentaire que
+ * les faits ne permettent pas d'écrire.
+ */
+const QUESTIONS = [
+  {
+    titre: 'Couvrir ou séparer ?',
+    texte:
+      'Une verrière de couverture ferme le dessus d’un espace. Une verrière de séparation partage un volume sans le cloisonner. Les deux ne se dessinent pas de la même manière.'
+  },
+  {
+    titre: 'Quelle lumière voulez-vous garder ?',
+    texte:
+      'C’est la question qui décide de presque tout : la part de vitrage, l’orientation, et ce que l’on accepte de perdre en ombre pour gagner en clarté.'
+  },
+  {
+    titre: 'Qu’est-ce qui existe déjà ?',
+    texte:
+      'Un mur porteur, une retombée de dalle, une menuiserie en place : l’existant fixe les appuis possibles avant même le premier tracé.'
+  }
+];
+---
+
+<Base route="/verrieres/">
+  <PageHead
+    route="/verrieres/"
+    eyebrow="Service"
+    title="Verrières de couverture et de séparation."
+    lede="Des solutions à étudier selon l’espace, la lumière et l’usage attendu. C’est une famille qui se discute avant de se dessiner."
+    theme="glass"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-verriere-intro">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Ce que c’est</p>
+        <h2 class="tp-mask" id="tp-verriere-intro">La lumière comme matériau.</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Une verrière ne sert pas seulement à couvrir : elle décide de la quantité de lumière qui
+          entre, de l’endroit où elle tombe et de ce que devient l’espace en dessous. C’est la
+          famille la plus dépendante du lieu des trois, et celle qui gagne le plus à être étudiée
+          avant d’être chiffrée.
+        </p>
+        <p>
+          La conception, la fourniture et la pose de verrières font partie de l’activité déclarée
+          par {SITE.name}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-verriere-questions">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">Avant de dessiner</p>
+          <h2 class="tp-mask" id="tp-verriere-questions">Trois questions qui décident du projet.</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">
+          Ce sont les points qui reviennent en premier dans une demande de verrière. Vos réponses
+          suffisent à cadrer la discussion.
+        </p>
+      </div>
+
+      <ol class="tp-cols tp-stagger" role="list">
+        {
+          QUESTIONS.map((question, index) => (
+            <li class="tp-stack tp-reveal">
+              <p class="tp-index">{String(index + 1).padStart(2, '0')}</p>
+              <h3>{question.titre}</h3>
+              <p class="tp-text-soft">{question.texte}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-verriere-photos">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">Transparence</p>
+        <h2 class="tp-mask" id="tp-verriere-photos">Pas de photo de verrière sur cette page.</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          Les réalisations publiées à ce jour montrent des pergolas, des auvents et des abris. Aucune
+          verrière n’y figure encore, et nous préférons le dire plutôt que d’illustrer cette page
+          avec une image qui ne viendrait pas d’un chantier {SITE.name}.
+        </p>
+        <p>
+          Les projets réellement photographiés sont ici :
+          <a href="/realisations/">les réalisations</a>. Les structures voisines les plus proches
+          d’une verrière de couverture sont
+          <a href="/pergolas/">les pergolas</a> et <a href="/abris/">les abris</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Décrivons votre verrière."
+    text="Le volume à couvrir ou à séparer, les dimensions approximatives et l’usage recherché. L’équipe chargée du suivi commercial vous répond sous 24 heures."
+  />
+</Base>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="t">
+<!-- Tunisie Pergola — identité v1, proposition DCB à valider. Dessin original. -->
+<title id="t">Tunisie Pergola</title>
+<rect width="120" height="120" rx="16" fill="#151A1C"/>
+<g transform="translate(10 19.45) scale(0.17)"><g fill="#F4F0E8"><rect x="72" y="92" width="510" height="32"/><polygon points="0,32 24,32 96,124 72,124"/><rect x="0" y="0" width="528" height="32"/><rect x="172" y="124" width="44" height="348"/><path fill-rule="evenodd" d="M312 124H356V154H443A98 98 0 0 1 443 350H356V472H312ZM356 200H443A52 52 0 0 1 443 304H356Z"/><polygon points="24,32 56,32 122,116 90,116"/><polygon points="116,32 148,32 214,116 182,116"/><polygon points="208,32 240,32 306,116 274,116"/><polygon points="300,32 332,32 398,116 366,116"/><polygon points="392,32 424,32 490,116 458,116"/><polygon points="484,32 516,32 582,116 550,116"/></g></g>
+</svg>

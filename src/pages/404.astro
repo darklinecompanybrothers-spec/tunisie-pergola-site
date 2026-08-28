@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site';
+import { SERVICE_LINKS } from '../data/pages';
+import Btn from '../components/Btn.astro';
+import Mark from '../components/brand/Mark.astro';
+---
+
+<Base route="/404">
+  <!-- La structure est démontée, pièce par pièce : c'est exactement l'état
+       final de la descente de l'accueil, figé. La page qui manque est une
+       pergola qu'on n'a pas fini de poser. -->
+  <section class="tp-scene tp-dark tp-lost" aria-labelledby="tp-404">
+    <Mark class="tp-lost__mark" variant="color" parts />
+
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <p class="tp-lost__code" aria-hidden="true">404</p>
+
+      <div class="tp-stack">
+        <p class="tp-eyebrow">Page introuvable</p>
+        <h1 class="tp-mask" id="tp-404">Cette adresse ne mène nulle part.</h1>
+        <p class="tp-lede">
+          Le lien est peut-être ancien, ou l’adresse comporte une faute. Voici les chemins les plus
+          courts vers ce que vous cherchiez.
+        </p>
+      </div>
+
+      <div class="tp-actions">
+        <Btn href="/realisations/">Voir les réalisations</Btn>
+        <Btn href="/contact/" tone="ghost">Parler de votre projet</Btn>
+      </div>
+
+      <ul class="tp-cols" role="list">
+        <li class="tp-stack">
+          <p class="tp-index">Services</p>
+          {
+            SERVICE_LINKS.map((link) => (
+              <p>
+                <Btn href={link.href} tone="quiet">
+                  {link.label}
+                </Btn>
+              </p>
+            ))
+          }
+        </li>
+        <li class="tp-stack">
+          <p class="tp-index">L’entreprise</p>
+          <p><Btn href="/" tone="quiet">Accueil</Btn></p>
+          <p><Btn href="/a-propos/" tone="quiet">À propos</Btn></p>
+          <p><Btn href="/zones-intervention/" tone="quiet">Zones d’intervention</Btn></p>
+        </li>
+        <li class="tp-stack">
+          <p class="tp-index">Direct</p>
+          <p>
+            <Btn href={SITE.contact.phoneHref} tone="quiet" class="tp-tabular" track="phone">{SITE.contact.phoneDisplay}</Btn>
+          </p>
+          <p><Btn href={SITE.contact.emailHref} tone="quiet">{SITE.contact.email}</Btn></p>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Base>
