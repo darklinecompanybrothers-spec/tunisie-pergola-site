@@ -1,15 +1,32 @@
 ---
+/**
+ * Page introuvable.
+ *
+ * Une seule, en français : l'hébergeur ne sert qu'un `/404.html` pour tout le
+ * domaine, et il n'y a pas de moyen statique de choisir la langue d'une page
+ * d'erreur sans deviner l'origine du visiteur — ce que le site s'interdit
+ * ailleurs. Elle porte donc, en arabe, la même phrase et un lien vers
+ * l'accueil arabe : un lecteur arabophone y trouve sa sortie en une ligne.
+ *
+ * La page n'est pas indexable et ne figure pas au sitemap.
+ */
 import Base from '../layouts/Base.astro';
-import { SITE } from '../data/site';
-import { SERVICE_LINKS } from '../data/pages';
 import Btn from '../components/Btn.astro';
 import Mark from '../components/brand/Mark.astro';
+import Motif from '../components/Motif.astro';
+import { SITE } from '../data/site';
+import { FAMILIES } from '../data/catalogue';
+import { LOST } from '../data/copy';
+import { localePath } from '../i18n/locales';
+import { ui } from '../i18n/ui';
+
+const locale = 'fr' as const;
 ---
 
-<Base route="/404">
+<Base route="/404" locale={locale}>
   <!-- La structure est démontée, pièce par pièce : c'est exactement l'état
-       final de la descente de l'accueil, figé. La page qui manque est une
-       pergola qu'on n'a pas fini de poser. -->
+       final de la descente de l'accueil, figé. La page qui manque est un
+       ouvrage qu'on n'a pas fini de poser. -->
   <section class="tp-scene tp-dark tp-lost" aria-labelledby="tp-404">
     <Mark class="tp-lost__mark" variant="color" parts />
 
@@ -17,44 +34,51 @@ import Mark from '../components/brand/Mark.astro';
       <p class="tp-lost__code" aria-hidden="true">404</p>
 
       <div class="tp-stack">
-        <p class="tp-eyebrow">Page introuvable</p>
-        <h1 class="tp-mask" id="tp-404">Cette adresse ne mène nulle part.</h1>
-        <p class="tp-lede">
-          Le lien est peut-être ancien, ou l’adresse comporte une faute. Voici les chemins les plus
-          courts vers ce que vous cherchiez.
+        <p class="tp-eyebrow">{LOST.eyebrow.fr}</p>
+        <h1 class="tp-mask" id="tp-404">{LOST.title.fr}</h1>
+        <p class="tp-lede">{LOST.lede.fr}</p>
+        <p class="tp-lede" lang="ar" dir="rtl">
+          {LOST.title.ar} <a href="/ar/">{ui('home', 'ar')}</a>
         </p>
       </div>
 
       <div class="tp-actions">
-        <Btn href="/realisations/">Voir les réalisations</Btn>
-        <Btn href="/contact/" tone="ghost">Parler de votre projet</Btn>
+        <Btn href={localePath('/ouvrages-metalliques/', locale)}>{ui('ctaCatalogue', locale)}</Btn>
+        <Btn href={localePath('/contact/', locale)} tone="ghost">{ui('ctaProject', locale)}</Btn>
       </div>
+
+      <ul class="tp-board__grid tp-board__grid--short" role="list">
+        {
+          FAMILIES.slice(0, 4).map((family) => (
+            <li>
+              <a class="tp-board__card" href={localePath(family.route, locale)}>
+                <span class="tp-board__n">{family.index}</span>
+                <Motif motif={family.motif} class="tp-board__motif" />
+                <span class="tp-board__nom">{family.nom[locale]}</span>
+                <span class="tp-board__count">
+                  {family.products.length}&nbsp;{ui('countWorks', locale)}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
 
       <ul class="tp-cols" role="list">
         <li class="tp-stack">
-          <p class="tp-index">Services</p>
-          {
-            SERVICE_LINKS.map((link) => (
-              <p>
-                <Btn href={link.href} tone="quiet">
-                  {link.label}
-                </Btn>
-              </p>
-            ))
-          }
+          <p class="tp-index">{LOST.company.fr}</p>
+          <p><Btn href="/" tone="quiet">{ui('home', locale)}</Btn></p>
+          <p><Btn href="/a-propos/" tone="quiet">{ui('navAbout', locale)}</Btn></p>
+          <p><Btn href="/zones-intervention/" tone="quiet">{ui('navZones', locale)}</Btn></p>
         </li>
         <li class="tp-stack">
-          <p class="tp-index">L’entreprise</p>
-          <p><Btn href="/" tone="quiet">Accueil</Btn></p>
-          <p><Btn href="/a-propos/" tone="quiet">À propos</Btn></p>
-          <p><Btn href="/zones-intervention/" tone="quiet">Zones d’intervention</Btn></p>
-        </li>
-        <li class="tp-stack">
-          <p class="tp-index">Direct</p>
+          <p class="tp-index">{LOST.direct.fr}</p>
           <p>
-            <Btn href={SITE.contact.phoneHref} tone="quiet" class="tp-tabular" track="phone">{SITE.contact.phoneDisplay}</Btn>
+            <Btn href={SITE.contact.phoneHref} tone="quiet" class="tp-tabular tp-ltr" track="phone"
+              >{SITE.contact.phoneDisplay}</Btn
+            >
           </p>
-          <p><Btn href={SITE.contact.emailHref} tone="quiet">{SITE.contact.email}</Btn></p>
+          <p><Btn href={SITE.contact.emailHref} tone="quiet" class="tp-ltr">{SITE.contact.email}</Btn></p>
         </li>
       </ul>
     </div>

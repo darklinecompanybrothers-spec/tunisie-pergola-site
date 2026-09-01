@@ -2,6 +2,8 @@
 ordre: 44
 legende: 'Auvent à lames en cours de pose au-dessus d’un balcon.'
 alt: 'Auvent à lames blanches en cours de pose au-dessus d’un balcon, échelles appuyées contre la façade de l’immeuble.'
+legendeAr: 'مظلة بشرائح في طور التركيب فوق شرفة.'
+altAr: 'مظلة بشرائح بيضاء في طور التركيب فوق شرفة، وسلالم مسندة إلى واجهة العمارة.'
 photo: ../../assets/photos/derived/auvent-lames-balcon-en-cours.jpg
 categories: ['chantiers']
 services: ['abris']

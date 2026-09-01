@@ -1,0 +1,244 @@
+---
+/**
+ * Une famille d'ouvrages — le gabarit des onze pages.
+ * ===================================================
+ *
+ * UN GABARIT, PAS UN MOULE
+ * La structure est commune : c'est ce qui permet à un visiteur de passer d'une
+ * famille à l'autre sans réapprendre à lire. Le CONTENU, lui, est propre à
+ * chaque famille — introduction, usages, ouvrages, questions, voisines — et
+ * vient de `catalogue.ts`. Les seuls textes partagés sont les cinq temps du
+ * parcours, et c'est volontaire : ils décrivent la même méthode, et onze
+ * reformulations d'une même méthode se liraient comme du remplissage.
+ *
+ * LA TÊTE DE PAGE
+ * Trois familles ont des photographies authentiques (pergolas, abris,
+ * verrières) : elles ouvrent sur une photographie. Les huit autres ouvrent sur
+ * une ÉLÉVATION DESSINÉE. Aucune image de banque, aucun rendu, aucune photo
+ * empruntée à une autre famille — le dessin dit le type d'ouvrage sans
+ * prétendre montrer un chantier réalisé.
+ *
+ * DONNÉES STRUCTURÉES
+ * Un `Service` — le service est réellement décrit sur la page — et un
+ * `ItemList` des ouvrages nommés. Rien d'autre : pas d'`Offer`, pas de prix,
+ * pas de note. Le contrôle de build refuse ces clés.
+ */
+import Base from '../../layouts/Base.astro';
+import PageHead from '../PageHead.astro';
+import CtaBand from '../CtaBand.astro';
+import Gallery from '../Gallery.astro';
+import Btn from '../Btn.astro';
+import Motif from '../Motif.astro';
+import type { ImageMetadata } from 'astro';
+import { SITE, ENTITY_ID, absolute, areaServed } from '../../data/site';
+import { FAMILY_BY_KEY, type Family } from '../../data/catalogue';
+import { JOURNEY } from '../../data/copy';
+import { meta } from '../../data/pages';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  family: Family;
+  locale: Locale;
+  /** Photographie d'ouverture, quand la famille en possède une authentique. */
+  photo?: ImageMetadata | undefined;
+  photoAlt?: string | undefined;
+}
+
+const { family, locale, photo, photoAlt } = Astro.props;
+const page = meta(family.route, locale);
+const canonical = absolute(localePath(family.route, locale));
+
+const service = {
+  '@type': 'Service',
+  '@id': `${canonical}#service`,
+  name: family.nom[locale],
+  serviceType: family.nom[locale],
+  description: page.description,
+  provider: { '@id': ENTITY_ID },
+  areaServed: areaServed(locale).map((city) => ({ '@type': 'City', name: city })),
+  url: canonical,
+  isPartOf: { '@id': `${canonical}#page` }
+};
+
+const list = {
+  '@type': 'ItemList',
+  '@id': `${canonical}#ouvrages`,
+  name: ui('productsTitle', locale),
+  numberOfItems: family.products.length,
+  itemListElement: family.products.map((product, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: product.nom[locale]
+  }))
+};
+
+const voisines = family.voisines.map((key) => FAMILY_BY_KEY[key]);
+---
+
+<Base route={family.route} locale={locale} graph={[service, list]}>
+  <PageHead
+    route={family.route}
+    locale={locale}
+    eyebrow={`${ui('eyebrowService', locale)} ${family.index}`}
+    title={family.h1[locale]}
+    lede={family.lede[locale]}
+    theme={family.theme}
+    photo={photo}
+    photoAlt={photoAlt}
+    motif={photo ? undefined : family.motif}
+  />
+
+  <!-- 1 · Ce que c'est ------------------------------------------------ -->
+  <section class="tp-scene tp-light" aria-labelledby="tp-fam-usages">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ui('eyebrowWhat', locale)}</p>
+        <h2 class="tp-mask" id="tp-fam-usages">{family.usagesTitle[locale]}</h2>
+        <ul class="tp-tags tp-reveal">
+          {family.usages[locale].map((usage) => <li>{usage}</li>)}
+        </ul>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {family.intro[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Les ouvrages de la famille ----------------------------------- -->
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-fam-ouvrages">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ui('eyebrowProducts', locale)}</p>
+          <h2 class="tp-mask" id="tp-fam-ouvrages">{ui('productsTitle', locale)}</h2>
+        </div>
+        <div class="tp-span-body tp-reveal">
+          <Motif motif={family.motif} class="tp-fam__plan" />
+        </div>
+      </div>
+
+      <ol class="tp-works tp-stagger" role="list">
+        {
+          family.products.map((product) => (
+            <li class="tp-works__item tp-reveal">
+              <span class="tp-works__n">{String(product.n).padStart(2, '0')}</span>
+              <span class="tp-works__nom">{product.nom[locale]}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3 · Le parcours --------------------------------------------------- -->
+  <section class="tp-scene tp-light" aria-labelledby="tp-fam-parcours">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ui('eyebrowJourney', locale)}</p>
+          <h2 class="tp-mask" id="tp-fam-parcours">{ui('journeyTitle', locale)}</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">
+          {SITE.delay.phrase[locale]}
+        </p>
+      </div>
+
+      <ol class="tp-cols tp-stagger" role="list">
+        {
+          JOURNEY.map((step) => (
+            <li class="tp-stack tp-reveal">
+              <p class="tp-index">{step.index}</p>
+              <h3>{step.titre[locale]}</h3>
+              <p class="tp-text-soft">{step.texte[locale]}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* 4 · En situation — seulement si la famille a des photographies. */}
+  {
+    family.gallery && (
+      <section class="tp-scene tp-light tp-scene--flush-top" aria-labelledby="tp-fam-galerie">
+        <div class="tp-shell tp-stack tp-stack--lg">
+          <div class="tp-stack">
+            <p class="tp-eyebrow">{ui('eyebrowSituation', locale)}</p>
+            <h2 class="tp-mask" id="tp-fam-galerie">
+              {family.nom[locale]}
+            </h2>
+          </div>
+
+          <Gallery locale={locale} service={family.gallery} />
+
+          <p>
+            <Btn href={localePath('/realisations/', locale)} tone="quiet">
+              {ui('ctaAllWorks', locale)}
+            </Btn>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 5 · Questions utiles ---------------------------------------------- -->
+  <section class="tp-scene tp-light tp-scene--tight" aria-labelledby="tp-fam-questions">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ui('eyebrowQuestions', locale)}</p>
+          <h2 class="tp-mask" id="tp-fam-questions">{ui('questionsTitle', locale)}</h2>
+        </div>
+        <div class="tp-span-body tp-reveal">
+          <dl class="tp-qa">
+            {
+              family.questions.map((question) => (
+                <div>
+                  <dt>{question.q[locale]}</dt>
+                  <dd>{question.r[locale]}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Maillage vers les familles voisines --------------------------- -->
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-fam-voisines">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-stack">
+        <p class="tp-eyebrow">{ui('eyebrowNearby', locale)}</p>
+        <h2 class="tp-mask" id="tp-fam-voisines">{ui('nearbyTitle', locale)}</h2>
+      </div>
+
+      <ul class="tp-board__grid tp-board__grid--short tp-stagger" role="list">
+        {
+          voisines.map((voisine) => (
+            <li class="tp-reveal">
+              <a class="tp-board__card" href={localePath(voisine.route, locale)}>
+                <span class="tp-board__n">{voisine.index}</span>
+                <Motif motif={voisine.motif} class="tp-board__motif" />
+                <span class="tp-board__nom">{voisine.nom[locale]}</span>
+                <span class="tp-board__count">
+                  {voisine.products.length}&nbsp;{ui('countWorks', locale)}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+        <li class="tp-reveal">
+          <a class="tp-board__card tp-board__card--all" href={localePath('/ouvrages-metalliques/', locale)}>
+            <span class="tp-board__n">—</span>
+            <span class="tp-board__nom">{ui('navCatalogueAll', locale)}</span>
+            <span class="tp-board__count">{meta('/ouvrages-metalliques/', locale).label}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

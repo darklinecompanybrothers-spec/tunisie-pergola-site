@@ -2,21 +2,36 @@
 /**
  * Pied de page.
  *
- * Il porte le NAP dans exactement la même formulation que la page contact et
- * que le JSON-LD : une seule source, `src/data/site.config.mjs`.
+ * Il porte le NAP de Tunisie Pergola dans exactement la même formulation que
+ * la page contact et que le JSON-LD : une seule source,
+ * `src/data/site.config.mjs`. L'adresse de DCB n'y figure pas — le pied de
+ * page décrit l'entreprise, pas l'agence qui reçoit ses demandes.
+ *
+ * Les onze familles y sont toutes listées : c'est le maillage interne le plus
+ * simple qui soit, présent sur chaque page du site, dans les deux langues.
  */
 import { getImage } from 'astro:assets';
 import Mark from './brand/Mark.astro';
 import Wordmark from './brand/Wordmark.astro';
 import { SITE, STUDIO } from '../data/site';
-import { FOOTER_SERVICES, FOOTER_SITE } from '../data/pages';
+import { FOOTER_SITE, meta } from '../data/pages';
+import { FAMILIES } from '../data/catalogue';
+import { LOCALES, LOCALE_INFO, localePath, routeOf, localeOf, type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 
 /* Signe du studio. Le fichier vient de `uploads/a-mark.original-737px.png`,
    détouré et remis à l'échelle d'affichage — aucun agrandissement. */
 import darklineMark from '../assets/brand/darkline-mark.png';
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const path = Astro.url.pathname;
+const currentRoute = routeOf(path);
 const year = new Date(SITE.lastReviewed).getFullYear();
+const other = LOCALES.filter((code) => code !== localeOf(path));
 
 /**
  * Le symbole du studio est produit ici plutôt que par `<Image>` : ce composant
@@ -39,30 +54,33 @@ const darklineImage = await getImage({
   <div class="tp-shell">
     <!-- Le mot-symbole reprend ici l'échelle qu'il avait dans le hero : la
          page se referme sur la marque, à la taille d'une enseigne. -->
-    <a class="tp-footer__sign" href="/" aria-label={`${SITE.name} — accueil`}>
+    <a class="tp-footer__sign" href={localePath('/', locale)} aria-label={`${SITE.name} — ${ui('homeAria', locale)}`}>
       <Wordmark class="tp-footer__logo" />
     </a>
 
     <div class="tp-footer__top">
       <div class="tp-stack">
         <Mark class="tp-footer__mark" variant="color" />
-        <p class="tp-text-soft">{SITE.signature}</p>
+        <p class="tp-text-soft">{SITE.signature[locale]}</p>
 
         <address>
-          {SITE.address.inline}<br />
-          <a href={SITE.contact.phoneHref} data-track="phone">{SITE.contact.phoneDisplay}</a><br />
-          <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>
+          {SITE.address.inline[locale]}<br />
+          <a href={SITE.contact.phoneHref} data-track="phone" class="tp-ltr">{SITE.contact.phoneDisplay}</a><br />
+          <a href={SITE.contact.emailHref} class="tp-ltr">{SITE.contact.email}</a>
         </address>
       </div>
 
       <div>
-        <h2>Services</h2>
-        <ul class="tp-footer__list">
+        <h2>{ui('footerFamilies', locale)}</h2>
+        <ul class="tp-footer__list tp-footer__list--split">
           {
-            FOOTER_SERVICES.map((link) => (
+            FAMILIES.map((family) => (
               <li>
-                <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
-                  {link.label}
+                <a
+                  href={localePath(family.route, locale)}
+                  aria-current={currentRoute === family.route ? 'page' : undefined}
+                >
+                  {family.nom[locale]}
                 </a>
               </li>
             ))
@@ -71,34 +89,50 @@ const darklineImage = await getImage({
       </div>
 
       <div>
-        <h2>Le site</h2>
+        <h2>{ui('footerSite', locale)}</h2>
         <ul class="tp-footer__list">
           {
             FOOTER_SITE.map((link) => (
               <li>
-                <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
-                  {link.label}
+                <a
+                  href={localePath(link, locale)}
+                  aria-current={currentRoute === link ? 'page' : undefined}
+                >
+                  {meta(link, locale).label}
                 </a>
               </li>
             ))
           }
           <li>
             <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
-              >Facebook<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+              >Facebook<span class="tp-visually-hidden">{ui('newTab', locale)}</span></a
             >
           </li>
           <li>
             <a href={SITE.contact.whatsappHref} rel="noopener noreferrer" target="_blank" data-track="whatsapp"
-              >WhatsApp<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+              >{ui('channelWhatsapp', locale)}<span class="tp-visually-hidden">{ui('newTab', locale)}</span></a
             >
           </li>
+          {
+            other.map((code) => (
+              <li>
+                <a
+                  href={localePath(currentRoute, code)}
+                  lang={LOCALE_INFO[code].htmlLang}
+                  hreflang={LOCALE_INFO[code].hreflang}
+                >
+                  {LOCALE_INFO[code].nativeName}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
 
     <div class="tp-footer__bottom">
       <p>© {year} {SITE.name}</p>
-      <p>{SITE.activity}</p>
+      <p>{SITE.activity[locale]}</p>
     </div>
 
     <!-- Signature du studio. Le symbole est décoratif : c'est la phrase qui
@@ -116,8 +150,8 @@ const darklineImage = await getImage({
           loading="lazy"
           decoding="async"
         />
-        <span>Conçu et développé par <b>{STUDIO.name}</b></span>
-        <span class="tp-visually-hidden"> (nouvel onglet)</span>
+        <span>{ui('footerStudio', locale)} <b>{STUDIO.name}</b></span>
+        <span class="tp-visually-hidden">{ui('newTab', locale)}</span>
       </a>
     </p>
   </div>

@@ -2,6 +2,8 @@
 ordre: 59
 legende: 'Ossature cintrée posée au sol avant levage.'
 alt: 'Ossature cintrée claire posée au sol sur une pelouse avant levage, échelle rouge appuyée contre le mur.'
+legendeAr: 'هيكل مقوّس موضوع على الأرض قبل الرفع.'
+altAr: 'هيكل مقوّس فاتح موضوع على العشب قبل الرفع، وسلّم أحمر مسند إلى الجدار.'
 photo: ../../assets/photos/derived/ossature-cintree-avant-levage.jpg
 categories: ['chantiers']
 services: ['abris']

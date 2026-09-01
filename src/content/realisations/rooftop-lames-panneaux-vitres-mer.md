@@ -2,6 +2,8 @@
 ordre: 19
 legende: 'Terrasse en toiture couverte par des lames, fermée par des panneaux vitrés, face à la mer.'
 alt: 'Terrasse en toiture couverte par une toiture à lames sombres et fermée par des panneaux vitrés teintés, avec vue sur la mer.'
+legendeAr: 'شرفة سطح مغطّاة بشرائح ومغلقة بألواح زجاجية، في مواجهة البحر.'
+altAr: 'شرفة سطح مغطّاة بسقف من شرائح داكنة ومغلقة بألواح زجاجية معتّمة، مع إطلالة على البحر.'
 photo: ../../assets/photos/derived/rooftop-lames-panneaux-vitres-mer.jpg
 categories: ['realisations']
 services: ['pergolas', 'verrieres']

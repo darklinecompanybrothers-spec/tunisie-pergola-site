@@ -2,6 +2,8 @@
 ordre: 30
 legende: 'Véranda vitrée sous toiture à lames, les lames dessinant des ombres régulières sur le sol.'
 alt: 'Véranda vitrée sous une toiture à lames sombres, ombres régulières des lames sur le sol carrelé, galets et pas japonais à l’extérieur.'
+legendeAr: 'شرفة مزجّجة تحت سقف بشرائح، ترسم الشرائح ظلالًا منتظمة على الأرض.'
+altAr: 'شرفة مزجّجة تحت سقف بشرائح داكنة، وظلال منتظمة للشرائح على الأرضية المبلّطة، وحصى وممرّ حجري في الخارج.'
 photo: ../../assets/photos/derived/veranda-vitree-ombres-lames-sol.jpg
 categories: ['realisations']
 services: ['verrieres']

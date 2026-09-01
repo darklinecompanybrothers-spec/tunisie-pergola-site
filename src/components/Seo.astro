@@ -1,36 +1,61 @@
 ---
 /**
- * Métadonnées, partage et données structurées.
+ * Métadonnées, partage, alternatives de langue et données structurées.
  *
  * Le domaine canonique vient d'une seule constante. Les données structurées ne
- * contiennent que ce que le dossier client confirme : nom, adresse, téléphone,
- * e-mail, site, page Facebook et villes déclarées. Pas de fourchette de prix,
- * pas d'horaires, pas d'avis, pas de note, pas d'offre — Google traite ces
- * inventions comme du balisage trompeur, et elles seraient fausses.
+ * contiennent que ce que le dossier client confirme : nom, adresse physique,
+ * téléphone, e-mail, site, page Facebook, villes déclarées et familles
+ * d'ouvrages. Pas de fourchette de prix, pas d'horaires, pas d'avis, pas de
+ * note, pas d'offre — Google traite ces inventions comme du balisage trompeur,
+ * et elles seraient fausses.
  *
- * L'entité de marque n'est définie qu'une fois, sur l'accueil, sous un `@id`
- * stable. Les autres pages s'y réfèrent au lieu de la redéclarer.
+ * L'entité de marque n'est définie qu'une fois, sur l'accueil français, sous
+ * un `@id` stable. Toutes les autres pages — arabe comprise — s'y réfèrent au
+ * lieu de la redéclarer : deux `LocalBusiness` pour une seule entreprise, même
+ * traduits, se dédoubleraient dans le graphe de connaissances.
+ *
+ * L'ADRESSE DU `LocalBusiness` EST CELLE DE SOUSSE. C'est l'adresse physique
+ * de Tunisie Pergola. L'adresse de DCB — l'agence qui reçoit les demandes —
+ * n'entre dans aucun balisage d'entreprise : elle apparaît là où le traitement
+ * des données l'exige, en toutes lettres, et nulle part ailleurs.
  */
-import { SITE, ENTITY_ID, absolute } from '../data/site';
+import { SITE, ENTITY_ID, absolute, areaServed } from '../data/site';
 import { meta, trail, type RoutePath } from '../data/pages';
+import { FAMILIES } from '../data/catalogue';
+import { LOCALE_INFO, LOCALES, localePath, type Locale } from '../i18n/locales';
 
 interface Props {
   route: RoutePath;
+  locale: Locale;
   /** Chemin d'une image de partage propre à la page. Défaut : image de marque. */
   shareImage?: string | undefined;
+  /** Nœuds JSON-LD ajoutés par la page (Service, ItemList, FAQPage…). */
+  graph?: readonly object[] | undefined;
 }
 
-const { route, shareImage } = Astro.props;
-const page = meta(route);
+const { route, locale, shareImage, graph = [] } = Astro.props;
+const page = meta(route, locale);
+const info = LOCALE_INFO[locale];
 
-const canonical = route === '/404' ? absolute('/404') : absolute(route);
+const path = route === '/404' ? '/404' : localePath(route, locale);
+const canonical = absolute(path);
 const share = absolute(shareImage ?? '/brand/og-tunisie-pergola.jpg');
+
+/* Les alternatives de langue. Elles ne sont émises que pour les pages
+   indexables : annoncer une alternative vers une page `noindex` enverrait un
+   signal contradictoire. */
+const alternates = page.indexable
+  ? LOCALES.map((other) => ({
+      hreflang: LOCALE_INFO[other].hreflang,
+      href: absolute(localePath(route, other))
+    }))
+  : [];
 
 const business = {
   '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
   '@id': ENTITY_ID,
   name: SITE.name,
-  description: SITE.activity,
+  description: SITE.activity[locale],
   url: absolute('/'),
   telephone: SITE.contact.phoneE164,
   email: SITE.contact.email,
@@ -40,15 +65,16 @@ const business = {
     '@type': 'PostalAddress',
     streetAddress: SITE.address.street,
     postalCode: SITE.address.postalCode,
-    addressLocality: SITE.address.city,
+    addressLocality: SITE.address.city[locale],
     addressCountry: SITE.address.countryCode
   },
-  areaServed: SITE.areaServed.map((city) => ({ '@type': 'City', name: city })),
+  areaServed: areaServed(locale).map((city) => ({ '@type': 'City', name: city })),
   sameAs: [SITE.social.facebook],
-  knowsAbout: ['Pergola', 'Verrière', 'Abri de jardin', 'Auvent']
+  knowsLanguage: LOCALES.map((code) => LOCALE_INFO[code].hreflang),
+  knowsAbout: FAMILIES.map((family) => family.nom[locale])
 };
 
-const crumbs = trail(route);
+const crumbs = trail(route, locale);
 const breadcrumb =
   crumbs.length > 1
     ? {
@@ -58,7 +84,7 @@ const breadcrumb =
           '@type': 'ListItem',
           position: index + 1,
           name: crumb.label,
-          item: absolute(crumb.path)
+          item: absolute(localePath(crumb.path, locale))
         }))
       }
     : null;
@@ -69,7 +95,7 @@ const webPage = {
   url: canonical,
   name: page.title,
   description: page.description,
-  inLanguage: SITE.lang,
+  inLanguage: info.hreflang,
   isPartOf: { '@id': `${SITE.origin}/#site` },
   about: { '@id': ENTITY_ID },
   ...(breadcrumb ? { breadcrumb: { '@id': breadcrumb['@id'] } } : {})
@@ -80,18 +106,28 @@ const website = {
   '@id': `${SITE.origin}/#site`,
   url: absolute('/'),
   name: SITE.name,
-  inLanguage: SITE.lang,
+  inLanguage: LOCALES.map((code) => LOCALE_INFO[code].hreflang),
   publisher: { '@id': ENTITY_ID }
 };
 
-const graph = [
-  ...(route === '/' ? [business] : []),
+const jsonGraph = [
+  ...(route === '/' && locale === 'fr' ? [business] : []),
   website,
   webPage,
-  ...(breadcrumb ? [breadcrumb] : [])
+  ...(breadcrumb ? [breadcrumb] : []),
+  ...graph
 ];
 
-const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonGraph });
+
+/* Fontes préchargées : celles de la langue de la page, et elles seules. Un
+   lecteur français ne demande jamais Amiri; un lecteur arabe ne demande Bodoni
+   que si un mot latin apparaît dans un titre, et l'`unicode-range` s'en charge
+   sans préchargement. */
+const PRELOAD: Record<Locale, readonly string[]> = {
+  fr: ['/fonts/bodoni-moda-latin-wght-normal.woff2', '/fonts/readex-pro-latin-wght-normal.woff2'],
+  ar: ['/fonts/amiri-arabic-400-normal.woff2', '/fonts/readex-pro-arabic-wght-normal.woff2']
+};
 ---
 
 <meta charset="utf-8" />
@@ -102,42 +138,49 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
 <link rel="canonical" href={canonical} />
 {page.indexable ? null : <meta name="robots" content="noindex, follow" />}
 
+{
+  alternates.map((alt) => (
+    <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+  ))
+}
+{
+  page.indexable && (
+    <link rel="alternate" hreflang="x-default" href={absolute(localePath(route, 'fr'))} />
+  )
+}
+
 <meta property="og:type" content={route === '/' ? 'website' : 'article'} />
 <meta property="og:site_name" content={SITE.name} />
-<meta property="og:locale" content="fr_TN" />
+<meta property="og:locale" content={info.ogLocale} />
+{
+  LOCALES.filter((code) => code !== locale).map((code) => (
+    <meta property="og:locale:alternate" content={LOCALE_INFO[code].ogLocale} />
+  ))
+}
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={page.title} />
 <meta property="og:description" content={page.description} />
 <meta property="og:image" content={share} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={`${SITE.name} — ${SITE.signature}`} />
+<meta property="og:image:alt" content={`${SITE.name} — ${SITE.signature[locale]}`} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={page.title} />
 <meta name="twitter:description" content={page.description} />
 <meta name="twitter:image" content={share} />
 
-<meta name="theme-color" content="#151A1C" />
+<meta name="theme-color" content="#12171A" />
 <meta name="format-detection" content="telephone=no" />
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-<link
-  rel="preload"
-  href="/fonts/syne-latin-wght-normal.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/manrope-latin-wght-normal.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin="anonymous"
-/>
+{
+  PRELOAD[locale].map((href) => (
+    <link rel="preload" href={href} as="font" type="font/woff2" crossorigin="anonymous" />
+  ))
+}
 
 <script type="application/ld+json" is:inline set:html={jsonLd} />

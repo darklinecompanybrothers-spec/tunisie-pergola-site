@@ -74,11 +74,10 @@
     --tp-focus: var(--tp-copper);
   }
 
-  @supports (backdrop-filter: blur(1px)) {
-    .tp-header {
-      backdrop-filter: blur(14px) saturate(1.1);
-    }
-  }
+  /* Aucun `backdrop-filter` sur la barre : il créait une racine de
+     composition floutée sur toute la largeur de l’écran, recomposée à chaque
+     image de défilement. La plaque franche de `scenes.css` fait le même
+     travail de lisibilité pour un coût nul. */
 
   .tp-header__bar {
     display: flex;
@@ -724,47 +723,6 @@
     align-self: stretch;
   }
 
-  /* Panneau sans photographie : la typographie et la structure prennent le
-     relais. Aucune image de remplacement, aucune image d'illustration
-     achetée, aucun visuel qui laisserait croire à une réalisation. */
-  .tp-plate {
-    position: relative;
-    display: grid;
-    place-content: center;
-    aspect-ratio: 4 / 3;
-    padding: var(--tp-gap-md);
-    background-color: var(--tp-anthracite);
-    color: var(--tp-ivory);
-    overflow: clip;
-  }
-
-  .tp-plate::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(
-        to right,
-        color-mix(in srgb, var(--tp-ivory) 14%, transparent) 0 1px,
-        transparent 1px 4.5rem
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--tp-ivory) 10%, transparent) 0 1px,
-        transparent 1px 4.5rem
-      );
-  }
-
-  .tp-plate span {
-    position: relative;
-    font-family: var(--tp-font-display);
-    font-size: var(--tp-text-lg);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    text-align: center;
-    max-width: 22ch;
-  }
-
   /* ==========================================================================
      Photographies
      ========================================================================== */
@@ -1144,6 +1102,10 @@
   .tp-field__optional {
     font-weight: 400;
     color: var(--tp-text-soft);
+    /* L’espace typographique est porté par la marge, pas par un blanc du
+       gabarit : le compilateur peut réduire un blanc entre une expression et
+       une balise, et « Échéance souhaitée(facultatif) » se collait. */
+    margin-inline-start: 0.45em;
   }
 
   .tp-input,

@@ -1,6 +1,13 @@
 ---
 /**
- * Gabarit unique du site.
+ * Gabarit unique du site, dans les deux langues.
+ *
+ * `lang` et `dir` sont portés par `<html>` : tout le reste du site n'utilise
+ * que des propriétés logiques (`margin-inline`, `inset-inline-start`,
+ * `padding-block`), donc la mise en page se retourne d'elle-même en arabe. Il
+ * n'existe pas de feuille RTL séparée — seulement quelques règles nommées, là
+ * où un geste a un sens physique que la logique ne devine pas (une flèche, une
+ * lame, un logo qui ne doit jamais être miroité).
  *
  * L'ouverture — le monogramme qui se construit pièce par pièce sur fond
  * anthracite — n'est posée que sur l'accueil. Son mécanisme est décrit dans
@@ -15,26 +22,31 @@ import SiteFooter from '../components/SiteFooter.astro';
 import Mark from '../components/brand/Mark.astro';
 import Wordmark from '../components/brand/Wordmark.astro';
 import type { RoutePath } from '../data/pages';
-import { SITE } from '../data/site';
+import { LOCALE_INFO, type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 import '../styles/app.css';
 
 interface Props {
   route: RoutePath;
+  locale: Locale;
   shareImage?: string | undefined;
   /** Scène d'ouverture — accueil uniquement. */
   curtain?: boolean | undefined;
+  /** Nœuds JSON-LD propres à la page. */
+  graph?: readonly object[] | undefined;
 }
 
-const { route, shareImage, curtain = false } = Astro.props;
+const { route, locale, shareImage, curtain = false, graph } = Astro.props;
+const info = LOCALE_INFO[locale];
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={info.htmlLang} dir={info.dir}>
   <head>
-    <Seo route={route} shareImage={shareImage} />
+    <Seo route={route} locale={locale} shareImage={shareImage} graph={graph} />
   </head>
   <body class="tp-light">
-    <a class="tp-skip" href="#tp-main">Aller au contenu</a>
+    <a class="tp-skip" href="#tp-main">{ui('skip', locale)}</a>
 
     {
       curtain && (
@@ -45,13 +57,13 @@ const { route, shareImage, curtain = false } = Astro.props;
       )
     }
 
-    <SiteHeader />
+    <SiteHeader route={route} locale={locale} />
 
     <main id="tp-main">
       <slot />
     </main>
 
-    <SiteFooter />
+    <SiteFooter locale={locale} />
 
     <script>
       import '../scripts/site';

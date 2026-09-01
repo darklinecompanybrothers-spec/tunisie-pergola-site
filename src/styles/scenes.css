@@ -206,15 +206,19 @@
     transition: inline-size var(--tp-speed) var(--tp-ease-blade);
   }
 
+  /* La pointe est dessinée en propriétés PHYSIQUES, volontairement : en
+     logique, le chevron changerait de côté en arabe sans changer de rotation,
+     et pointerait en biais. Il est donc toujours tracé vers la droite, puis
+     retourné en bloc par la règle RTL de catalogue.css. */
   .tp-btn__arrow::after {
     content: '';
     position: absolute;
-    inset-inline-end: 0;
+    right: 0;
     inset-block-start: 50%;
     inline-size: 0.5rem;
     block-size: 0.5rem;
-    border-inline-end: 2px solid currentColor;
-    border-block-start: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    border-top: 2px solid currentColor;
     rotate: 45deg;
     translate: 0.06rem -50%;
   }
@@ -1086,49 +1090,6 @@
     z-index: 1;
   }
 
-  /* Panneau typographique — la famille dont aucune photographie publique n'est
-     encore disponible. Ce n'est pas un emplacement vide : c'est une surface de
-     marque, tramée par les lames, qui porte une phrase et un chemin. */
-  .tp-plate {
-    position: relative;
-    display: grid;
-    align-content: end;
-    gap: var(--tp-gap-sm);
-    aspect-ratio: 3 / 2;
-    padding: var(--tp-gap-md);
-    overflow: clip;
-    background-color: var(--tp-anthracite-deep);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tp-copper) 30%, transparent);
-  }
-
-  .tp-plate > span {
-    position: absolute;
-    inset: -20%;
-    background-image: repeating-linear-gradient(
-      52deg,
-      color-mix(in srgb, var(--tp-copper) 34%, transparent) 0 18px,
-      transparent 18px 92px
-    );
-    mask-image: linear-gradient(200deg, #000 5%, transparent 68%);
-    translate: calc(var(--tp-x) * -4rem) 0;
-  }
-
-  .tp-plate p {
-    position: relative;
-    margin: 0;
-    font-family: var(--tp-font-display);
-    font-size: var(--tp-text-lg);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: var(--tp-ivory);
-    max-inline-size: 22ch;
-  }
-
-  /* Séquences numérotées — même grammaire que l'index des familles : un
-     chiffre monumental au trait, posé sur une ligne de structure. Une seule
-     règle, et les trois pages service, la page « à propos » et l'accueil
-     partagent le même repère. */
   .tp-cols > li > .tp-index {
     font-size: var(--tp-text-2xl);
     line-height: 0.82;
@@ -1144,398 +1105,19 @@
   }
 
   /* ==========================================================================
-     9. Les trois familles — une baie fixe, des noms qui défilent
+     9. La scène des trois familles — RETIRÉE le 1er septembre 2026
      ==========================================================================
-     La référence fait passer ses noms de produits dans un disque blanc : net
-     dedans, fantôme dehors. Nous faisons passer les nôtres dans une baie
-     horizontale bordée de deux rails cuivre — la coupe du monogramme, traverse
-     et panne vues de face. Deux piles superposées au pixel près : l'une en
-     filigrane, l'autre pleine encre et découpée par la baie. Elles se
-     déplacent du même nombre, donc elles ne peuvent pas se désaligner.
+     Elle présentait trois noms derrière une plaque de verre : une colonne
+     défilait, `backdrop-filter` floutait tout sauf le nom cadré par une baie.
+     C’était le plus beau moment de la page et le plus coûteux — une scène
+     épinglée de trois écrans qui recomposait un flou plein cadre à chaque
+     image, sur le profil mobile précisément mis en cause par le client. Elle
+     ne passait pas non plus à onze familles : le même mécanisme aurait
+     demandé onze crans, soit onze écrans de défilement pour lire un sommaire.
 
-     Une seconde baie, à droite, fait défiler les images au même rythme : le
-     nom et l'image changent ensemble parce qu'ils lisent `--tp-x`.
+     Ce qui la remplace est la PLANCHE (`.tp-plate`, plus bas) : onze
+     élévations au trait, numérotées, lisibles d’un regard et sans flou.
      ========================================================================== */
-
-  .tp-fam {
-    position: relative;
-    block-size: var(--tp-fam-run);
-    color: var(--tp-text);
-    background-color: var(--tp-surface);
-    --tp-fam-run: 300svh;
-    /* Pas de la colonne de noms : la hauteur d'un cran. */
-    --tp-slot-h: clamp(4.5rem, 11vh, 7.25rem);
-    /* Fenêtre visible : un cran net, et de part et d'autre assez de place pour
-       apercevoir le voisin sous la vitre. C'est cette marge qui donne la
-       profondeur — sans elle, il n'y a plus rien à flouter. */
-    --tp-lens-h: calc(var(--tp-slot-h) * 2.4);
-    --tp-lens-pad: calc((var(--tp-lens-h) - var(--tp-slot-h)) / 2);
-    /* Même ordre de grandeur que la référence (0,52 vw), borné pour rester
-       lisible du téléphone au très grand écran. */
-    --tp-lens-blur: clamp(5px, 0.52vw, 9px);
-    --tp-reel-h: clamp(12rem, 32vh, 20rem);
-    /* Nombre d'intervalles entre familles : une famille de moins que le
-       total. Les deux colonnes s'en servent pour leur course. */
-    --tp-fam-steps: 2;
-  }
-
-  .tp-fam__stage {
-    position: sticky;
-    inset-block-start: 0;
-    block-size: 100svh;
-    display: grid;
-    align-content: center;
-    overflow: clip;
-    padding-block: calc(var(--tp-header-h) + var(--tp-gap-sm)) var(--tp-gap-md);
-  }
-
-  .tp-fam__grid {
-    display: grid;
-    gap: var(--tp-gap-md);
-  }
-
-  .tp-fam__show {
-    display: grid;
-    gap: var(--tp-gap-md);
-  }
-
-  /* Sur écran étroit, l'image passe avant le nom : c'est elle qui dit le plus. */
-  .tp-fam__frame {
-    order: -1;
-  }
-
-  @media (min-width: 62rem) {
-    .tp-fam__grid {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      grid-template-areas:
-        'head frame'
-        'type frame'
-        'rail rail';
-      column-gap: var(--tp-gap-xl);
-      row-gap: var(--tp-gap-md);
-      align-items: center;
-    }
-
-    /* Le conteneur du spectacle s'efface pour que ses deux baies prennent
-       directement leur place dans la trame. */
-    .tp-fam__show {
-      display: contents;
-    }
-
-    .tp-fam__head {
-      grid-area: head;
-      align-self: end;
-    }
-    .tp-fam__type {
-      grid-area: type;
-    }
-    .tp-fam__frame {
-      grid-area: frame;
-      order: 0;
-    }
-    .tp-fam__rail {
-      grid-area: rail;
-    }
-  }
-
-  .tp-fam__lede {
-    font-size: var(--tp-text-xl);
-    line-height: 1;
-    letter-spacing: -0.035em;
-    max-inline-size: 20ch;
-    margin: 0;
-  }
-
-  /* --- La baie typographique ---------------------------------------------
-     Trois calques empilés, et l'ordre fait tout le travail :
-
-       .tp-fam__lens    les noms, en un seul exemplaire, pleine encre
-       .tp-fam__glass   la vitre — elle floute et voile TOUT ce qu'elle couvre,
-                        et son masque à bord franc lui perce la baie
-       .tp-fam__bay     les deux rails cuivre, posés sur les bords de la baie
-
-     Le nom courant n'est donc pas « mis en avant » : il est simplement le seul
-     que la vitre ne couvre pas. C'est ce renversement qui produit une vraie
-     profondeur de champ plutôt qu'un texte gris pâle.
-     ------------------------------------------------------------------------ */
-  .tp-fam__type {
-    position: relative;
-    block-size: var(--tp-lens-h);
-  }
-
-  /* Fondu aux deux extrémités : un nom qui sort de la fenêtre s'y dissout au
-     lieu d'être tranché net par la découpe. */
-  .tp-fam__lens {
-    position: absolute;
-    inset: 0;
-    overflow: clip;
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      #000 15%,
-      #000 85%,
-      transparent 100%
-    );
-  }
-
-  .tp-fam__stack {
-    position: absolute;
-    inset-inline: 0;
-    inset-block-start: var(--tp-lens-pad);
-    margin: 0;
-    display: grid;
-    grid-auto-rows: var(--tp-slot-h);
-    color: var(--tp-text);
-    /* Le premier nom démarre dans la baie; chaque cran monte d'une hauteur de
-       cran exactement, donc un nom est toujours cadré quand la course est
-       posée sur un arrêt. */
-    translate: 0 calc(var(--tp-slot-h) * var(--tp-x) * var(--tp-fam-steps) * -1);
-    /* La ligne de fuite laisse passer la lame d'arêtier, puis le texte. */
-    padding-inline: calc(var(--tp-slot-h) * var(--tp-rake-x) + clamp(1rem, 2vw, 1.75rem))
-      clamp(1rem, 3vw, 2.25rem);
-  }
-
-  .tp-fam__stack span {
-    display: grid;
-    align-content: center;
-    font-family: var(--tp-font-display);
-    font-size: clamp(2rem, 5.2vw, 4.25rem);
-    font-weight: 800;
-    line-height: 0.9;
-    letter-spacing: -0.05em;
-  }
-
-  /* La vitre. `backdrop-filter` floute ce qui est DERRIÈRE elle; le masque à
-     bord franc la retire complètement au droit de la baie. Ce qui reste net
-     n'est donc pas dessiné autrement — il n'est simplement pas couvert. */
-  .tp-fam__glass {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    backdrop-filter: blur(var(--tp-lens-blur));
-    background-color: color-mix(in srgb, var(--tp-surface) 58%, transparent);
-    mask-image: linear-gradient(
-      to bottom,
-      #000 0 var(--tp-lens-pad),
-      transparent var(--tp-lens-pad) calc(var(--tp-lens-pad) + var(--tp-slot-h)),
-      #000 calc(var(--tp-lens-pad) + var(--tp-slot-h)) 100%
-    );
-  }
-
-  /* Sans flou, le voile doit porter seul la mise à distance : il s'épaissit.
-     Le résultat est plus plat, jamais illisible. */
-  @supports not (backdrop-filter: blur(1px)) {
-    .tp-fam__glass {
-      background-color: color-mix(in srgb, var(--tp-surface) 82%, transparent);
-    }
-  }
-
-  /* Les deux rails de la baie : la traverse et la panne du monogramme, vues de
-     face. Ils se posent exactement sur les bords de l'ouverture. */
-  .tp-fam__bay {
-    position: absolute;
-    z-index: 2;
-    inset-inline: 0;
-    inset-block-start: var(--tp-lens-pad);
-    block-size: var(--tp-slot-h);
-    pointer-events: none;
-    border-block: 2px solid var(--tp-copper);
-  }
-
-  /* La lame d'arêtier ferme la baie à gauche, d'un rail à l'autre, à
-     l'obliquité unique du site. Elle est CONTENUE dans la baie : une lame qui
-     s'en échapperait ne serait plus une pièce de structure, seulement un trait
-     en travers de la page. */
-  .tp-fam__bay::before {
-    content: '';
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    inline-size: calc(var(--tp-slot-h) * var(--tp-rake-x) + 0.3rem);
-    background-color: var(--tp-copper);
-    clip-path: polygon(0 100%, calc(100% - 0.3rem) 0, 100% 0, 0.3rem 100%);
-  }
-
-  /* --- La baie photographique --------------------------------------------
-     Même instrument, autre matière : deux rails cuivre encadrent la fenêtre,
-     et la bobine y monte du même nombre de crans, au même moment, que la
-     colonne de noms. Les rails sont posés en calque par-dessus, et non en
-     bordure du cadre : une bordure rognerait la fenêtre de ses quatre pixels
-     et la bobine dériverait d'autant à chaque cran. */
-  .tp-fam__frame {
-    position: relative;
-    block-size: var(--tp-reel-h);
-    overflow: clip;
-    background-color: color-mix(in srgb, var(--tp-anthracite) 10%, transparent);
-  }
-
-  .tp-fam__frame::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    border-block: 2px solid var(--tp-copper);
-  }
-
-  .tp-fam__reel {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-auto-rows: var(--tp-reel-h);
-    translate: 0 calc(var(--tp-reel-h) * var(--tp-x) * var(--tp-fam-steps) * -1);
-  }
-
-  .tp-fam__cell {
-    block-size: var(--tp-reel-h);
-    overflow: clip;
-  }
-
-  .tp-fam__cell .tp-figure,
-  .tp-fam__cell .tp-figure__frame,
-  .tp-fam__cell .tp-plate {
-    block-size: 100%;
-    aspect-ratio: auto;
-  }
-
-  .tp-fam__cell .tp-figure {
-    display: block;
-  }
-
-  /* --- Le rail : le contenu réel ----------------------------------------- */
-  .tp-fam__rail {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
-    gap: var(--tp-gap-md);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .tp-fam__item {
-    position: relative;
-    display: grid;
-    gap: 0.3rem;
-    align-content: start;
-    padding-block-start: var(--tp-gap-sm);
-    border-block-start: 1px solid var(--tp-line);
-  }
-
-  /* Barre de progression : chaque famille remplit son tiers de la course.
-     C'est l'équivalent du compteur 1·2·3 de la référence, en continu. */
-  .tp-fam__item::before {
-    content: '';
-    position: absolute;
-    inset-block-start: -1px;
-    inset-inline-start: 0;
-    inline-size: 100%;
-    block-size: 2px;
-    background-color: var(--tp-copper);
-    transform-origin: 0 50%;
-  }
-
-  .tp-fam__item:nth-child(1)::before {
-    scale: clamp(0, calc(var(--tp-x) * 3), 1) 1;
-  }
-  .tp-fam__item:nth-child(2)::before {
-    scale: clamp(0, calc(var(--tp-x) * 3 - 1), 1) 1;
-  }
-  .tp-fam__item:nth-child(3)::before {
-    scale: clamp(0, calc(var(--tp-x) * 3 - 2), 1) 1;
-  }
-
-  .tp-fam__n {
-    font-family: var(--tp-font-display);
-    font-size: var(--tp-text-sm);
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    color: color-mix(in srgb, var(--tp-text) 40%, transparent);
-    font-variant-numeric: tabular-nums;
-    transition: color var(--tp-speed) var(--tp-ease);
-  }
-
-  /* La famille effectivement cadrée dans la baie s'allume dans le rail —
-     l'équivalent du compteur 1·2·3 de la référence. L'index vient de
-     `data-slot`, publié par le moteur de scènes : aucune classe n'est calculée
-     ici, et sans JavaScript aucun numéro n'est allumé, ce qui est un état
-     parfaitement lisible. */
-  .tp-fam[data-slot='0'] .tp-fam__item:nth-child(1) .tp-fam__n,
-  .tp-fam[data-slot='1'] .tp-fam__item:nth-child(2) .tp-fam__n,
-  .tp-fam[data-slot='2'] .tp-fam__item:nth-child(3) .tp-fam__n {
-    color: var(--tp-accent);
-  }
-
-  .tp-fam__nom {
-    margin: 0;
-    font-size: var(--tp-text-lg);
-    letter-spacing: -0.03em;
-  }
-
-  .tp-fam__nom a {
-    text-decoration: none;
-  }
-
-  .tp-fam__texte {
-    font-size: var(--tp-text-sm);
-    line-height: 1.55;
-    color: var(--tp-text-soft);
-    max-inline-size: 34ch;
-    margin: 0;
-  }
-
-  /* Sous 62 rem la composition passe en colonne : elle ne tiendrait plus dans
-     une fenêtre, donc la scène se dépingle. Le spectacle reste — le moteur
-     retombe sur la progression de traversée et les noms défilent pendant que
-     la section monte. C'est une adaptation, pas une désactivation. */
-  /* Sous 30 rem, la baie ne fait plus que quelques centaines de pixels : la
-     lame d'arêtier y occuperait un cinquième de la largeur et « Verrières »
-     déborderait. Elle est retirée, et le nom reprend la place.
-
-     Elle est RETIRÉE, pas rétrécie : l'obliquité 72/92 est la signature du
-     site, et une lame plus étroite à hauteur de baie constante serait une
-     lame à un autre angle. Mieux vaut deux rails seuls qu'un angle faux. */
-  @media (max-width: 29.99rem) {
-    .tp-fam__bay::before {
-      display: none;
-    }
-
-    .tp-fam__stack {
-      padding-inline: clamp(1rem, 3vw, 2.25rem);
-    }
-  }
-
-  @media (max-width: 61.99rem) {
-    .tp-fam {
-      --tp-fam-run: auto;
-      --tp-reel-h: clamp(11rem, 26vh, 16rem);
-      --tp-slot-h: clamp(4rem, 10vh, 6rem);
-    }
-
-    .tp-fam__stage {
-      position: static;
-      block-size: auto;
-      padding-block: var(--tp-scene-y);
-    }
-  }
-
-  /* Sous réduction de mouvement, le spectacle n'a plus de sens : il disparaît
-     et le rail occupe la scène. Aucune information n'y était. */
-  @media (prefers-reduced-motion: reduce) {
-    .tp-fam {
-      --tp-fam-run: auto;
-    }
-
-    .tp-fam__stage {
-      position: static;
-      block-size: auto;
-      padding-block: var(--tp-scene-y);
-    }
-
-    .tp-fam__show {
-      display: none;
-    }
-  }
 
   /* ==========================================================================
      9 ter. Le déroulé — quatre temps traversés horizontalement
@@ -1695,7 +1277,7 @@
     font-weight: 800;
     letter-spacing: 0.18em;
     font-variant-numeric: tabular-nums;
-    color: color-mix(in srgb, var(--tp-text) 34%, transparent);
+    color: color-mix(in srgb, var(--tp-text) 62%, transparent);
     transition: color var(--tp-speed) var(--tp-ease);
   }
 
@@ -1934,35 +1516,45 @@
     scale: calc(1.1 - var(--tp-x) * 0.1);
   }
 
-  /* --- La mise au point ---------------------------------------------------
-     Relevé sur la référence : ses photographies n'apparaissent pas, elles se
-     METTENT AU POINT — floues d'abord, nettes une fois arrivées. C'est le même
-     geste que la vitre de la baie typographique, appliqué à l'entrée plutôt
-     qu'à la position : ce qui n'est pas encore à sa place n'est pas encore lu.
+  /* --- L'image qui se découvre --------------------------------------------
+     CE QUI ÉTAIT ÉCRIT ICI, ET POURQUOI IL A ÉTÉ RETIRÉ (1er septembre 2026)
+     Les photographies ne s'affichaient pas : elles se METTAIENT AU POINT,
+     `filter: blur(13px)` ramené à zéro le long de la chronologie d'entrée.
+     L'effet était juste, son coût ne l'était pas. Un flou est le seul filtre
+     que le compositeur ne peut pas rejouer sans redessiner : chaque image de
+     défilement rééchantillonnait une photographie décodée en pleine
+     résolution, pour chacune des soixante-huit vignettes de la galerie et pour
+     chaque bande pleine largeur. C'est la première cause du ressenti de
+     saccade signalé sur mobile, et elle se mesure : le flou est appliqué sur
+     la surface RÉELLE de l'image, pas sur sa taille à l'écran.
 
-     Seul le flou est animé. Le `scale` porte déjà la parallaxe ci-dessus, et
-     une image-clé qui le toucherait le figerait à sa valeur d'arrivée pour le
-     reste de la page — la parallaxe serait perdue sans que rien ne le signale.
+     Le remplacement fait le même travail narratif — ce qui n'est pas encore à
+     sa place n'est pas encore lu — avec deux propriétés que le compositeur
+     traite sans repeindre : l'opacité et un déplacement. La découpe part du
+     bas, à l'obliquité du monogramme, comme une lame qui s'écarte.
 
-     L'état écrit reste l'image NETTE : sans chronologie de défilement, sans
-     `@supports`, ou sous réduction de mouvement, il n'y a pas de flou du tout. */
+     L'état écrit reste l'image ENTIÈRE et NETTE : sans chronologie de
+     défilement, sans `@supports`, ou sous réduction de mouvement, il n'y a
+     aucun mouvement du tout. */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .tp-gallery .tp-shot .tp-figure__frame img,
-      .tp-bleed .tp-figure__frame img {
-        animation: tp-focus var(--tp-ease-blade) both;
+      .tp-gallery .tp-shot .tp-figure__frame,
+      .tp-bleed .tp-figure__frame {
+        animation: tp-reveal-shot var(--tp-ease-blade) both;
         animation-timeline: view();
         animation-range: entry 4% entry 52%;
       }
     }
   }
 
-  @keyframes tp-focus {
+  @keyframes tp-reveal-shot {
     from {
-      filter: blur(13px);
+      opacity: 0;
+      translate: 0 2.5%;
     }
     to {
-      filter: blur(0);
+      opacity: 1;
+      translate: 0 0;
     }
   }
 

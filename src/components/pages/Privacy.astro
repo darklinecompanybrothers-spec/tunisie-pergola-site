@@ -1,0 +1,115 @@
+---
+/**
+ * Politique de confidentialité.
+ *
+ * Cette page décrit le traitement réellement mis en place par ce site, et
+ * uniquement lui. Elle ne recopie pas un modèle et n'annonce aucune mesure qui
+ * n'existe pas : pas de durée de conservation chiffrée tant qu'elle n'est pas
+ * arrêtée, pas de mention d'un sous-traitant qui n'intervient pas, pas de
+ * bannière de cookies alors qu'aucun cookie n'est déposé.
+ *
+ * Les points qui relèvent d'une décision juridique du client sont consignés
+ * dans `docs/RELEASE-GATES.md` et bloquent la mise en production.
+ */
+import Base from '../../layouts/Base.astro';
+import PageHead from '../PageHead.astro';
+import { SITE } from '../../data/site';
+import { PRIVACY } from '../../data/copy';
+import type { Locale } from '../../i18n/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Base route="/politique-confidentialite/" locale={locale}>
+  <PageHead
+    route="/politique-confidentialite/"
+    locale={locale}
+    eyebrow={PRIVACY.eyebrow[locale]}
+    title={PRIVACY.title[locale]}
+    lede={PRIVACY.lede[locale]}
+    theme="grid"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-donnees">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{PRIVACY.collectEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-donnees">{PRIVACY.collectTitle[locale]}</h2>
+        <p class="tp-text-soft">{PRIVACY.collectText[locale]}</p>
+      </div>
+
+      <div class="tp-span-body tp-reveal">
+        <dl class="tp-nap">
+          {
+            PRIVACY.collect.map(([champ, role]) => (
+              <div>
+                <dt>{champ[locale]}</dt>
+                <dd class="tp-text-soft">{role[locale]}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-destinataires">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{PRIVACY.whoEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-destinataires">{PRIVACY.whoTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {PRIVACY.whoBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+        <p>{SITE.intake.operator} — {SITE.intake.inline[locale]}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-conservation">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{PRIVACY.keepEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-conservation">{PRIVACY.keepTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {PRIVACY.keepBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light tp-scene--tight" aria-labelledby="tp-absent">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{PRIVACY.notEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-absent">{PRIVACY.notTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {PRIVACY.notBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark" aria-labelledby="tp-ecrire">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{PRIVACY.askEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-ecrire">{PRIVACY.askTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>{PRIVACY.askText[locale]}</p>
+        <p>
+          <a href={SITE.contact.emailHref} class="tp-ltr">{SITE.contact.email}</a><br />
+          <a href={SITE.contact.phoneHref} class="tp-tabular tp-ltr" data-track="phone"
+            >{SITE.contact.phoneDisplay}</a
+          ><br />
+          {SITE.address.inline[locale]}
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

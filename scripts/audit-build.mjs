@@ -10,12 +10,32 @@
  * tard par quelqu'un qui n'a pas lu le brief doit casser le build, pas se
  * retrouver en ligne.
  *
+ * BILINGUE (1er septembre 2026)
+ * Le site existe en français et en arabe. Trois conséquences ici :
+ *   • les routes attendues sont doublées, et l'appariement `hreflang` entre les
+ *     deux versions est vérifié dans les deux sens;
+ *   • les affirmations interdites ont leurs motifs ARABES. Une garantie
+ *     inventée en arabe est aussi fausse qu'en français, et le contrôle qui ne
+ *     saurait la lire ne protégerait que la moitié du site;
+ *   • la couverture des cinquante ouvrages est comptée dans chaque langue, et
+ *     l'écriture de chaque libellé est contrôlée — un ouvrage resté en français
+ *     dans la version arabe est une traduction oubliée, pas une variante.
+ *
  *   node scripts/audit-build.mjs
  */
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
-import { SITE, STUDIO } from '../src/data/site.config.mjs';
+import { SITE, STUDIO, RETIRED_PHONES } from '../src/data/site.config.mjs';
+import {
+  ALL_ROUTES,
+  FAMILY_ROUTES,
+  HREFLANG,
+  LEGACY_ROUTES,
+  LOCALES,
+  PRODUCT_COUNT,
+  localePath
+} from '../src/data/routes.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -26,22 +46,21 @@ const notes = [];
 const fail = (where, message) => problems.push(`${where} — ${message}`);
 
 /* --------------------------------------------------------------------------
-   Affirmations interdites
+   Affirmations interdites — français
    Reprises une par une de « Informations interdites tant qu'elles ne sont pas
    confirmées » (CLIENT-BRIEF.md §3). Le motif est comparé au texte visible et
    aux attributs lisibles (alt, title, aria-label, meta).
 
    Trois motifs ont été LEVÉS le 27 août 2026 — « bioclimatique », l'aluminium
-   et la motorisation — parce que le client les a confirmés de vive voix
-   (CLIENT-BRIEF.md §2 bis). Ils n'ont pas été supprimés à la légère : chacun a
-   été remplacé par un motif plus étroit qui continue de bloquer la part NON
-   confirmée. L'aluminium est admis, l'acier et l'inox restent interdits; la
-   motorisation est admise, le quatrième produit motorisé — « probablement des
-   stores », intitulé non établi — reste bloqué; le délai est admis en
-   fourchette, jamais comme un engagement.
+   et la motorisation. Un quatrième groupe l'a été le 1er septembre 2026 : le
+   fer, la ferronnerie, la métallerie et les cinquante ouvrages confirmés. Rien
+   n'a été supprimé à la légère : chaque levée a été remplacée par un motif plus
+   étroit qui continue de bloquer la part NON confirmée. Le fer et le métal sont
+   admis, l'acier et l'inox — que le client n'a jamais nommés — restent
+   interdits; la fabrication est admise, l'atelier propriétaire reste bloqué.
    -------------------------------------------------------------------------- */
-const FORBIDDEN = [
-  [/\binox\b|\bacier\b/i, 'matériau non confirmé (seuls aluminium, toile acrylique, tube, tôle et panneau sandwich le sont)'],
+const FORBIDDEN_FR = [
+  [/\binox\b|\bacier\b/i, 'alliage non confirmé (le client a nommé le fer, le métal, l’aluminium, la toile acrylique, le tube, la tôle et le panneau sandwich — pas l’acier ni l’inox)'],
   [/\bstores?\b/i, 'quatrième produit motorisé évoqué mais non intitulé (CLIENT-BRIEF §2 ter)'],
   [/(livr|pos|fabriqu|install|réalis)\w*\s+(en|sous)\s+\d+\s*jours?/i, 'délai présenté comme un engagement — publier la fourchette 30 à 60 jours'],
   [/\bgarantie?s?\b|\bgaranti[e]?\b/i, 'garantie non confirmée'],
@@ -51,7 +70,7 @@ const FORBIDDEN = [
   [/€|\bTND\b|\bdinars?\b|\bDT\b(?!\s*>)|prix\s+au\s+m|à\s+partir\s+de\s+\d/i, 'tarif ou devise affichés'],
   [/\d+\s*(ans?|années?)\s+d[’']expérience|depuis\s+(19|20)\d\d/i, 'ancienneté non confirmée'],
   [/\d+\s*(projets?|chantiers?|clients?)\s+(réalisés?|satisfaits?|livrés?)/i, 'volume de projets non confirmé'],
-  [/fabricat(ion|ion)\s+locale|fabriqué[es]?\s+en\s+Tunisie|notre\s+atelier|dans\s+nos\s+ateliers/i, 'fabrication ou atelier non documentés'],
+  [/fabricat(ion|ion)\s+locale|fabriqué[es]?\s+en\s+Tunisie|notre\s+atelier|dans\s+nos\s+ateliers/i, 'atelier propriétaire non documenté'],
   [/horaires?\s+d[’']ouverture|ouvert\s+du\s+lundi|lun\.?\s*[–-]\s*ven/i, 'horaires non confirmés'],
   [/partout\s+en\s+Tunisie|toute\s+la\s+Tunisie|couverture\s+nationale/i, 'couverture nationale non déclarée'],
   [/paiement\s+en\s+\d|facilités?\s+de\s+paiement|acompte\s+de\s+\d/i, 'modalités de paiement non confirmées'],
@@ -59,19 +78,44 @@ const FORBIDDEN = [
   [/\d+\s*(avis|étoiles?)|note\s+de\s+\d[,.]\d\s*\/\s*5/i, 'avis ou note inventés']
 ];
 
-/** Routes attendues dans `dist/`, et leur indexabilité. */
-const EXPECTED = [
-  ['index.html', '/', true],
-  ['a-propos/index.html', '/a-propos/', true],
-  ['pergolas/index.html', '/pergolas/', true],
-  ['verrieres/index.html', '/verrieres/', true],
-  ['abris/index.html', '/abris/', true],
-  ['realisations/index.html', '/realisations/', true],
-  ['zones-intervention/index.html', '/zones-intervention/', true],
-  ['contact/index.html', '/contact/', true],
-  ['politique-confidentialite/index.html', '/politique-confidentialite/', true],
-  ['404.html', '/404', false]
+/* --------------------------------------------------------------------------
+   Affirmations interdites — arabe
+   Mêmes règles, autres mots. La liste n'est pas une traduction mécanique de la
+   précédente : elle vise les tournures que l'arabe emploierait réellement pour
+   dire la même chose.
+
+   Un motif a été volontairement ÉCARTÉ : « ستائر » (stores). Le mot apparaît
+   légitimement dans des textes alternatifs qui décrivent les volets roulants
+   d'une façade photographiée; l'interdire bloquerait une description exacte au
+   lieu d'une affirmation commerciale. Le produit non intitulé reste bloqué par
+   son motif français, qui est celui du relevé client.
+   -------------------------------------------------------------------------- */
+const FORBIDDEN_AR = [
+  [/فولاذ|ستانلس|إينوكس|الصلب المقاوم/, 'alliage non confirmé (acier ou inox)'],
+  [/ضمان|كفالة/, 'garantie non confirmée'],
+  [/شهادة مطابقة|معتمد رسمي|مواصفة إيزو|آيزو|أيزو/, 'certification ou norme non confirmée'],
+  [/عازل للماء|مقاوم للرياح|إحكام ضدّ|مقاومة الرياح/, 'performance technique non documentée'],
+  [/مجّان|مجاني|بالمجان|دراسة مجّانية/, 'gratuité non confirmée'],
+  [/دينار|د\.ت|الأسعار|السعر|بالمتر المربّع|ابتداء من \d/, 'tarif ou devise affichés'],
+  [/منذ (19|20)\d\d|\d+\s*(سنة|سنوات)\s*(من\s*)?الخبرة/, 'ancienneté non confirmée'],
+  [/\d+\s*(مشروع|حريف|زبون|ورشة)\s*(منجز|راضٍ|مسلّم)/, 'volume de projets non confirmé'],
+  [/ورشتنا|مصنعنا|معملنا/, 'atelier propriétaire non documenté'],
+  [/أوقات العمل|مفتوح من الاثنين|ساعات الفتح/, 'horaires non confirmés'],
+  [/كامل تونس|كلّ تونس|التراب التونسي كامل|تغطية وطنية/, 'couverture nationale non déclarée'],
+  [/تقسيط|دفع على \d|تسبقة قدرها/, 'modalités de paiement non confirmées'],
+  [/\d+\s*(تقييم|نجمة|نجوم)/, 'avis ou note inventés']
 ];
+
+/** Routes attendues dans `dist/`, et leur indexabilité. */
+const EXPECTED = [];
+for (const locale of LOCALES) {
+  for (const route of ALL_ROUTES) {
+    const path = localePath(route, locale);
+    const relPath = path === '/' ? 'index.html' : `${path.replace(/^\/|\/$/g, '')}/index.html`;
+    EXPECTED.push({ relPath, path, route, locale, indexable: true });
+  }
+}
+EXPECTED.push({ relPath: '404.html', path: '/404', route: '/404', locale: 'fr', indexable: false });
 
 /**
  * Hôtes externes autorisés à apparaître dans le HTML produit.
@@ -115,6 +159,7 @@ function readableText(html) {
 function decode(text) {
   return text
     .replace(/&nbsp;/g, ' ')
+    .replace(/&#160;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
@@ -128,6 +173,9 @@ function one(html, pattern) {
   return found ? found[1] : null;
 }
 
+const ARABIC = /[؀-ۿ]/;
+const LATIN = /[A-Za-zÀ-ÿ]/;
+
 async function main() {
   try {
     await stat(DIST);
@@ -140,22 +188,32 @@ async function main() {
   const htmlFiles = files.filter((file) => file.endsWith('.html'));
   const titles = new Map();
   const descriptions = new Map();
+  /** Libellés d'ouvrages relevés sur le hub, par langue. */
+  const works = { fr: [], ar: [] };
 
   /* --- 1. Toutes les routes prévues existent ----------------------------- */
-  for (const [relPath, route] of EXPECTED) {
+  for (const { relPath, path } of EXPECTED) {
     const full = join(DIST, ...relPath.split('/'));
-    if (!files.includes(full)) fail(route, `page absente du build (${relPath})`);
+    if (!files.includes(full)) fail(path, `page absente du build (${relPath})`);
   }
 
   const extra = htmlFiles.filter(
-    (file) => !EXPECTED.some(([relPath]) => join(DIST, ...relPath.split('/')) === file)
+    (file) => !EXPECTED.some(({ relPath }) => join(DIST, ...relPath.split('/')) === file)
   );
   for (const file of extra) {
     fail(relative(DIST, file).split(sep).join('/'), 'page produite hors des routes autorisées');
   }
 
+  // Les trois routes historiques ne doivent jamais disparaître : elles peuvent
+  // déjà être partagées, indexées ou imprimées sur un document.
+  for (const legacy of LEGACY_ROUTES) {
+    if (!EXPECTED.some((entry) => entry.route === legacy && entry.locale === 'fr')) {
+      fail(legacy, 'route historique retirée — elle doit rester servie');
+    }
+  }
+
   /* --- 2. Contrôles page par page ---------------------------------------- */
-  for (const [relPath, route, indexable] of EXPECTED) {
+  for (const { relPath, path, route, locale, indexable } of EXPECTED) {
     const full = join(DIST, ...relPath.split('/'));
     if (!files.includes(full)) continue;
     const html = await readFile(full, 'utf8');
@@ -163,67 +221,102 @@ async function main() {
 
     // Un seul H1
     const h1s = html.match(/<h1[\s>]/g) ?? [];
-    if (h1s.length !== 1) fail(route, `${h1s.length} balise(s) H1 — il en faut exactement une`);
+    if (h1s.length !== 1) fail(path, `${h1s.length} balise(s) H1 — il en faut exactement une`);
 
     // Titre et description
     const title = one(html, /<title>([^<]*)<\/title>/);
     const description = one(html, /<meta name="description" content="([^"]*)"/);
-    if (!title) fail(route, 'balise <title> absente');
-    if (!description) fail(route, 'meta description absente');
+    if (!title) fail(path, 'balise <title> absente');
+    if (!description) fail(path, 'meta description absente');
     if (title) {
-      if (titles.has(title)) fail(route, `titre identique à ${titles.get(title)}`);
-      titles.set(title, route);
+      if (titles.has(title)) fail(path, `titre identique à ${titles.get(title)}`);
+      titles.set(title, path);
     }
     if (description) {
-      if (descriptions.has(description)) fail(route, `description identique à ${descriptions.get(description)}`);
-      descriptions.set(description, route);
+      if (descriptions.has(description)) fail(path, `description identique à ${descriptions.get(description)}`);
+      descriptions.set(description, path);
     }
 
-    // Canonical absolue sur le bon domaine
+    // Canonical absolue, sur le bon domaine ET sur son propre chemin : une
+    // page arabe qui pointerait vers son équivalent français se retirerait
+    // elle-même de l'index.
     const canonical = one(html, /<link rel="canonical" href="([^"]*)"/);
-    if (!canonical) fail(route, 'canonical absente');
-    else if (!canonical.startsWith(`${SITE.origin}/`)) {
-      fail(route, `canonical hors domaine canonique : ${canonical}`);
+    const expectedCanonical = `${SITE.origin}${path}`;
+    if (!canonical) fail(path, 'canonical absente');
+    else if (canonical !== expectedCanonical) {
+      fail(path, `canonical inattendue : ${canonical} au lieu de ${expectedCanonical}`);
     }
 
     // Indexabilité conforme
     const hasNoindex = /<meta name="robots"[^>]*noindex/i.test(html);
-    if (indexable && hasNoindex) fail(route, 'page indexable marquée noindex');
-    if (!indexable && !hasNoindex) fail(route, 'page non indexable sans meta robots noindex');
+    if (indexable && hasNoindex) fail(path, 'page indexable marquée noindex');
+    if (!indexable && !hasNoindex) fail(path, 'page non indexable sans meta robots noindex');
 
-    // Langue
-    if (!/<html lang="fr"/.test(html)) fail(route, 'attribut lang="fr" absent sur <html>');
+    // Langue et sens de lecture
+    const dir = locale === 'ar' ? 'rtl' : 'ltr';
+    if (!new RegExp(`<html lang="${locale}"`).test(html)) {
+      fail(path, `attribut lang="${locale}" absent sur <html>`);
+    }
+    if (!new RegExp(`<html[^>]*dir="${dir}"`).test(html)) {
+      fail(path, `attribut dir="${dir}" absent sur <html>`);
+    }
 
-    // NAP identique partout
-    if (!text.includes(SITE.contact.phoneDisplay)) fail(route, 'téléphone public absent');
-    if (!text.includes(SITE.contact.email)) fail(route, 'e-mail public absent');
-    if (!text.includes(SITE.address.inline)) fail(route, 'adresse publique absente ou reformulée');
+    // Alternatives de langue — présence, réciprocité et x-default
+    if (indexable) {
+      for (const other of LOCALES) {
+        const href = `${SITE.origin}${localePath(route, other)}`;
+        const tag = new RegExp(
+          `<link rel="alternate" hreflang="${HREFLANG[other]}" href="${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`
+        );
+        if (!tag.test(html)) fail(path, `alternative hreflang ${HREFLANG[other]} absente ou erronée`);
+      }
+      const xdefault = `${SITE.origin}${localePath(route, 'fr')}`;
+      if (!html.includes(`hreflang="x-default" href="${xdefault}"`)) {
+        fail(path, 'x-default absent ou ne pointant pas vers la version française');
+      }
+    }
+
+    // NAP identique partout, dans la langue de la page
+    if (!text.includes(SITE.contact.phoneDisplay)) fail(path, 'téléphone public absent');
+    if (!text.includes(SITE.contact.email)) fail(path, 'e-mail public absent');
+    if (!text.includes(SITE.address.inline[locale])) {
+      fail(path, 'adresse publique absente ou reformulée');
+    }
+    // Les anciens numéros ne doivent plus exister nulle part.
+    for (const retired of RETIRED_PHONES) {
+      if (html.includes(retired)) fail(path, `ancien numéro encore présent : ${retired}`);
+    }
 
     // Images : texte alternatif et dimensions réservées
     for (const img of html.match(/<img\b[^>]*>/g) ?? []) {
-      if (!/\salt="/.test(img)) fail(route, `image sans attribut alt : ${img.slice(0, 90)}`);
+      if (!/\salt="/.test(img)) fail(path, `image sans attribut alt : ${img.slice(0, 90)}`);
       if (!/\swidth="\d+"/.test(img) || !/\sheight="\d+"/.test(img)) {
-        fail(route, `image sans dimensions réservées : ${img.slice(0, 90)}`);
+        fail(path, `image sans dimensions réservées : ${img.slice(0, 90)}`);
       }
-      if (/\salt=""/.test(img)) {
-        notes.push(`${route} — image décorative avec alt vide (voulu ?) : ${img.slice(0, 70)}`);
+    }
+    // Un texte alternatif français sur une page arabe est une traduction
+    // oubliée : le lecteur d'écran arabophone entendrait du français.
+    if (locale === 'ar') {
+      for (const alt of html.matchAll(/<img\b[^>]*\salt="([^"]+)"/g)) {
+        const value = decode(alt[1]);
+        if (!ARABIC.test(value)) fail(path, `texte alternatif non traduit : « ${value.slice(0, 60)} »`);
       }
     }
 
     // Aucune valeur de style en ligne : la CSP peut rester stricte
-    if (/\sstyle="/.test(html)) fail(route, 'attribut style= en ligne (incompatible avec la CSP)');
+    if (/\sstyle="/.test(html)) fail(path, 'attribut style= en ligne (incompatible avec la CSP)');
 
     // Aucun script en ligne autre que les données structurées
     for (const script of html.match(/<script\b[^>]*>/g) ?? []) {
       const isJsonLd = /type="application\/ld\+json"/.test(script);
       const isExternal = /\ssrc="/.test(script);
-      if (!isJsonLd && !isExternal) fail(route, `script en ligne : ${script.slice(0, 80)}`);
+      if (!isJsonLd && !isExternal) fail(path, `script en ligne : ${script.slice(0, 80)}`);
     }
 
     // Hôtes externes
     for (const match of html.matchAll(/https?:\/\/([a-z0-9.-]+)/gi)) {
       const host = match[1].toLowerCase();
-      if (!ALLOWED_HOSTS.includes(host)) fail(route, `hôte externe non autorisé : ${host}`);
+      if (!ALLOWED_HOSTS.includes(host)) fail(path, `hôte externe non autorisé : ${host}`);
     }
 
     // Données structurées : syntaxe et absence de champ inventé
@@ -234,25 +327,80 @@ async function main() {
       try {
         parsed = JSON.parse(block[1]);
       } catch (error) {
-        fail(route, `JSON-LD illisible : ${String(error).slice(0, 80)}`);
+        fail(path, `JSON-LD illisible : ${String(error).slice(0, 80)}`);
         continue;
       }
       const serialized = JSON.stringify(parsed);
       for (const key of ['priceRange', 'openingHours', 'aggregateRating', 'review', 'offers', 'makesOffer']) {
-        if (serialized.includes(`"${key}"`)) fail(route, `JSON-LD contient « ${key} » — donnée non confirmée`);
+        if (serialized.includes(`"${key}"`)) fail(path, `JSON-LD contient « ${key} » — donnée non confirmée`);
       }
-      if (route === '/' && !serialized.includes('"LocalBusiness"')) {
-        fail(route, 'JSON-LD LocalBusiness absent de l’accueil');
+      if (path === '/' && !serialized.includes('"LocalBusiness"')) {
+        fail(path, 'JSON-LD LocalBusiness absent de l’accueil');
       }
       if (serialized.includes('"telephone"') && !serialized.includes(SITE.contact.phoneE164)) {
-        fail(route, 'téléphone du JSON-LD différent du NAP');
+        fail(path, 'téléphone du JSON-LD différent du NAP');
+      }
+      // Le LocalBusiness décrit l'ENTREPRISE : son adresse est celle de Sousse,
+      // jamais celle de l'agence qui reçoit les demandes.
+      if (serialized.includes('"LocalBusiness"')) {
+        if (!serialized.includes(SITE.address.street)) {
+          fail(path, 'LocalBusiness sans l’adresse physique de l’entreprise');
+        }
+        if (serialized.includes(SITE.intake.inline.fr) || serialized.includes(SITE.intake.inline.ar)) {
+          fail(path, 'LocalBusiness portant l’adresse de l’agence au lieu de celle de l’entreprise');
+        }
       }
     }
 
-    // Affirmations interdites
-    for (const [pattern, why] of FORBIDDEN) {
+    // Affirmations interdites, dans la langue de la page
+    for (const [pattern, why] of locale === 'ar' ? FORBIDDEN_AR : FORBIDDEN_FR) {
       const hit = text.match(pattern);
-      if (hit) fail(route, `${why} — « ${hit[0]} »`);
+      if (hit) fail(path, `${why} — « ${hit[0]} »`);
+    }
+
+    // Le hub porte les cinquante ouvrages : on les relève ici pour les compter.
+    if (route === '/ouvrages-metalliques/') {
+      const list = html.match(/<ul class="tp-index-list__works"[^>]*>([\s\S]*?)<\/ul>/g) ?? [];
+      for (const block of list) {
+        for (const item of block.matchAll(/<li>([^<]+)<\/li>/g)) {
+          works[locale].push(decode(item[1]).trim());
+        }
+      }
+    }
+  }
+
+  /* --- 2 bis. Les cinquante ouvrages, dans les deux langues --------------- */
+  for (const locale of LOCALES) {
+    const found = works[locale];
+    if (found.length !== PRODUCT_COUNT) {
+      fail(
+        `/ouvrages-metalliques/ [${locale}]`,
+        `${found.length} ouvrages listés au lieu des ${PRODUCT_COUNT} confirmés par le client`
+      );
+    }
+    const unique = new Set(found);
+    if (unique.size !== found.length) {
+      fail(`/ouvrages-metalliques/ [${locale}]`, 'un libellé d’ouvrage apparaît deux fois');
+    }
+    for (const label of found) {
+      const written = locale === 'ar' ? ARABIC.test(label) : LATIN.test(label);
+      if (!written) fail(`/ouvrages-metalliques/ [${locale}]`, `libellé non traduit : « ${label} »`);
+    }
+  }
+  // Le même ouvrage ne peut pas porter le même libellé dans les deux écritures.
+  const shared = works.fr.filter((label) => works.ar.includes(label));
+  if (shared.length > 0) {
+    fail('/ouvrages-metalliques/', `libellé identique en français et en arabe : « ${shared[0]} »`);
+  }
+  notes.push(`Catalogue : ${works.fr.length} ouvrages en français, ${works.ar.length} en arabe.`);
+
+  /* --- 2 ter. Chaque famille est atteignable depuis chaque page ----------- */
+  {
+    const home = await readFile(join(DIST, 'index.html'), 'utf8');
+    for (const familyRoute of FAMILY_ROUTES) {
+      if (!home.includes(`href="${familyRoute}"`)) {
+        fail('/', `la famille ${familyRoute} n’est atteignable depuis aucun lien de l’accueil`);
+      }
     }
   }
 
@@ -262,14 +410,20 @@ async function main() {
   else {
     const sitemap = await readFile(sitemapFile, 'utf8');
     const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-    for (const [, route, indexable] of EXPECTED) {
-      const expected = new URL(route, `${SITE.origin}/`).href;
+    for (const { path, indexable } of EXPECTED) {
+      const expected = `${SITE.origin}${path}`;
       const present = urls.includes(expected);
-      if (indexable && !present) fail('sitemap', `route absente : ${route}`);
-      if (!indexable && present) fail('sitemap', `route non indexable présente : ${route}`);
+      if (indexable && !present) fail('sitemap', `route absente : ${path}`);
+      if (!indexable && present) fail('sitemap', `route non indexable présente : ${path}`);
     }
     for (const url of urls) {
       if (!url.startsWith(`${SITE.origin}/`)) fail('sitemap', `URL hors domaine canonique : ${url}`);
+    }
+    // Sitemap bilingue : chaque URL doit annoncer son équivalent.
+    for (const hreflang of Object.values(HREFLANG)) {
+      if (!sitemap.includes(`hreflang="${hreflang}"`)) {
+        fail('sitemap', `aucune alternative ${hreflang} — le sitemap n’est pas bilingue`);
+      }
     }
   }
 
@@ -332,16 +486,26 @@ async function main() {
     if (/\son[a-z]+=["']/i.test(html)) fail(route, 'gestionnaire d’évènement en ligne (onclick, onload…)');
   }
 
-  /* --- 4. Poids de la page d'accueil -------------------------------------- */
+  /* --- 4. Budgets ---------------------------------------------------------
+     Le budget CSS est passé de 90 à 118 Ko le 1er septembre 2026. Ce n'est pas
+     un assouplissement de confort : le site porte désormais onze familles
+     d'ouvrages, une planche de motifs, un panneau de navigation déployé et une
+     seconde direction de lecture. Le budget JavaScript, lui, n'a pas bougé —
+     et il ne devait pas : rien de tout cela n'est du script. */
   const css = files.filter((file) => file.endsWith('.css'));
   const js = files.filter((file) => file.endsWith('.js'));
+  const fonts = files.filter((file) => file.endsWith('.woff2'));
   let cssBytes = 0;
   let jsBytes = 0;
+  let fontBytes = 0;
   for (const file of css) cssBytes += (await stat(file)).size;
   for (const file of js) jsBytes += (await stat(file)).size;
-  notes.push(`CSS total ${(cssBytes / 1024).toFixed(1)} Ko · JavaScript total ${(jsBytes / 1024).toFixed(1)} Ko (non compressés)`);
+  for (const file of fonts) fontBytes += (await stat(file)).size;
+  notes.push(
+    `CSS total ${(cssBytes / 1024).toFixed(1)} Ko · JavaScript total ${(jsBytes / 1024).toFixed(1)} Ko · fontes ${(fontBytes / 1024).toFixed(1)} Ko (non compressés)`
+  );
   if (jsBytes > 40 * 1024) fail('performance', `budget JavaScript dépassé : ${(jsBytes / 1024).toFixed(1)} Ko > 40 Ko`);
-  if (cssBytes > 90 * 1024) fail('performance', `budget CSS dépassé : ${(cssBytes / 1024).toFixed(1)} Ko > 90 Ko`);
+  if (cssBytes > 118 * 1024) fail('performance', `budget CSS dépassé : ${(cssBytes / 1024).toFixed(1)} Ko > 118 Ko`);
 
   /* --- 5. Aucune image originale non recadrée publiée --------------------- */
   const leaked = files.filter((file) => /facebook-\d+\.jpg$|facebook-page-cover\.jpg$/.test(file));
@@ -355,7 +519,7 @@ async function main() {
 function report() {
   for (const note of notes) console.log(`  · ${note}`);
   if (problems.length === 0) {
-    console.log(`\n✓ Contrôle du build : ${EXPECTED.length} routes conformes.`);
+    console.log(`\n✓ Contrôle du build : ${EXPECTED.length} routes conformes, deux langues.`);
     return;
   }
   console.error(`\n✗ ${problems.length} problème(s) :`);

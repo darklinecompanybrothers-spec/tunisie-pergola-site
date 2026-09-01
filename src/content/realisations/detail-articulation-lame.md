@@ -2,6 +2,8 @@
 ordre: 63
 legende: 'Détail de l’articulation d’une lame et de la tringle qui la commande.'
 alt: 'Détail en noir et blanc de l’articulation boulonnée d’une lame et de la tringle qui commande son basculement.'
+legendeAr: 'تفصيل مفصل الشريحة والقضيب الذي يحرّكها.'
+altAr: 'تفصيل بالأبيض والأسود لمفصل مبرشم لشريحة وللقضيب الذي يتحكّم في ميلانها.'
 photo: ../../assets/photos/derived/detail-articulation-lame.jpg
 categories: ['details']
 services: ['pergolas']

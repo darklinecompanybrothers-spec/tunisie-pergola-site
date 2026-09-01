@@ -5,19 +5,22 @@
  * Un seul numéro, celui de la fiche publique, pour l'appel comme pour WhatsApp.
  */
 import { SITE } from '../data/site';
+import type { Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 
 interface Props {
+  locale: Locale;
   /** Ajoute l'adresse postale sous les canaux joignables. */
   withAddress?: boolean | undefined;
 }
 
-const { withAddress = false } = Astro.props;
+const { locale, withAddress = false } = Astro.props;
 ---
 
 <div class="tp-cta__channels">
   <a class="tp-channel" href={SITE.contact.phoneHref} data-track="phone">
-    <span>Appeler</span>
-    <span class="tp-tabular">{SITE.contact.phoneDisplay}</span>
+    <span>{ui('channelCall', locale)}</span>
+    <span class="tp-tabular tp-ltr">{SITE.contact.phoneDisplay}</span>
   </a>
 
   <a
@@ -27,22 +30,22 @@ const { withAddress = false } = Astro.props;
     target="_blank"
     data-track="whatsapp"
   >
-    <span>WhatsApp</span>
-    <span class="tp-tabular"
-      >{SITE.contact.phoneDisplay}<span class="tp-visually-hidden"> — ouvre un nouvel onglet</span></span
+    <span>{ui('channelWhatsapp', locale)}</span>
+    <span class="tp-tabular tp-ltr"
+      >{SITE.contact.phoneDisplay}<span class="tp-visually-hidden">{ui('newTab', locale)}</span></span
     >
   </a>
 
   <a class="tp-channel" href={SITE.contact.emailHref}>
-    <span>E-mail</span>
-    <span>{SITE.contact.email}</span>
+    <span>{ui('channelEmail', locale)}</span>
+    <span class="tp-ltr">{SITE.contact.email}</span>
   </a>
 
   {
     withAddress && (
       <p class="tp-channel">
-        <span>Adresse</span>
-        <span>{SITE.address.inline}</span>
+        <span>{ui('channelAddress', locale)}</span>
+        <span>{SITE.address.inline[locale]}</span>
       </p>
     )
   }

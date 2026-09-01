@@ -3,8 +3,10 @@
 **Document interne. Jamais publié** : il vit hors de `public/`, donc hors de
 `dist/`, donc hors du site.
 
-État au **21 août 2026** : le site est complet et vérifiable en local.
-**Il ne doit pas être mis en ligne** tant que les portes A à D restent ouvertes.
+État au **1er septembre 2026** : le site est complet, bilingue (français et
+arabe) et vérifiable en local — 37 pages, onze familles d’ouvrages, cinquante
+intitulés confirmés.
+**Il ne doit pas être mis en ligne** tant que les portes A à E restent ouvertes.
 
 ---
 
@@ -62,6 +64,29 @@ reprendre les pages.
 
 ---
 
+## E — Relecture native de la version arabe · BLOQUANT
+
+La version arabe a été rédigée en arabe standard moderne, avec la terminologie
+du métier telle qu’elle est employée en Tunisie (« درابزين » pour un garde-corps,
+« الحديد المطاوع » pour le fer forgé, « برغولا » conservé tel quel). Elle est
+complète : contenu éditorial, cinquante intitulés d’ouvrages, formulaire,
+messages d’erreur, textes alternatifs des soixante-huit photographies,
+métadonnées et données structurées.
+
+**Elle n’a pas été relue par un locuteur natif.** C’est la seule partie du site
+dont la qualité ne peut pas être vérifiée par un contrôle automatique : le build
+sait garantir qu’une traduction EXISTE et qu’elle est écrite en arabe, il ne
+sait pas juger si elle sonne juste.
+
+**À faire :** faire relire par un locuteur tunisien, en priorité :
+
+1. les onze noms de famille et les cinquante intitulés d’ouvrages
+   (`src/data/catalogue.ts`) — ce sont eux que les gens tapent dans un moteur;
+2. les titres et descriptions `ar` de `src/data/pages.ts`;
+3. le formulaire et ses messages (`src/i18n/ui.ts`).
+
+Une correction se fait à un seul endroit et se répercute partout.
+
 ## Décisions soumises au client (non bloquantes)
 
 | Sujet | Ce qui a été fait | Ce qu'il faut valider |
@@ -76,6 +101,11 @@ reprendre les pages.
 
 ## Ce qui reste volontairement absent
 
+- **Pages par ouvrage.** Les cinquante ouvrages sont nommés, visibles et
+  indexables, mais aucun n’a sa propre page : il n’existe ni photographie, ni
+  projet identifié, ni donnée technique qui la justifierait. L’architecture est
+  prête (`catalogue.ts` porte déjà les intitulés et leur famille) ; une page
+  individuelle se créera le jour où l’ouvrage aura de quoi la remplir.
 - **Vidéos.** Le dossier réserve `assets/facebook/videos/` sans média. Aucune
   vidéo de stock, aucune génération, aucune animation prétendant montrer une
   réalisation n'a été mise à la place. Aucun bloc vide non plus : la place se

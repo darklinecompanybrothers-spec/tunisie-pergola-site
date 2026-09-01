@@ -2,6 +2,8 @@
 ordre: 42
 legende: 'Couverture pleine en cours de pose sur une terrasse en toiture.'
 alt: 'Ouvrier debout sur une couverture pleine nervurée en cours de pose sur une terrasse en toiture, ville à l’horizon.'
+legendeAr: 'تغطية كاملة في طور التركيب على شرفة سطح.'
+altAr: 'عامل واقف على تغطية كاملة مضلّعة في طور التركيب على شرفة سطح، والمدينة في الأفق.'
 photo: ../../assets/photos/derived/couverture-pleine-terrasse-toiture.jpg
 categories: ['chantiers']
 services: ['abris']

@@ -2,6 +2,8 @@
 ordre: 53
 legende: 'Pose d’une ossature claire sur la terrasse d’un immeuble.'
 alt: 'Ouvrier posant une ossature claire sur la terrasse d’un immeuble, jardinière plantée en bordure et façades voisines à l’arrière-plan.'
+legendeAr: 'تركيب هيكل فاتح على شرفة عمارة.'
+altAr: 'عامل يركّب هيكلًا فاتحًا على شرفة عمارة، وحوض نباتات على الحافّة وواجهات مجاورة في الخلفية.'
 photo: ../../assets/photos/derived/pose-ossature-terrasse-immeuble.jpg
 categories: ['chantiers']
 services: ['pergolas']

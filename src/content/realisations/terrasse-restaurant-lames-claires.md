@@ -2,6 +2,8 @@
 ordre: 16
 legende: 'Terrasse de restaurant couverte par un plafond à lames claires, avec éclairage intégré.'
 alt: 'Terrasse de restaurant couverte d’un plafond à lames claires avec éclairage chaud intégré, tables et chaises en bois sur un sol en terre cuite.'
+legendeAr: 'شرفة مطعم مغطّاة بسقف من شرائح فاتحة، بإنارة مدمجة.'
+altAr: 'شرفة مطعم مغطّاة بسقف من شرائح فاتحة بإنارة دافئة مدمجة، وطاولات وكراسي خشبية على أرضية من الطين المشوي.'
 photo: ../../assets/photos/derived/terrasse-restaurant-lames-claires.jpg
 categories: ['realisations']
 services: ['pergolas']

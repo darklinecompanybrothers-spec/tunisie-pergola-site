@@ -1,0 +1,32 @@
+---
+/**
+ * Les onze pages de famille, en français.
+ * =======================================
+ *
+ * Une seule route dynamique pour les onze : le contenu vient de
+ * `catalogue.ts`, la mise en page de `components/pages/Family.astro`. Les
+ * routes historiques `/pergolas/`, `/verrieres/` et `/abris/` sont produites
+ * par ce même chemin — elles ne bougent donc pas d'un caractère, et leur
+ * contenu bénéficie des sections ajoutées aux huit nouvelles.
+ *
+ * Les routes statiques du dossier (`/contact/`, `/realisations/`…) gardent la
+ * priorité sur cette route dynamique : Astro sert toujours un fichier avant un
+ * paramètre. Et `getStaticPaths` ne rend que les onze slugs du catalogue, donc
+ * aucune adresse inventée ne peut apparaître dans `dist/`.
+ */
+import Family from '../components/pages/Family.astro';
+import { FAMILIES } from '../data/catalogue';
+import { FAMILY_PHOTOS } from '../data/family-photos';
+
+export function getStaticPaths() {
+  return FAMILIES.map((family) => ({
+    params: { famille: family.route.replace(/^\/|\/$/g, '') },
+    props: { family }
+  }));
+}
+
+const { family } = Astro.props;
+const shot = FAMILY_PHOTOS[family.key];
+---
+
+<Family family={family} locale="fr" photo={shot?.photo} photoAlt={shot?.alt.fr} />

@@ -1,0 +1,144 @@
+---
+/**
+ * Le hub des ouvrages métalliques — onze familles, cinquante ouvrages.
+ * ====================================================================
+ *
+ * C'est la page qui rend le périmètre lisible d'un seul écran de lecture : les
+ * cinquante ouvrages y sont écrits, groupés par famille, chaque famille liant
+ * vers sa page. Elle sert trois choses à la fois — le visiteur qui cherche
+ * « est-ce qu'ils font ça ? », le maillage interne, et le moteur qui découvre
+ * l'étendue du métier sans avoir à parcourir onze pages.
+ *
+ * Elle porte le seul `FAQPage` du site. Quatre questions, posées une fois,
+ * répondues avec des faits confirmés. Répéter le même balisage sur onze pages
+ * de famille aurait produit onze FAQ identiques : c'est exactement le genre de
+ * balisage ajouté « pour l'IA » que le brief interdit.
+ */
+import Base from '../../layouts/Base.astro';
+import PageHead from '../PageHead.astro';
+import CtaBand from '../CtaBand.astro';
+import Motif from '../Motif.astro';
+import Btn from '../Btn.astro';
+import { absolute } from '../../data/site';
+import { FAMILIES, PRODUCT_COUNT } from '../../data/catalogue';
+import { HUB } from '../../data/copy';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+import headPhoto from '../../assets/photos/derived/detail-structure-claire-chantier.jpg';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const canonical = absolute(localePath('/ouvrages-metalliques/', locale));
+
+const faq = {
+  '@type': 'FAQPage',
+  '@id': `${canonical}#faq`,
+  mainEntity: HUB.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q[locale],
+    acceptedAnswer: { '@type': 'Answer', text: item.r[locale] }
+  }))
+};
+
+const index = {
+  '@type': 'ItemList',
+  '@id': `${canonical}#familles`,
+  numberOfItems: FAMILIES.length,
+  itemListElement: FAMILIES.map((family, position) => ({
+    '@type': 'ListItem',
+    position: position + 1,
+    name: family.nom[locale],
+    url: absolute(localePath(family.route, locale))
+  }))
+};
+
+const headAlt = {
+  fr: 'Détail sous une grande structure claire à lames, échelle et matériel de chantier visibles au sol.',
+  ar: 'تفصيل تحت هيكل فاتح كبير بشرائح، مع سلّم ومعدّات ورشة ظاهرة على الأرض.'
+};
+---
+
+<Base route="/ouvrages-metalliques/" locale={locale} graph={[index, faq]}>
+  <PageHead
+    route="/ouvrages-metalliques/"
+    locale={locale}
+    eyebrow={HUB.eyebrow[locale]}
+    title={HUB.title[locale]}
+    lede={HUB.lede[locale]}
+    theme="forge"
+    photo={headPhoto}
+    photoAlt={headAlt[locale]}
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-hub-intro">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{HUB.introEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-hub-intro">{HUB.introTitle[locale]}</h2>
+        <p class="tp-numeral tp-reveal" aria-hidden="true">{PRODUCT_COUNT}</p>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {HUB.introBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+        <p><Btn href={localePath('/contact/', locale)} tone="quiet">{ui('ctaProject', locale)}</Btn></p>
+      </div>
+    </div>
+  </section>
+
+  {/* Les onze familles, et sous chacune ses ouvrages nommés. C'est ici que les
+      cinquante entrées confirmées par le client sont toutes visibles à la fois,
+      dans la langue de la page. */}
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-hub-familles">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <h2 class="tp-visually-hidden" id="tp-hub-familles">{HUB.title[locale]}</h2>
+
+      <ol class="tp-index-list" role="list">
+        {
+          FAMILIES.map((family) => (
+            <li class="tp-index-list__row tp-reveal">
+              <div class="tp-index-list__head">
+                <span class="tp-index-list__n">{family.index}</span>
+                <Motif motif={family.motif} class="tp-index-list__motif" />
+                <h3 class="tp-index-list__nom">
+                  <a href={localePath(family.route, locale)}>{family.nom[locale]}</a>
+                </h3>
+              </div>
+              <p class="tp-index-list__lede">{family.lede[locale]}</p>
+              <ul class="tp-index-list__works" role="list">
+                {family.products.map((product) => (
+                  <li>{product.nom[locale]}</li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-hub-faq">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{HUB.faqEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-hub-faq">{HUB.faqTitle[locale]}</h2>
+      </div>
+      <div class="tp-span-body tp-reveal">
+        <dl class="tp-qa">
+          {
+            HUB.faq.map((item) => (
+              <div>
+                <dt>{item.q[locale]}</dt>
+                <dd>{item.r[locale]}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

@@ -1,0 +1,113 @@
+---
+/**
+ * Contact — le formulaire complet et les canaux directs.
+ *
+ * Les conditions commerciales sont annoncées AVANT la demande, pas après : la
+ * visite et l'étude sont des services payants. L'écrire ici évite la
+ * conversation gênante au téléphone et fait le tri en amont. Aucun montant
+ * n'est publié — les chiffres cités par le client ne sont pas rattachés de
+ * façon sûre à ce qu'ils couvrent (CLIENT-BRIEF §2 ter).
+ */
+import Base from '../../layouts/Base.astro';
+import PageHead from '../PageHead.astro';
+import LeadForm from '../LeadForm.astro';
+import ContactChannels from '../ContactChannels.astro';
+import { SITE } from '../../data/site';
+import { CONTACT } from '../../data/copy';
+import type { Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Base route="/contact/" locale={locale}>
+  <PageHead
+    route="/contact/"
+    locale={locale}
+    eyebrow={CONTACT.eyebrow[locale]}
+    title={CONTACT.title[locale]}
+    lede={CONTACT.lede[locale]}
+    theme="glass"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-formulaire">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <h2 class="tp-mask" id="tp-formulaire">{CONTACT.formTitle[locale]}</h2>
+        <p class="tp-text-soft">{CONTACT.formText[locale]}</p>
+
+        <hr class="tp-rule--accent" />
+
+        <dl class="tp-nap">
+          <div>
+            <dt>{ui('labelDelay', locale)}</dt>
+            <dd>{SITE.delay.phrase[locale]}</dd>
+          </div>
+          <div>
+            <dt>{ui('labelVisit', locale)}</dt>
+            <dd>{SITE.study.visite[locale]}</dd>
+          </div>
+          <div>
+            <dt>{ui('labelStudy', locale)}</dt>
+            <dd>{SITE.study.conception[locale]}</dd>
+          </div>
+        </dl>
+
+        <hr class="tp-rule--accent" />
+
+        <dl class="tp-nap">
+          <div>
+            <dt>{ui('channelAddress', locale)}</dt>
+            <dd>{SITE.address.inline[locale]}</dd>
+          </div>
+          <div>
+            <dt>{ui('labelPhone', locale)}</dt>
+            <dd>
+              <a href={SITE.contact.phoneHref} class="tp-tabular tp-ltr" data-track="phone"
+                >{SITE.contact.phoneDisplay}</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt>{ui('channelEmail', locale)}</dt>
+            <dd><a href={SITE.contact.emailHref} class="tp-ltr">{SITE.contact.email}</a></dd>
+          </div>
+          <div>
+            <dt>{ui('labelNetwork', locale)}</dt>
+            <dd>
+              <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
+                >{ui('labelFacebookPage', locale)}<span class="tp-visually-hidden"
+                  >{ui('newTab', locale)}</span
+                ></a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt>{CONTACT.intakeLabel[locale]}</dt>
+            <dd>{CONTACT.intakeText[locale]} {SITE.intake.inline[locale]}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="tp-span-body">
+        <LeadForm locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-dark" aria-labelledby="tp-direct">
+    <div class="tp-shell tp-cta">
+      <div class="tp-stack">
+        <p class="tp-eyebrow">{CONTACT.directEyebrow[locale]}</p>
+        <h2 class="tp-cta__title tp-mask" id="tp-direct">{CONTACT.directTitle[locale]}</h2>
+        <p class="tp-lede">{CONTACT.directText[locale]}</p>
+      </div>
+
+      <ContactChannels locale={locale} withAddress />
+    </div>
+  </section>
+</Base>

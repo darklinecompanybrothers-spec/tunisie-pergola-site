@@ -2,6 +2,8 @@
 ordre: 18
 legende: 'Terrasse couverte par des lames aspect bois avec éclairage en corniche, ouverte sur un salon vitré.'
 alt: 'Terrasse couverte par un plafond à lames aspect bois avec éclairage en corniche, ouverte sur un salon vitré, immeubles à l’arrière-plan.'
+legendeAr: 'شرفة مغطّاة بشرائح بمظهر الخشب بإنارة في الإفريز، مفتوحة على صالون مزجّج.'
+altAr: 'شرفة مغطّاة بسقف من شرائح بمظهر الخشب بإنارة في الإفريز، مفتوحة على صالون مزجّج، وعمارات في الخلفية.'
 photo: ../../assets/photos/derived/terrasse-lames-bois-salon-vitre.jpg
 categories: ['realisations']
 services: ['pergolas']

@@ -31,7 +31,14 @@ accès que DCB n'a pas encore.
 - [ ] **Google Search Console** : ajouter la propriété **de domaine**
       (validation DNS TXT) — elle couvre l'apex, `www` et tous les protocoles
       d'un coup.
-- [ ] Soumettre `https://tunisiepergola.tn/sitemap-index.xml`.
+- [ ] Soumettre `https://tunisiepergola.tn/sitemap-index.xml`. Il est
+      **bilingue** : chaque URL y déclare son équivalent dans l’autre langue
+      (`xhtml:link`), et le `<head>` de chaque page déclare les mêmes
+      `hreflang` — le contrôle de build vérifie les deux.
+- [ ] Dans Search Console, contrôler le rapport **Ciblage international** : il
+      ne doit signaler aucune balise `hreflang` sans retour. La réciprocité est
+      vérifiée au build, mais Google la revérifie sur les URL réellement
+      servies.
 - [ ] Inspecter et demander l'indexation des trois pages qui portent
       l'acquisition : `/`, `/pergolas/`, `/realisations/`.
 - [ ] **Bing Webmaster Tools** : importer depuis Search Console (deux clics),
@@ -49,8 +56,12 @@ avant la remise formelle.
 
       Tunisie Pergola
       Rue Léopold Senghor, 4000 Sousse, Tunisie
-      +216 98 363 003
-      tunisiepergola@gmail.com
+      +216 58 233 020
+      contact@dcbag.net
+
+      C’est l’adresse PHYSIQUE de l’entreprise, à Sousse — pas celle de DCB,
+      qui reçoit les demandes du site. Le `LocalBusiness` du site porte la
+      même, et le contrôle de build refuse le contraire.
 
       Une virgule ou une abréviation de différence suffit à affaiblir le
       rapprochement d'entité. La source unique est `src/data/site.config.mjs`.
@@ -116,7 +127,7 @@ alternatif, **le build échoue**. C'est voulu.
 
 | Indicateur | Où | Seuil d'alerte |
 |---|---|---|
-| Pages indexées | Search Console → Pages | < 9 |
+| Pages indexées | Search Console → Pages | < 36 |
 | Impressions « pergola Tunisie », « pergola Sousse » | Search Console → Performances | Aucune impression après 60 jours |
 | Clics vers `/contact/` | Search Console + lignes de lead | Aucun lead sur 30 jours |
 | Sources des leads | Ligne « Source : » de chaque demande | Part « Direct » > 80 % (signe d'un suivi cassé) |
@@ -124,16 +135,34 @@ alternatif, **le build échoue**. C'est voulu.
 
 ## Mots-clés — une intention par page, sans recouvrement
 
+Dix-huit routes indexables, dans deux langues. Une seule intention par route :
+l’unicité est vérifiée au build (`src/data/pages.ts`, constante `INTENT`), et
+un doublon fait échouer `astro build`.
+
 | Route | Intention principale |
 |---|---|
-| `/` | pergola Tunisie |
+| `/` | ferronnerie métallerie Tunisie |
+| `/ouvrages-metalliques/` | ouvrages métalliques sur mesure Tunisie |
+| `/portes-metalliques/` | porte métallique Tunisie |
+| `/portails-metalliques/` | portail métallique Tunisie |
+| `/fenetres-grilles-metalliques/` | grille de sécurité fenêtre Tunisie |
+| `/garde-corps-rampes/` | garde-corps métallique Tunisie |
+| `/escaliers-metalliques/` | escalier métallique Tunisie |
 | `/pergolas/` | pergola sur mesure Tunisie |
+| `/abris/` | abri de jardin Tunisie |
+| `/clotures-palissades/` | clôture métallique Tunisie |
 | `/verrieres/` | verrière Tunisie |
-| `/abris/` | abri jardin Tunisie |
-| `/realisations/` | réalisations pergola Tunisie |
-| `/a-propos/` | installateur pergola Sousse |
-| `/zones-intervention/` | pergola Sousse, zones desservies |
+| `/structures-metalliques/` | charpente métallique Tunisie |
+| `/mobilier-ferronnerie-artistique/` | ferronnerie artistique Tunisie |
+| `/realisations/` | réalisations ferronnerie Tunisie |
+| `/a-propos/` | ferronnier métallier Sousse |
+| `/zones-intervention/` | métallerie Sousse zones |
 | `/contact/` | contact Tunisie Pergola |
+| `/politique-confidentialite/` | politique de confidentialité |
+
+Les routes `/ar/…` visent les mêmes intentions dans leur terminologie arabe —
+« حدادة », « بوابات معدنية », « درابزين », « سلالم معدنية », « برغولا ». Elles ne
+concurrencent pas les françaises : Google les sépare par la langue déclarée.
 
 Cette répartition est déclarée dans `src/data/pages.ts` (champ `intent`) et
 l'unicité des titres et descriptions est vérifiée au build.

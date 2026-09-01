@@ -2,6 +2,8 @@
 ordre: 60
 legende: 'Ensemble de lames assemblé à plat, avant transport et pose.'
 alt: 'Ensemble de lames claires assemblé à plat au sol dans un local, rayonnages et matériel rangés à l’arrière-plan.'
+legendeAr: 'مجموعة شرائح مركّبة مسطّحة، قبل النقل والتركيب.'
+altAr: 'مجموعة شرائح فاتحة مركّبة مسطّحة على أرض محلّ، ورفوف ومعدّات مرتّبة في الخلفية.'
 photo: ../../assets/photos/derived/ensemble-lames-avant-pose.jpg
 categories: ['chantiers', 'details']
 services: ['pergolas']

@@ -2,6 +2,8 @@
 ordre: 22
 legende: 'Maison contemporaine équipée de deux pergolas à lames blanches au-dessus de ses ouvertures.'
 alt: 'Façade de maison contemporaine blanche équipée de deux pergolas à lames blanches au-dessus des ouvertures, pelouse au premier plan.'
+legendeAr: 'منزل عصري مجهّز ببرغولتين بشرائح بيضاء فوق فتحاته.'
+altAr: 'واجهة منزل عصري أبيض مجهّزة ببرغولتين بشرائح بيضاء فوق الفتحات، وعشب في المقدّمة.'
 photo: ../../assets/photos/derived/maison-deux-pergolas-lames-blanches.jpg
 categories: ['realisations']
 services: ['pergolas']

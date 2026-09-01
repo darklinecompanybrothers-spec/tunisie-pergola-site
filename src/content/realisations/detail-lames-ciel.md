@@ -2,6 +2,8 @@
 ordre: 64
 legende: 'Détail des lames et de leur profil, vues à contre-jour.'
 alt: 'Détail rapproché de lames claires vues à contre-jour sur fond de ciel bleu, au-dessus d’une couverture nervurée sombre.'
+legendeAr: 'تفصيل الشرائح ومقطعها، منظورة عكس الضوء.'
+altAr: 'تفصيل قريب لشرائح فاتحة منظورة عكس الضوء على خلفية سماء زرقاء، فوق تغطية مضلّعة داكنة.'
 photo: ../../assets/photos/derived/detail-lames-ciel.jpg
 categories: ['details']
 services: ['pergolas']

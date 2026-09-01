@@ -2,6 +2,8 @@
 ordre: 50
 legende: 'Ossature claire en cours de pose, dans un jardin planté de palmiers.'
 alt: 'Ossature claire à lames en cours de pose au-dessus d’une terrasse, palmiers et bâtiment à l’arrière-plan, échelle appuyée à la structure.'
+legendeAr: 'هيكل فاتح في طور التركيب، في حديقة مغروسة بالنخيل.'
+altAr: 'هيكل فاتح بشرائح في طور التركيب فوق شرفة، ونخيل ومبنى في الخلفية، وسلّم مسند إلى الهيكل.'
 photo: ../../assets/photos/derived/ossature-claire-palmiers-en-cours.jpg
 categories: ['chantiers']
 services: ['pergolas']

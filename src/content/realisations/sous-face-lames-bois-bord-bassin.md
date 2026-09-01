@@ -2,6 +2,8 @@
 ordre: 8
 legende: 'Sous-face à lames aspect bois vue depuis la terrasse, bassin en contrebas.'
 alt: 'Sous-face d’une couverture à lames aspect bois vue depuis le sol, poteau blanc au premier plan et petit bassin bleu en contrebas.'
+legendeAr: 'سطح سفلي بشرائح بمظهر الخشب منظور من الشرفة، وحوض ماء في الأسفل.'
+altAr: 'سطح سفلي لتغطية بشرائح بمظهر الخشب منظور من الأرض، وقائم أبيض في المقدّمة وحوض ماء أزرق صغير في الأسفل.'
 photo: ../../assets/photos/derived/sous-face-lames-bois-bord-bassin.jpg
 categories: ['realisations']
 services: ['pergolas']

@@ -1,0 +1,18 @@
+---
+/** Les onze pages de famille, en arabe. Même source, même gabarit. */
+import Family from '../../components/pages/Family.astro';
+import { FAMILIES } from '../../data/catalogue';
+import { FAMILY_PHOTOS } from '../../data/family-photos';
+
+export function getStaticPaths() {
+  return FAMILIES.map((family) => ({
+    params: { famille: family.route.replace(/^\/|\/$/g, '') },
+    props: { family }
+  }));
+}
+
+const { family } = Astro.props;
+const shot = FAMILY_PHOTOS[family.key];
+---
+
+<Family family={family} locale="ar" photo={shot?.photo} photoAlt={shot?.alt.ar} />

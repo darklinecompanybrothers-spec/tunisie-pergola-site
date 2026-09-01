@@ -2,6 +2,8 @@
 ordre: 51
 legende: 'Montage d’une ossature claire depuis un échafaudage roulant.'
 alt: 'Montage d’une ossature claire depuis un échafaudage roulant, palmiers et espace planté à l’arrière-plan.'
+legendeAr: 'تركيب هيكل فاتح انطلاقًا من سقالة متحرّكة.'
+altAr: 'تركيب هيكل فاتح انطلاقًا من سقالة متحرّكة، ونخيل وفضاء مشجّر في الخلفية.'
 photo: ../../assets/photos/derived/montage-ossature-echafaudage.jpg
 categories: ['chantiers']
 services: ['pergolas']

@@ -1,0 +1,241 @@
+---
+/**
+ * Accueil — le récit complet, dans une langue ou l'autre.
+ *
+ * Une seule idée le tient : le métal prend forme. Le monogramme est une
+ * structure; il ouvre la page à l'échelle d'un ouvrage réel, se démonte
+ * pendant la descente pour devenir la charpente des scènes suivantes, et se
+ * recompose au-dessus du formulaire. Toutes ces transformations sont des
+ * fonctions de la progression du défilement : remonter les défait exactement.
+ *
+ * Ce fichier ne contient aucune phrase : tout vient de `copy.ts`, `ui.ts` et
+ * `site.config.mjs`. C'est ce qui garantit que la version arabe est la même
+ * page — pas une seconde page à maintenir en parallèle.
+ */
+import Base from '../../layouts/Base.astro';
+import Mark from '../brand/Mark.astro';
+import Shutter from '../Shutter.astro';
+import Btn from '../Btn.astro';
+import Shot from '../Shot.astro';
+import Families from '../Families.astro';
+import Story from '../Story.astro';
+import River from '../River.astro';
+import LeadForm from '../LeadForm.astro';
+import ContactChannels from '../ContactChannels.astro';
+import { SITE, areaServed } from '../../data/site';
+import { HOME } from '../../data/copy';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+import { Picture } from 'astro:assets';
+
+/**
+ * Image d'ouverture. Visuel d'ambiance fourni par le client, hors portfolio :
+ * il habille le premier écran, il ne prétend pas montrer un chantier livré, et
+ * il n'entre donc ni dans la galerie ni dans le nombre annoncé sur
+ * `/realisations/`. Voir `HORS_PORTFOLIO` dans `photos.catalogue.mjs`.
+ */
+import heroPhoto from '../../assets/photos/derived/hero-pergola-lames-terrasse-piscine-crepuscule.jpg';
+import chantierPhoto from '../../assets/photos/derived/grande-structure-claire-vue-large.jpg';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const path = (route: Parameters<typeof localePath>[0]) => localePath(route, locale);
+---
+
+<Base route="/" locale={locale} curtain>
+  <!-- ====================================================================
+       1 · Hero — le monogramme à l'échelle d'une structure
+       ==================================================================== -->
+  <section class="tp-hero" data-scene="pin" aria-labelledby="tp-hero-titre">
+    <div class="tp-hero__stage tp-dark">
+      <div class="tp-hero__light">
+        <Picture
+          src={heroPhoto}
+          alt={HOME.heroPhotoAlt[locale]}
+          widths={[640, 960, 1280, 1600]}
+          sizes="100vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpeg"
+          quality={70}
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+        />
+      </div>
+
+      <Shutter role="veil" />
+
+      <Mark class="tp-hero__mark tp-markwork" variant="color" parts />
+
+      <div class="tp-shell tp-hero__copy">
+        <p class="tp-eyebrow">{HOME.heroEyebrow[locale]}</p>
+        <h1 class="tp-hero__title" id="tp-hero-titre">
+          {HOME.heroTitleBefore[locale]}<em>{HOME.heroTitleAccent[locale]}</em>{HOME.heroTitleAfter[locale]}
+        </h1>
+        <p class="tp-hero__lede">{HOME.heroLede[locale]}</p>
+        <div class="tp-actions">
+          <Btn href={path('/contact/')}>{ui('ctaProject', locale)}</Btn>
+          <Btn href={path('/ouvrages-metalliques/')} tone="ghost">{ui('ctaCatalogue', locale)}</Btn>
+        </div>
+      </div>
+
+      <div class="tp-shell tp-hero__foot">
+        <p class="tp-hero__cue">{ui('scrollCue', locale)}</p>
+        <dl class="tp-hero__ledger">
+          <div>
+            <dt>{ui('labelBase', locale)}</dt>
+            <dd>{SITE.baseCity[locale]}, {SITE.address.country[locale]}</dd>
+          </div>
+          <div>
+            <dt>{ui('labelAreas', locale)}</dt>
+            <dd>
+              <a href={path('/zones-intervention/')}
+                >{SITE.areaServed.length} {ui('citiesDeclared', locale)}</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt>{ui('labelRequest', locale)}</dt>
+            <dd>{SITE.responsePromise[locale]}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       2 · Manifeste — la scène claire arrive par les lames
+       ==================================================================== -->
+  <section
+    class="tp-scene tp-manifesto tp-light tp-scene--seamed"
+    data-scene="through"
+    aria-labelledby="tp-manifeste"
+  >
+    <Shutter role="seam" />
+    <span class="tp-manifesto__slats" aria-hidden="true"></span>
+
+    <div class="tp-shell">
+      <h2 class="tp-manifesto__title" id="tp-manifeste">
+        <span class="tp-mask">{HOME.manifestoA[locale]}</span>
+        <span class="tp-mask">{HOME.manifestoB[locale]}</span>
+        <span class="tp-mask"><em>{HOME.manifestoC[locale]}</em></span>
+      </h2>
+
+      <div class="tp-manifesto__body">
+        <p class="tp-lede tp-reveal">{HOME.manifestoLede[locale]}</p>
+        <div class="tp-prose tp-reveal">
+          {HOME.manifestoBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       3 · L'approche — le chantier prend toute la largeur
+       ==================================================================== -->
+  <section class="tp-scene tp-light" aria-labelledby="tp-approche">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow tp-reveal">{HOME.approachEyebrow[locale]}</p>
+          <h2 class="tp-mask" id="tp-approche">{HOME.approachTitle[locale]}</h2>
+        </div>
+        <div class="tp-prose tp-reveal tp-span-body">
+          {HOME.approachBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+          <p><Btn href={path('/a-propos/')} tone="quiet">{ui('ctaHowWeWork', locale)}</Btn></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tp-bleed tp-grow tp-reveal" data-scene="enter">
+      <Shot
+        photo={chantierPhoto}
+        alt={HOME.approachPhotoAlt[locale]}
+        legende={HOME.approachPhotoCaption[locale]}
+        ratio="21-9"
+        format="full"
+      />
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       4 · Le déroulé — les temps d'un ouvrage, traversés horizontalement
+       ==================================================================== -->
+  <Story locale={locale} />
+
+  <!-- ====================================================================
+       5 · La planche — les onze familles
+       ==================================================================== -->
+  <Families locale={locale} />
+
+  <!-- ====================================================================
+       6 · Réalisations — le flux traverse le titre
+       ==================================================================== -->
+  <section class="tp-flow tp-dark" data-scene="pin" aria-labelledby="tp-realisations">
+    <div class="tp-flow__stage">
+      <div class="tp-shell tp-flow__title">
+        <p class="tp-eyebrow">{HOME.worksEyebrow[locale]}</p>
+        <h2 id="tp-realisations">{HOME.worksTitle[locale]}</h2>
+        <p class="tp-lede">{HOME.worksLede[locale]}</p>
+      </div>
+
+      <River locale={locale} limit={18} />
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-dark">
+    <div class="tp-shell">
+      <Btn href={path('/realisations/')} tone="quiet">{ui('ctaAllWorks', locale)}</Btn>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       7 · Zones d'intervention
+       ==================================================================== -->
+  <section class="tp-scene tp-dark" aria-labelledby="tp-zones">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ui('eyebrowZones', locale)}</p>
+          <h2 class="tp-mask" id="tp-zones">{HOME.zonesTitle[locale]}</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">{HOME.zonesLede[locale]}</p>
+      </div>
+
+      <ul class="tp-zones tp-stagger">
+        {areaServed(locale).map((ville) => <li class="tp-reveal">{ville}</li>)}
+      </ul>
+
+      <p><Btn href={path('/zones-intervention/')} tone="quiet">{ui('ctaZones', locale)}</Btn></p>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       8 · Conversion — le monogramme se recompose au-dessus du formulaire
+       ==================================================================== -->
+  <section
+    class="tp-scene tp-dark tp-convert"
+    id="projet"
+    data-scene="through"
+    aria-labelledby="tp-conversion"
+  >
+    <div class="tp-convert__roof" aria-hidden="true"><span></span></div>
+
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-cta">
+        <div class="tp-stack">
+          <p class="tp-eyebrow">{ui('eyebrowYourProject', locale)}</p>
+          <h2 class="tp-cta__title tp-mask" id="tp-conversion">{ui('ctaTitle', locale)}</h2>
+          <p class="tp-lede">{ui('ctaText', locale)}</p>
+        </div>
+
+        <ContactChannels locale={locale} />
+      </div>
+
+      <LeadForm locale={locale} />
+    </div>
+  </section>
+</Base>

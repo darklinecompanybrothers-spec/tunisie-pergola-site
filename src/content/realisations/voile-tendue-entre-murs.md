@@ -2,6 +2,8 @@
 ordre: 34
 legende: 'Voile tendue entre deux murs au-dessus d’une terrasse.'
 alt: 'Voile d’ombrage beige tendue en pointe entre deux murs blancs au-dessus d’une terrasse, vue en contre-plongée.'
+legendeAr: 'شراع مشدود بين جدارين فوق شرفة.'
+altAr: 'شراع تظليل بيج مشدود بطرف مدبّب بين جدارين أبيضين فوق شرفة، منظور من الأسفل.'
 photo: ../../assets/photos/derived/voile-tendue-entre-murs.jpg
 categories: ['realisations']
 services: ['abris']

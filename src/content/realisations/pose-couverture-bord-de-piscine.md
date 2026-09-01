@@ -2,6 +2,8 @@
 ordre: 43
 legende: 'Pose d’une couverture à sous-face bois au bord d’une piscine, avec engin de levage.'
 alt: 'Pose d’une couverture sombre à sous-face bois au bord d’une piscine, engin de levage et ouvriers sur la structure.'
+legendeAr: 'تركيب تغطية بسطح سفلي خشبي على حافّة مسبح، برافعة.'
+altAr: 'تركيب تغطية داكنة بسطح سفلي خشبي على حافّة مسبح، برافعة وعمّال فوق الهيكل.'
 photo: ../../assets/photos/derived/pose-couverture-bord-de-piscine.jpg
 categories: ['chantiers']
 services: ['abris']

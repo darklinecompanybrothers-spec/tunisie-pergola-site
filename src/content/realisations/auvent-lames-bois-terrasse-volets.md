@@ -2,6 +2,8 @@
 ordre: 9
 legende: 'Auvent à lames aspect bois au-dessus d’une terrasse, façade équipée de volets roulants.'
 alt: 'Vue en contre-plongée d’un auvent à lames aspect bois au-dessus d’une terrasse, façade blanche à volets roulants et mobilier de jardin.'
+legendeAr: 'مظلة بشرائح بمظهر الخشب فوق شرفة، وواجهة مجهّزة بستائر دوّارة.'
+altAr: 'منظر من الأسفل لمظلة بشرائح بمظهر الخشب فوق شرفة، وواجهة بيضاء بستائر دوّارة وأثاث حديقة.'
 photo: ../../assets/photos/derived/auvent-lames-bois-terrasse-volets.jpg
 categories: ['realisations']
 services: ['abris']

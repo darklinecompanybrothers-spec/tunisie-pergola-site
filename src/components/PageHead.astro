@@ -3,16 +3,18 @@
  * Ouverture des pages internes.
  *
  * Chaque route a sa mise en scène, mais toutes partagent la même grammaire :
- * scène sombre plein cadre, photographie tenue loin derrière, monogramme en
+ * scène sombre plein cadre, photographie tenue loin derrière OU élévation
+ * dessinée quand aucune photographie authentique n'existe, monogramme en
  * filigrane, trame propre à la famille, puis fil d'Ariane, sur-titre, H1 et
  * chapô posés en bas de l'écran. C'est ce qui permet à la barre flottante
  * d'avoir toujours son contraste, dès le premier pixel de chaque page.
  *
  * `theme` change la trame, donc la lumière de la page :
- *   slats    lames obliques — l'ombre portée      (/pergolas/, /realisations/)
- *   glass    résille verticale claire — la lumière (/verrieres/, /contact/)
- *   shelter  masse protectrice qui descend         (/abris/, /a-propos/)
- *   grid     graticule d'horizons et niveau cuivre (/zones-intervention/, /politique-confidentialite/)
+ *   slats    lames obliques — l'ombre portée
+ *   glass    résille verticale claire — la lumière
+ *   shelter  masse protectrice qui descend
+ *   grid     graticule d'horizons et niveau cuivre
+ *   forge    braise sourde et limaille — les familles du fer travaillé
  *   plain    aucune trame
  *
  * Un seul H1 par page, toujours ici.
@@ -21,27 +23,41 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import Mark from './brand/Mark.astro';
+import Motif from './Motif.astro';
+import type { Motif as MotifName } from '../data/catalogue';
 import type { RoutePath } from '../data/pages';
+import type { Locale } from '../i18n/locales';
 
 interface Props {
   route: RoutePath;
+  locale: Locale;
   eyebrow: string;
   title: string;
   lede?: string | undefined;
-  theme?: 'slats' | 'glass' | 'shelter' | 'grid' | 'plain';
+  theme?: 'slats' | 'glass' | 'shelter' | 'grid' | 'forge' | 'plain';
   /** Photographie de fond. Son texte alternatif est obligatoire avec elle. */
   photo?: ImageMetadata | undefined;
   photoAlt?: string | undefined;
+  /** Élévation dessinée — employée quand aucune photographie n'existe. */
+  motif?: MotifName | undefined;
 }
 
-const { route, eyebrow, title, lede, theme = 'plain', photo, photoAlt } = Astro.props;
+const { route, locale, eyebrow, title, lede, theme = 'plain', photo, photoAlt, motif } = Astro.props;
 
 if (photo && !photoAlt) {
   throw new Error(`PageHead — ${route} : une photographie de fond exige un texte alternatif.`);
 }
+if (photo && motif) {
+  throw new Error(
+    `PageHead — ${route} : photographie et élévation dessinée ensemble. L’élévation ne sert qu’à remplacer une photographie absente.`
+  );
+}
 ---
 
-<section class:list={['tp-pagehead', 'tp-dark', `tp-pagehead--${theme}`]} data-scene="through">
+<section
+  class:list={['tp-pagehead', 'tp-dark', `tp-pagehead--${theme}`, motif && 'tp-pagehead--drawn']}
+  data-scene="through"
+>
   {
     photo && photoAlt && (
       <div class="tp-pagehead__plate">
@@ -61,12 +77,14 @@ if (photo && !photoAlt) {
     )
   }
 
+  {motif && <Motif motif={motif} class="tp-pagehead__drawing" />}
+
   <Mark class="tp-pagehead__mark" variant="color" />
 
   {theme !== 'plain' && <span class="tp-pagehead__weave" aria-hidden="true" />}
 
   <div class="tp-shell tp-stack tp-stack--md">
-    <Breadcrumbs route={route} />
+    <Breadcrumbs route={route} locale={locale} />
 
     <div class="tp-stack">
       <p class="tp-eyebrow">{eyebrow}</p>

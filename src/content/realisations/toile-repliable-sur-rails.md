@@ -2,6 +2,8 @@
 ordre: 37
 legende: 'Couverture en toile repliable sur rails, vue par en dessous en position déployée.'
 alt: 'Couverture en toile sombre repliable sur rails vue par en dessous en position déployée, au-dessus d’un passage commercial.'
+legendeAr: 'تغطية بقماش قابل للطيّ على سكك، منظورة من الأسفل في وضع البسط.'
+altAr: 'تغطية بقماش داكن قابل للطيّ على سكك، منظورة من الأسفل في وضع البسط، فوق ممرّ تجاري.'
 photo: ../../assets/photos/derived/toile-repliable-sur-rails.jpg
 categories: ['realisations', 'details']
 services: ['pergolas']

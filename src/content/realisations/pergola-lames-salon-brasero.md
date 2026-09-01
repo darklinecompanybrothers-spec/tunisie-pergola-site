@@ -2,6 +2,8 @@
 ordre: 6
 legende: 'Pergola à lames au-dessus d’un salon d’extérieur avec braséro, ouverte sur la pelouse.'
 alt: 'Pergola à lames sombres couvrant un salon d’extérieur avec canapés et table-braséro, mur sombre à gauche et pelouse arborée au fond.'
+legendeAr: 'برغولا بشرائح فوق صالون خارجي بموقد، مفتوحة على العشب.'
+altAr: 'برغولا بشرائح داكنة تغطّي صالونًا خارجيًا بأرائك وطاولة موقد، وجدار داكن على اليسار وعشب مشجّر في العمق.'
 photo: ../../assets/photos/derived/pergola-lames-salon-brasero.jpg
 categories: ['realisations']
 services: ['pergolas']

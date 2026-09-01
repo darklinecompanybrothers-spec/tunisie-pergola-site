@@ -2,6 +2,8 @@
 ordre: 27
 legende: 'Détail d’un auvent à sous-face aspect bois et poteaux décoratifs.'
 alt: 'Détail d’un auvent sombre avec sous-face à aspect bois et poteaux décoratifs ajourés.'
+legendeAr: 'تفصيل مظلة بسطح سفلي بمظهر الخشب وقوائم زخرفية.'
+altAr: 'تفصيل مظلة داكنة بسطح سفلي بمظهر الخشب وقوائم زخرفية مفرّغة.'
 photo: ../../assets/photos/derived/detail-sous-face-bois-auvent.jpg
 categories: ['details']
 services: ['abris']

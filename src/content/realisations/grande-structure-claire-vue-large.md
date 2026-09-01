@@ -2,6 +2,8 @@
 ordre: 46
 legende: 'Grande structure claire en cours de pose, vue large.'
 alt: 'Grande structure claire en cours de pose au-dessus d’une cour, vue large horizontale montrant toute la portée.'
+legendeAr: 'هيكل فاتح كبير في طور التركيب، منظر واسع.'
+altAr: 'هيكل فاتح كبير في طور التركيب فوق فناء، بمنظر أفقي واسع يُظهر كامل المسافة.'
 photo: ../../assets/photos/derived/grande-structure-claire-vue-large.jpg
 categories: ['chantiers']
 services: ['pergolas']

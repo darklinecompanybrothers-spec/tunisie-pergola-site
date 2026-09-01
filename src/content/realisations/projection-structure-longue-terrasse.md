@@ -2,6 +2,8 @@
 ordre: 66
 legende: 'Projection d’une structure longue au-dessus d’une terrasse, avant réalisation.'
 alt: 'Projection en volume d’une structure sombre à lames couvrant une longue terrasse avec banquettes, le long d’un bâtiment clair.'
+legendeAr: 'إسقاط لهيكل طويل فوق شرفة، قبل الإنجاز.'
+altAr: 'إسقاط حجمي لهيكل داكن بشرائح يغطّي شرفة طويلة بمقاعد، على امتداد مبنى فاتح.'
 photo: ../../assets/photos/derived/projection-structure-longue-terrasse.jpg
 categories: ['conception']
 services: []

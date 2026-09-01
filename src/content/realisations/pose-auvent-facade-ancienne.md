@@ -2,6 +2,8 @@
 ordre: 55
 legende: 'Pose d’un auvent clair contre une façade ancienne.'
 alt: 'Ouvrier sur une échelle posant un auvent clair contre une façade ancienne à moulures, unité de climatisation fixée au mur.'
+legendeAr: 'تركيب مظلة فاتحة على واجهة قديمة.'
+altAr: 'عامل على سلّم يركّب مظلة فاتحة على واجهة قديمة بزخارف، ووحدة تكييف مثبّتة على الجدار.'
 photo: ../../assets/photos/derived/pose-auvent-facade-ancienne.jpg
 categories: ['chantiers']
 services: ['abris']

@@ -2,6 +2,8 @@
 ordre: 24
 legende: 'Auvent à lames au-dessus d’un balcon, dessinant des ombres régulières sur la façade.'
 alt: 'Auvent à lames blanches au-dessus d’un balcon à balustres, projetant des ombres régulières sur la façade blanche.'
+legendeAr: 'مظلة بشرائح فوق شرفة ترسم ظلالًا منتظمة على الواجهة.'
+altAr: 'مظلة بشرائح بيضاء فوق شرفة ذات درابزين، تُسقط ظلالًا منتظمة على واجهة بيضاء.'
 photo: ../../assets/photos/derived/auvent-lames-balcon-ombres.jpg
 categories: ['realisations']
 services: ['abris']

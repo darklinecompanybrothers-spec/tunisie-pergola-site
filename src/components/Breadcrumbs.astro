@@ -2,21 +2,24 @@
 /**
  * Fil d'Ariane visible. Le balisage `BreadcrumbList` correspondant est émis
  * par `Seo.astro` à partir de la même chaîne : la donnée structurée décrit
- * toujours ce que l'utilisateur voit réellement.
+ * toujours ce que l'utilisateur voit réellement, et dans la même langue.
  */
 import { trail, type RoutePath } from '../data/pages';
+import { localePath, type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 
 interface Props {
   route: RoutePath;
+  locale: Locale;
 }
 
-const { route } = Astro.props;
-const items = trail(route);
+const { route, locale } = Astro.props;
+const items = trail(route, locale);
 ---
 
 {
   items.length > 1 && (
-    <nav class="tp-crumbs" aria-label="Fil d’Ariane">
+    <nav class="tp-crumbs" aria-label={ui('breadcrumb', locale)}>
       <ol>
         {items.map((item, index) =>
           index === items.length - 1 ? (
@@ -25,7 +28,7 @@ const items = trail(route);
             </li>
           ) : (
             <li>
-              <a href={item.path}>{item.label}</a>
+              <a href={localePath(item.path, locale)}>{item.label}</a>
             </li>
           )
         )}

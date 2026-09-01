@@ -2,6 +2,8 @@
 ordre: 35
 legende: 'Toile tendue couvrant l’angle d’une terrasse, le long d’une façade à volets.'
 alt: 'Toile claire tendue couvrant l’angle d’une terrasse le long d’une façade blanche à volet roulant, vue en contre-plongée.'
+legendeAr: 'قماش مشدود يغطّي زاوية شرفة، على امتداد واجهة بستائر.'
+altAr: 'قماش فاتح مشدود يغطّي زاوية شرفة على امتداد واجهة بيضاء بستارة دوّارة، منظور من الأسفل.'
 photo: ../../assets/photos/derived/toile-tendue-angle-terrasse.jpg
 categories: ['realisations']
 services: ['abris']

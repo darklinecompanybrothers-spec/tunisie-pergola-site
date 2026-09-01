@@ -1,0 +1,84 @@
+---
+/**
+ * Réalisations — la galerie complète, filtrable sans JavaScript.
+ *
+ * La page dit explicitement ce qu'elle NE montre pas : huit des onze familles
+ * n'ont pas encore de photographie de chantier. C'est une information utile au
+ * visiteur, et c'est le seul moyen honnête de tenir un site de ferronnerie dont
+ * le portfolio public ne couvre pour l'instant que les couvertures.
+ */
+import Base from '../../layouts/Base.astro';
+import Btn from '../Btn.astro';
+import PageHead from '../PageHead.astro';
+import CtaBand from '../CtaBand.astro';
+import Gallery from '../Gallery.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../data/site';
+import { WORKS } from '../../data/copy';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+import headPhoto from '../../assets/photos/derived/grande-structure-claire-vue-large.jpg';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const entries = await getCollection('realisations');
+---
+
+<Base route="/realisations/" locale={locale}>
+  <PageHead
+    route="/realisations/"
+    locale={locale}
+    eyebrow={WORKS.eyebrow[locale]}
+    title={WORKS.title[locale]}
+    lede={WORKS.lede[locale]}
+    theme="slats"
+    photo={headPhoto}
+    photoAlt={WORKS.headPhotoAlt[locale]}
+  />
+
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-perimetre">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{WORKS.scopeEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-perimetre">{WORKS.scopeTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        {WORKS.scopeBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+        <p>
+          <Btn href={localePath('/ouvrages-metalliques/', locale)} tone="quiet"
+            >{ui('ctaCatalogue', locale)}</Btn
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--flush-top tp-light" aria-labelledby="tp-galerie">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <h2 class="tp-visually-hidden" id="tp-galerie">{ui('galleryHeading', locale)}</h2>
+      <Gallery locale={locale} filtrable eagerFirst />
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-dark" aria-labelledby="tp-provenance">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{WORKS.originEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-provenance">{WORKS.originTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>{entries.length} {WORKS.originBody1[locale]}</p>
+        <p>{WORKS.originBody2[locale]}</p>
+        <p>
+          <Btn href={SITE.social.facebook} tone="quiet" external>{WORKS.originLink[locale]}</Btn>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

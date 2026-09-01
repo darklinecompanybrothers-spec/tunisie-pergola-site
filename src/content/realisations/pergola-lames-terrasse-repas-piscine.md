@@ -2,6 +2,8 @@
 ordre: 1
 legende: 'Pergola à lames au-dessus d’une terrasse aménagée en salle à manger et en salon, en bordure de piscine.'
 alt: 'Pergola à lames au-dessus d’une longue table et d’un salon d’extérieur, piscine à gauche et jardin en pente à l’arrière-plan.'
+legendeAr: 'برغولا بشرائح فوق شرفة مهيّأة للطعام والجلوس، على حافّة مسبح.'
+altAr: 'برغولا بشرائح فوق طاولة طويلة وصالون خارجي، ومسبح على اليسار وحديقة منحدرة في الخلفية.'
 photo: ../../assets/photos/derived/pergola-lames-terrasse-repas-piscine.jpg
 categories: ['realisations']
 services: ['pergolas']

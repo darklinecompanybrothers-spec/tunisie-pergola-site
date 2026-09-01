@@ -24,24 +24,44 @@
  * composition entière s'en sert.
  *
  * LES DEUX LOIS DU MOUVEMENT
- * Ce que le défilement donne est brut : la molette avance par paliers de cent
- * pixels, et une composition branchée dessus avance par à-coups. Deux
- * transformations séparent la mesure de ce qui est écrit.
- *
  *   1. AMORTISSEMENT — la valeur écrite ne saute pas sur la mesure, elle la
  *      rejoint. Chaque image l'en rapproche d'une fraction constante du chemin
  *      restant, calculée sur le temps réellement écoulé : la course dure le
  *      même temps à 60 comme à 144 images par seconde. C'est l'équivalent du
- *      `scrub` amorti de ScrollTrigger, en une ligne. C'est cette loi, et elle
- *      seule, qui fait la différence entre « lié au défilement » et « fluide ».
+ *      `scrub` amorti de ScrollTrigger, en une ligne.
  *
  *   2. CRÉNEAUX — `data-scene-slots="N"` découpe la course en N positions
  *      d'arrêt. Dans chaque intervalle la valeur reste tenue un moment, puis
  *      rejoint la suivante par une courbe en S. Une scène à créneaux passe donc
- *      l'essentiel de son temps POSÉE sur un état lisible, au lieu d'être
- *      perpétuellement à mi-chemin entre deux. L'index du créneau atteint est
- *      publié dans `data-slot` : le CSS peut marquer l'élément courant sans
- *      qu'aucune classe ne soit calculée ici.
+ *      l'essentiel de son temps POSÉE sur un état lisible. L'index du créneau
+ *      atteint est publié dans `data-slot`.
+ *
+ * LA GÉOMÉTRIE EST MESURÉE, PUIS MÉMORISÉE (1er septembre 2026)
+ * La version précédente appelait `getBoundingClientRect()` sur chaque scène du
+ * champ, à chaque image de défilement. C'est une LECTURE de disposition : le
+ * navigateur doit garantir qu'elle est à jour, donc il termine tout calcul de
+ * style ou de disposition en attente avant de répondre. Sur un téléphone, avec
+ * quatre scènes proches et une galerie chargée, ces lectures s'additionnent
+ * dans la tâche de défilement elle-même — exactement le profil de saccade
+ * signalé par le client.
+ *
+ * Le moteur mesure désormais la géométrie de chaque scène UNE FOIS — sa
+ * position dans le document et sa hauteur — puis calcule la progression à
+ * partir de `window.scrollY`, qui ne coûte rien. Plus une seule lecture de
+ * disposition pendant le défilement.
+ *
+ * La mesure est refaite quand elle peut avoir bougé, et jamais pendant le
+ * défilement : à l'arrivée d'une scène dans le champ, au chargement complet
+ * de la page, et via un `ResizeObserver` — donc aussi quand une image en
+ * chargement différé prend enfin sa place et décale ce qui la suit.
+ *
+ * BARRES DU NAVIGATEUR MOBILE
+ * Faire défiler un téléphone masque puis réaffiche la barre d'adresse, ce qui
+ * déclenche un `resize` en rafale. La version précédente y répondait en
+ * réamorçant toutes les scènes, c'est-à-dire en les faisant SAUTER à leur
+ * mesure. On distingue maintenant deux choses : la géométrie est toujours
+ * remesurée, mais le réamorçage — celui qui saute — n'a lieu que si la LARGEUR
+ * a changé, c'est-à-dire lors d'une vraie recomposition.
  *
  * SÛRETÉ
  *   • Les valeurs au repos, déclarées dans `tokens.css`, sont l'état LISIBLE
@@ -52,8 +72,6 @@
  *   • Une scène qui entre dans le champ prend sa valeur d'un coup au lieu de
  *     l'amortir : sans cela, un rechargement en milieu de page rejouerait
  *     l'animation depuis zéro sous les yeux du lecteur.
- *   • Toutes les mesures sont lues d'abord, toutes les écritures ensuite : la
- *     boucle ne provoque pas de recalcul de disposition en cascade.
  *   • Seules les scènes réellement proches du cadre sont calculées, et la
  *     boucle s'arrête d'elle-même dès que plus rien ne bouge.
  */
@@ -68,6 +86,10 @@ interface Scene {
   /** Nombre de positions d'arrêt. 0 ou 1 : progression continue. */
   readonly slots: number;
   near: boolean;
+  /** Position du haut de la scène dans le document, en pixels. */
+  top: number;
+  /** Hauteur de la scène, en pixels. */
+  height: number;
   /** Ce que mesure le défilement, après passage par les créneaux. */
   target: number;
   /** Ce que l'amortissement a effectivement atteint. */
@@ -105,23 +127,6 @@ const DWELL = 0.44;
 
 const clamp = (value: number): number => (value < 0 ? 0 : value > 1 ? 1 : value);
 
-const through = (rect: DOMRect, view: number): number =>
-  clamp((view - rect.top) / (view + rect.height));
-
-function progress(mode: SceneMode, rect: DOMRect, view: number): number {
-  if (mode === 'pin') {
-    const travel = rect.height - view;
-    // Une scène « pin » n'est tenue que tant qu'elle est plus haute que la
-    // fenêtre. Le CSS la dépingle sur écran étroit et sous réduction de
-    // mouvement; elle retombe alors sur la progression de traversée, qui reste
-    // continue. Sans ce repli, la même scène recevrait un tout-ou-rien et ses
-    // compositions sauteraient d'un état à l'autre.
-    return travel > 0 ? clamp(-rect.top / travel) : through(rect, view);
-  }
-  if (mode === 'through') return through(rect, view);
-  return clamp((view - rect.top) / (view * 0.8));
-}
-
 /** Courbe en S : départ et arrivée à vitesse nulle, donc aucun à-coup. */
 const smoothstep = (t: number): number => t * t * (3 - 2 * t);
 
@@ -136,6 +141,28 @@ function detent(x: number, slots: number): number {
   const index = Math.min(Math.floor(walk), steps - 1);
   const inside = walk - index;
   return (index + smoothstep(clamp((inside - DWELL / 2) / (1 - DWELL)))) / steps;
+}
+
+/**
+ * Progression d'une scène, calculée sans lire la disposition.
+ * `offset` est la distance du haut de la scène au haut du cadre — c'est
+ * exactement ce que `getBoundingClientRect().top` renvoyait, mais déduit de la
+ * géométrie mémorisée et du défilement courant.
+ */
+function progress(scene: Scene, scrollY: number, view: number): number {
+  const offset = scene.top - scrollY;
+  const through = clamp((view - offset) / (view + scene.height));
+  if (scene.mode === 'pin') {
+    const travel = scene.height - view;
+    // Une scène « pin » n'est tenue que tant qu'elle est plus haute que la
+    // fenêtre. Le CSS la dépingle sur écran étroit et sous réduction de
+    // mouvement; elle retombe alors sur la progression de traversée, qui reste
+    // continue. Sans ce repli, la même scène recevrait un tout-ou-rien et ses
+    // compositions sauteraient d'un état à l'autre.
+    return travel > 0 ? clamp(-offset / travel) : through;
+  }
+  if (scene.mode === 'through') return through;
+  return clamp((view - offset) / (view * 0.8));
 }
 
 export function initScenes(): void {
@@ -156,6 +183,8 @@ export function initScenes(): void {
       rest: spec.rest,
       slots: Number.isFinite(slots) && slots > 1 ? slots : 0,
       near: false,
+      top: 0,
+      height: 0,
       target: spec.rest,
       value: spec.rest,
       shown: spec.rest.toFixed(DIGITS),
@@ -170,6 +199,21 @@ export function initScenes(): void {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   let frame = 0;
   let last = 0;
+  let width = window.innerWidth;
+
+  /**
+   * Relève la géométrie d'une scène. C'est la SEULE lecture de disposition du
+   * moteur, et elle n'a jamais lieu pendant le défilement.
+   */
+  function measure(scene: Scene): void {
+    const rect = scene.el.getBoundingClientRect();
+    scene.top = rect.top + window.scrollY;
+    scene.height = rect.height;
+  }
+
+  function measureAll(): void {
+    for (const scene of scenes) measure(scene);
+  }
 
   function release(): void {
     for (const scene of scenes) {
@@ -195,25 +239,26 @@ export function initScenes(): void {
     const delta = last === 0 ? 0 : Math.min(now - last, MAX_FRAME);
     last = now;
     const view = window.innerHeight;
+    const scrollY = window.scrollY;
     const ratio = 1 - Math.exp(-delta / TAU);
     let moving = false;
 
-    // 1. Lire — aucune écriture ici, donc une seule mise en page pour tout.
+    // 1. Calculer — aucune lecture de disposition, uniquement de l'arithmétique
+    //    sur la géométrie mémorisée.
     for (const scene of scenes) {
       if (!scene.near) continue;
-      const raw = progress(scene.mode, scene.el.getBoundingClientRect(), view);
+      const raw = progress(scene, scrollY, view);
       scene.target = scene.slots === 0 ? raw : detent(raw, scene.slots);
     }
 
-    // 2. Amortir puis écrire — aucune lecture ici, donc aucun aller-retour
-    //    avec le moteur de rendu.
+    // 2. Amortir puis écrire.
     for (const scene of scenes) {
       if (!scene.near) continue;
       const gap = scene.target - scene.value;
       if (!scene.primed) {
-        // Entrée dans le champ, ou changement de taille : la scène prend sa
-        // valeur d'un coup. Amortir depuis une valeur périmée rejouerait le
-        // mouvement sous les yeux du lecteur.
+        // Entrée dans le champ, ou recomposition : la scène prend sa valeur
+        // d'un coup. Amortir depuis une valeur périmée rejouerait le mouvement
+        // sous les yeux du lecteur.
         scene.value = scene.target;
         scene.primed = true;
       } else if (Math.abs(gap) < SETTLED) {
@@ -255,9 +300,15 @@ export function initScenes(): void {
         const scene = byNode.get(entry.target);
         if (!scene) continue;
         scene.near = entry.isIntersecting;
-        // Une scène qui revient dans le champ reprend sa mesure sans amortir :
-        // elle a pu se déplacer de plusieurs écrans pendant son absence.
-        if (entry.isIntersecting) scene.primed = false;
+        if (entry.isIntersecting) {
+          // Une scène qui revient dans le champ reprend sa mesure sans amortir :
+          // elle a pu se déplacer de plusieurs écrans pendant son absence. Le
+          // rectangle est déjà connu de l'observateur, donc cette lecture ne
+          // coûte pas de calcul de disposition supplémentaire.
+          scene.top = entry.boundingClientRect.top + window.scrollY;
+          scene.height = entry.boundingClientRect.height;
+          scene.primed = false;
+        }
       }
       schedule();
     },
@@ -265,10 +316,43 @@ export function initScenes(): void {
   );
   for (const scene of scenes) watcher.observe(scene.el);
 
+  /* Une scène qui change de hauteur — image différée enfin arrivée, panneau
+     déployé, police échangée — décale tout ce qui la suit. Le `ResizeObserver`
+     rattrape ces cas hors de la tâche de défilement, là où une lecture de
+     disposition ne coûte rien à la fluidité. */
+  if ('ResizeObserver' in window) {
+    const sizes = new ResizeObserver(() => {
+      measureAll();
+      schedule();
+    });
+    for (const scene of scenes) sizes.observe(scene.el);
+  }
+
   window.addEventListener('scroll', schedule, { passive: true });
-  // Un changement de taille refait la géométrie : amortir vers une mesure prise
-  // dans l'ancienne disposition ferait glisser toute la page.
-  window.addEventListener('resize', settle, { passive: true });
+
+  /* Redimensionnement. La géométrie est TOUJOURS reprise; le réamorçage — qui
+     fait sauter les scènes à leur mesure — n'a lieu que si la largeur a changé.
+     Sur mobile, masquer la barre d'adresse ne change que la hauteur : les
+     scènes gardent alors leur amortissement au lieu de tressauter. */
+  window.addEventListener(
+    'resize',
+    () => {
+      measureAll();
+      if (window.innerWidth !== width) {
+        width = window.innerWidth;
+        settle();
+      } else {
+        schedule();
+      }
+    },
+    { passive: true }
+  );
+
+  /* Au chargement complet, les images ont pris leur place définitive : c'est le
+     moment où la géométrie mémorisée doit être reprise. */
+  if (document.readyState === 'complete') measureAll();
+  else window.addEventListener('load', () => { measureAll(); schedule(); }, { once: true });
+
   reduced.addEventListener('change', () => {
     if (reduced.matches) {
       if (frame !== 0) cancelAnimationFrame(frame);
@@ -276,10 +360,14 @@ export function initScenes(): void {
       last = 0;
       release();
     } else {
+      measureAll();
       settle();
     }
   });
 
   if (reduced.matches) release();
-  else schedule();
+  else {
+    measureAll();
+    schedule();
+  }
 }

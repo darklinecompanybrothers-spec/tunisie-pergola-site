@@ -2,6 +2,8 @@
 ordre: 56
 legende: 'Pose d’une structure dans un patio à arcades.'
 alt: 'Ouvrier sur une échelle posant une structure dans un patio à arcades, plantes en pot au premier plan.'
+legendeAr: 'تركيب هيكل في فناء بأقواس.'
+altAr: 'عامل على سلّم يركّب هيكلًا في فناء بأقواس، ونباتات في أصص في المقدّمة.'
 photo: ../../assets/photos/derived/pose-structure-patio-arcades.jpg
 categories: ['chantiers']
 services: ['abris']

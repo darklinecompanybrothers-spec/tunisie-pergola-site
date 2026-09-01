@@ -1,0 +1,155 @@
+---
+/**
+ * L'entreprise — comment Tunisie Pergola travaille.
+ *
+ * C'est la page qui porte la distinction d'entités : Tunisie Pergola est
+ * l'entreprise, implantée à Sousse; DCB Authority Group reçoit et traite les
+ * demandes envoyées depuis ce site. Les deux adresses sont écrites, jamais
+ * confondues, et seule celle de Sousse alimente le `LocalBusiness`.
+ */
+import Base from '../../layouts/Base.astro';
+import Btn from '../Btn.astro';
+import PageHead from '../PageHead.astro';
+import CtaBand from '../CtaBand.astro';
+import Shot from '../Shot.astro';
+import { SITE } from '../../data/site';
+import { ABOUT, JOURNEY } from '../../data/copy';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+import chantierPhoto from '../../assets/photos/derived/structure-en-cours-de-pose-cour.jpg';
+import posePhoto from '../../assets/photos/derived/pose-couverture-bord-de-piscine.jpg';
+import bandePhoto from '../../assets/photos/derived/grande-structure-claire-vue-large.jpg';
+import headPhoto from '../../assets/photos/derived/structure-claire-vue-etage.jpg';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Base route="/a-propos/" locale={locale}>
+  <PageHead
+    route="/a-propos/"
+    locale={locale}
+    eyebrow={ABOUT.eyebrow[locale]}
+    title={ABOUT.title[locale]}
+    lede={ABOUT.lede[locale]}
+    theme="shelter"
+    photo={headPhoto}
+    photoAlt={ABOUT.headPhotoAlt[locale]}
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-histoire">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ABOUT.startEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-histoire">{ABOUT.startTitle[locale]}</h2>
+      </div>
+
+      <div class="tp-prose tp-reveal tp-span-body">
+        {ABOUT.startBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
+        <p>
+          {ABOUT.facebookLine[locale]} {SITE.social.facebookFollowersLabel[locale]} — {
+            SITE.social.facebookObservedOn[locale]
+          }. {ABOUT.facebookLineEnd[locale]}
+          <a href={SITE.social.facebook} rel="noopener noreferrer" target="_blank"
+            >{ABOUT.facebookLink[locale]}<span class="tp-visually-hidden">{ui('newTab', locale)}</span></a
+          >.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--flush-top tp-light">
+    <div class="tp-bleed tp-grow tp-reveal" data-scene="enter">
+      <Shot
+        photo={bandePhoto}
+        alt={ABOUT.bandPhotoAlt[locale]}
+        legende={ABOUT.bandPhotoCaption[locale]}
+        ratio="21-9"
+        format="full"
+      />
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-methode">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ABOUT.methodEyebrow[locale]}</p>
+          <h2 class="tp-mask" id="tp-methode">{ABOUT.methodTitle[locale]}</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">{ABOUT.methodLede[locale]}</p>
+      </div>
+
+      <ol class="tp-cols tp-stagger" role="list">
+        {
+          JOURNEY.map((step) => (
+            <li class="tp-stack tp-reveal">
+              <p class="tp-index">{step.index}</p>
+              <h3>{step.titre[locale]}</h3>
+              <p class="tp-text-soft">{step.texte[locale]}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="tp-text-soft tp-reveal">
+        <small>{SITE.delay.phrase[locale]}</small>
+      </p>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-chantier">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ABOUT.siteEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-chantier">{ABOUT.siteTitle[locale]}</h2>
+        <p class="tp-text-soft">{ABOUT.siteText[locale]}</p>
+        <p><Btn href={localePath('/realisations/', locale)} tone="quiet">{ui('ctaSeeWorks', locale)}</Btn></p>
+      </div>
+
+      <div class="tp-span-body tp-reveal">
+        <div class="tp-cols">
+          <Shot
+            photo={chantierPhoto}
+            alt={ABOUT.sitePhotoAlt[locale]}
+            legende={ABOUT.sitePhotoCaption[locale]}
+            ratio="4-3"
+            format="third"
+          />
+          <Shot
+            photo={posePhoto}
+            alt={ABOUT.sitePhoto2Alt[locale]}
+            legende={ABOUT.sitePhoto2Caption[locale]}
+            ratio="4-5"
+            format="third"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-scene--tight tp-light" aria-labelledby="tp-ou">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ABOUT.whereEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-ou">{ABOUT.whereTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          {ABOUT.whereBody1[locale]} {SITE.address.inline[locale]}, {ABOUT.whereBody2[locale]}{' '}
+          {SITE.areaServed.length} {ABOUT.whereBody3[locale]}
+        </p>
+        <p>{ABOUT.whereIntake[locale]} {SITE.intake.inline[locale]}</p>
+        <p>
+          <Btn href={localePath('/zones-intervention/', locale)} tone="quiet">{ui('ctaZones', locale)}</Btn>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

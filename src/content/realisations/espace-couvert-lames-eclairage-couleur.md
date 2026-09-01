@@ -2,6 +2,8 @@
 ordre: 14
 legende: 'Grand espace couvert par un plafond à lames, éclairage de couleur en soirée.'
 alt: 'Grand espace couvert par un plafond à lames sombres avec éclairage bleu en périphérie et sol éclairé en rose, arbres en bac de part et d’autre.'
+legendeAr: 'فضاء واسع مغطّى بسقف من شرائح، بإنارة ملوّنة مساءً.'
+altAr: 'فضاء واسع مغطّى بسقف من شرائح داكنة بإنارة زرقاء على الأطراف وأرضية مضاءة بالوردي، وأشجار في أحواض على الجانبين.'
 photo: ../../assets/photos/derived/espace-couvert-lames-eclairage-couleur.jpg
 categories: ['realisations']
 services: ['pergolas']

@@ -2,6 +2,8 @@
 ordre: 17
 legende: 'Grande terrasse de restaurant couverte par une toiture à lames claires, en service.'
 alt: 'Grande terrasse de restaurant couverte par une toiture à lames claires, nombreuses tables et chaises occupées, haies taillées en bordure.'
+legendeAr: 'شرفة مطعم واسعة مغطّاة بسقف من شرائح فاتحة، أثناء الخدمة.'
+altAr: 'شرفة مطعم واسعة مغطّاة بسقف من شرائح فاتحة، وطاولات وكراسي كثيرة مشغولة، وأسيجة نباتية مشذّبة على الحواف.'
 photo: ../../assets/photos/derived/grande-terrasse-restaurant-lames.jpg
 categories: ['realisations']
 services: ['pergolas']

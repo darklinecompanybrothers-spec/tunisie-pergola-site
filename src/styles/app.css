@@ -10,6 +10,10 @@
 /* Après `components.css`, dans la même couche : la scénographie gagne à
    spécificité égale, et les composants fonctionnels restent intacts dessous. */
 @import './scenes.css';
+/* Le catalogue vient en dernier : ses composants n’existent nulle part
+   ailleurs, et cette place lui donne le dernier mot sans avoir à monter en
+   spécificité. */
+@import './catalogue.css';
 
 /* ==========================================================================
    Transition entre pages — les lames s'ouvrent sur la page suivante

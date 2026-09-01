@@ -2,6 +2,8 @@
 ordre: 10
 legende: 'Plafond à lames vu du dessous, avec bande lumineuse intégrée en périphérie.'
 alt: 'Plafond à lames sombres vu du dessous dans une courette, bande lumineuse intégrée en périphérie et façades blanches sur les côtés.'
+legendeAr: 'سقف بشرائح منظور من الأسفل، بشريط ضوئي مدمج على الأطراف.'
+altAr: 'سقف بشرائح داكنة منظور من الأسفل في فناء صغير، بشريط ضوئي مدمج على الأطراف وواجهات بيضاء على الجانبين.'
 photo: ../../assets/photos/derived/plafond-lames-eclairage-integre.jpg
 categories: ['realisations', 'details']
 services: ['pergolas']

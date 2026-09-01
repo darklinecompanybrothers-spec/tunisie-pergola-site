@@ -3,12 +3,20 @@
  *
  * Le formulaire cible n'a que six champs et leurs identifiants sont figés :
  * y ajouter une question casserait la feuille existante. La qualification
- * (ville, usage, dimensions, échéance, parcours, source) est donc repliée,
+ * (ville, ouvrage, dimensions, échéance, parcours, source) est donc repliée,
  * lisiblement, dans le champ de détails — exactement la stratégie retenue par
  * `js/lead.js` à la racine du dépôt DCB, qui n'est pas modifié.
  *
- * Le service est préfixé « Tunisie Pergola » pour que DCB distingue ces leads
- * de ceux du site DCB au premier coup d'œil.
+ * Le service est composé « Tunisie Pergola — <Famille> · <Ouvrage> » pour que
+ * DCB distingue ces leads de ceux du site DCB au premier coup d'œil, ET
+ * reconnaisse immédiatement de quel métier relève la demande.
+ *
+ * AUCUNE CHAÎNE TRADUITE ICI
+ * Les messages sont écrits par le gabarit dans le HTML — `data-message` sur
+ * chaque emplacement d'erreur, `data-msg-*` sur le formulaire. Ce fichier ne
+ * connaît donc pas les langues du site : il lit ce que la page lui donne. Une
+ * troisième langue n'y changerait pas une ligne, et une traduction ne peut pas
+ * diverger entre le HTML et le script.
  *
  * La réponse d'un formulaire Google en `no-cors` est opaque : impossible de la
  * lire. On annonce donc « transmise », jamais « reçue et validée ».
@@ -24,53 +32,32 @@ interface Entries {
   details: string;
 }
 
+type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 interface FieldRule {
   id: string;
-  label: string;
-  /** Message affiché quand le champ est vide ou invalide. */
-  message: string;
+  /** Champ facultatif : contrôlé seulement s'il est rempli. */
+  optional?: boolean;
   validate?: (value: string) => boolean;
 }
 
-const RULES: FieldRule[] = [
-  { id: 'tp-nom', label: 'Nom et prénom', message: 'Indiquez le nom à qui répondre.' },
-  {
-    id: 'tp-tel',
-    label: 'Téléphone',
-    message: 'Indiquez un numéro joignable (au moins 8 chiffres).',
-    validate: (value) => (value.match(/\d/g) ?? []).length >= 8
-  },
-  { id: 'tp-ville', label: 'Ville', message: 'Indiquez la ville du projet.' },
-  { id: 'tp-projet-type', label: 'Type de projet', message: 'Choisissez un type de projet.' },
-  { id: 'tp-usage', label: 'Usage recherché', message: 'Choisissez l’usage recherché.' },
-  {
-    id: 'tp-dimensions',
-    label: 'Dimensions approximatives',
-    message: 'Une estimation suffit, par exemple « environ 4 m × 6 m ».'
-  },
-  {
-    id: 'tp-message',
-    label: 'Votre projet',
-    message: 'Décrivez le projet en quelques mots (20 caractères minimum).',
-    validate: (value) => value.trim().length >= 20
-  },
+const RULES: readonly FieldRule[] = [
+  { id: 'tp-nom' },
+  { id: 'tp-tel', validate: (value) => (value.match(/\d/g) ?? []).length >= 8 },
+  { id: 'tp-ville' },
+  { id: 'tp-famille' },
+  { id: 'tp-ouvrage' },
+  { id: 'tp-dimensions' },
+  { id: 'tp-message', validate: (value) => value.trim().length >= 20 },
   {
     id: 'tp-email',
-    label: 'E-mail',
-    message: 'Cette adresse e-mail semble incomplète.',
+    optional: true,
     validate: (value) => value === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)
   },
-  {
-    id: 'tp-consent',
-    label: 'Consentement',
-    message: 'Votre accord est nécessaire pour vous recontacter.'
-  }
+  { id: 'tp-consent' }
 ];
 
-/** Champs facultatifs : ils ne sont pas exigés, seulement contrôlés s'ils sont remplis. */
-const OPTIONAL = new Set(['tp-email']);
-
-function control(form: HTMLFormElement, id: string): HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null {
+function control(form: HTMLFormElement, id: string): Field | null {
   const element = form.querySelector(`#${CSS.escape(id)}`);
   return element instanceof HTMLInputElement ||
     element instanceof HTMLSelectElement ||
@@ -79,42 +66,110 @@ function control(form: HTMLFormElement, id: string): HTMLInputElement | HTMLSele
     : null;
 }
 
-function valueOf(field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): string {
+function slotOf(form: HTMLFormElement, id: string): HTMLElement | null {
+  return form.querySelector<HTMLElement>(`#${CSS.escape(id)}-err`);
+}
+
+/**
+ * Libellé lisible du champ, lu dans son étiquette — jamais recopié ici.
+ *
+ * Un champ dont l'étiquette est une PHRASE — le consentement, dont le libellé
+ * est la phrase d'accord elle-même — porte un libellé court sur son
+ * emplacement d'erreur. Le résumé des erreurs reste alors lisible : « le
+ * consentement » plutôt que la phrase entière recopiée.
+ */
+function labelOf(form: HTMLFormElement, id: string): string {
+  const short = slotOf(form, id)?.dataset['label'];
+  if (short) return short;
+  const label = form.querySelector<HTMLElement>(`label[for="${CSS.escape(id)}"]`);
+  if (!label) return id;
+  const clone = label.cloneNode(true) as HTMLElement;
+  for (const extra of clone.querySelectorAll('.tp-field__optional, .tp-error, a')) extra.remove();
+  return (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function valueOf(field: Field): string {
   if (field instanceof HTMLInputElement && field.type === 'checkbox') {
     return field.checked ? field.value || 'oui' : '';
   }
   return field.value.trim();
 }
 
-function setError(form: HTMLFormElement, id: string, message: string): void {
-  const field = control(form, id);
-  const slot = form.querySelector(`#${CSS.escape(id)}-err`);
-  if (field) field.setAttribute('aria-invalid', message ? 'true' : 'false');
-  // textContent uniquement : aucune valeur saisie n'est jamais interprétée
-  // comme du HTML.
-  if (slot) slot.textContent = message;
+/** Texte affiché de l'option retenue — c'est lui qui doit partir, pas la clé. */
+function chosenLabel(field: Field | null): string {
+  if (field instanceof HTMLSelectElement) {
+    return field.selectedOptions[0]?.textContent?.trim() ?? '';
+  }
+  return field ? valueOf(field) : '';
 }
 
-function validate(form: HTMLFormElement): { id: string; label: string; message: string }[] {
-  const problems: { id: string; label: string; message: string }[] = [];
+function setError(form: HTMLFormElement, id: string, show: boolean): string {
+  const field = control(form, id);
+  const slot = slotOf(form, id);
+  const message = slot?.dataset['message'] ?? '';
+  if (field) field.setAttribute('aria-invalid', show ? 'true' : 'false');
+  // textContent uniquement : aucune valeur saisie n'est jamais interprétée
+  // comme du HTML.
+  if (slot) slot.textContent = show ? message : '';
+  return message;
+}
+
+interface Problem {
+  id: string;
+  label: string;
+  message: string;
+}
+
+function validate(form: HTMLFormElement): Problem[] {
+  const problems: Problem[] = [];
 
   for (const rule of RULES) {
     const field = control(form, rule.id);
     if (!field) continue;
     const value = valueOf(field);
-    const required = !OPTIONAL.has(rule.id);
     const empty = value === '';
     const invalid = rule.validate ? !rule.validate(value) : false;
-
-    if ((required && empty) || invalid) {
-      setError(form, rule.id, rule.message);
-      problems.push({ id: rule.id, label: rule.label, message: rule.message });
-    } else {
-      setError(form, rule.id, '');
-    }
+    const broken = (!rule.optional && empty) || invalid;
+    const message = setError(form, rule.id, broken);
+    if (broken) problems.push({ id: rule.id, label: labelOf(form, rule.id), message });
   }
 
   return problems;
+}
+
+/* --------------------------------------------------------------------------
+   La liste des ouvrages suit la famille
+   Les cinquante ouvrages sont TOUS dans le HTML, groupés par famille. Sans
+   JavaScript, le prospect les parcourt tous — c'est utilisable. Avec, on ne
+   laisse visible que le groupe qui correspond à la famille choisie, plus le
+   groupe « autre ». Masquer un `<optgroup>` ne suffit pas partout : on le
+   désactive AUSSI, ce qui le retire de la navigation clavier dans les moteurs
+   qui ignorent `hidden` sur ces éléments.
+   -------------------------------------------------------------------------- */
+function linkFamilyToProduct(form: HTMLFormElement): void {
+  const famille = form.querySelector<HTMLSelectElement>('#tp-famille');
+  const ouvrage = form.querySelector<HTMLSelectElement>('#tp-ouvrage');
+  if (!famille || !ouvrage) return;
+  const groups = [...ouvrage.querySelectorAll<HTMLOptGroupElement>('optgroup[data-famille]')];
+
+  function apply(): void {
+    const key = famille!.value;
+    const showAll = key === '' || key === 'indecis';
+    for (const group of groups) {
+      const own = group.dataset['famille'];
+      const visible = showAll || own === key || own === '*';
+      group.hidden = !visible;
+      group.disabled = !visible;
+    }
+    // Une option devenue invisible ne doit pas rester sélectionnée : elle
+    // partirait dans la demande sans que personne ne la voie à l'écran.
+    const chosen = ouvrage!.selectedOptions[0];
+    const parent = chosen?.parentElement;
+    if (parent instanceof HTMLOptGroupElement && parent.hidden) ouvrage!.value = '';
+  }
+
+  famille.addEventListener('change', apply);
+  apply();
 }
 
 /** Bloc de qualification, lisible tel quel dans la feuille de suivi. */
@@ -123,19 +178,21 @@ function composeDetails(form: HTMLFormElement): string {
     const field = control(form, id);
     return field ? valueOf(field) : '';
   };
+  const label = (id: string) => labelOf(form, id);
 
   const lines = [
     get('tp-message'),
     '',
-    `Ville : ${get('tp-ville')}`,
-    `Usage : ${get('tp-usage')}`,
-    `Dimensions approximatives : ${get('tp-dimensions')}`
+    `${label('tp-ville')} : ${get('tp-ville')}`,
+    `${label('tp-famille')} : ${chosenLabel(control(form, 'tp-famille'))}`,
+    `${label('tp-ouvrage')} : ${chosenLabel(control(form, 'tp-ouvrage'))}`,
+    `${label('tp-dimensions')} : ${get('tp-dimensions')}`
   ];
 
   const echeance = get('tp-echeance');
-  if (echeance) lines.push(`Échéance : ${echeance}`);
+  if (echeance) lines.push(`${label('tp-echeance')} : ${echeance}`);
 
-  lines.push('Consentement de contact : accordé');
+  lines.push(form.dataset['msgConsent'] ?? '');
 
   const src = summary();
   const path = journey();
@@ -149,18 +206,18 @@ function composeDetails(form: HTMLFormElement): string {
 }
 
 /** Reprend la demande dans un message WhatsApp prérempli, sans rien perdre. */
-function whatsappFallback(form: HTMLFormElement, base: string): string {
+function whatsappFallback(form: HTMLFormElement, base: string, intro: string): string {
   const get = (id: string) => {
     const field = control(form, id);
     return field ? valueOf(field) : '';
   };
+  const label = (id: string) => labelOf(form, id);
   const text = [
-    'Bonjour, je souhaite parler d’un projet.',
-    `Nom : ${get('tp-nom')}`,
-    `Ville : ${get('tp-ville')}`,
-    `Projet : ${get('tp-projet-type')}`,
-    `Usage : ${get('tp-usage')}`,
-    `Dimensions : ${get('tp-dimensions')}`,
+    intro,
+    `${label('tp-nom')} : ${get('tp-nom')}`,
+    `${label('tp-ville')} : ${get('tp-ville')}`,
+    `${label('tp-ouvrage')} : ${chosenLabel(control(form, 'tp-ouvrage'))}`,
+    `${label('tp-dimensions')} : ${get('tp-dimensions')}`,
     '',
     get('tp-message')
   ].join('\n');
@@ -181,9 +238,20 @@ export function initLeadForm(): void {
     details: form.dataset['entryDetails'] ?? ''
   };
   const action = form.dataset['action'] ?? form.action;
+  const prefix = form.dataset['servicePrefix'] ?? '';
   const whatsappBase = form.dataset['whatsapp'] ?? '';
   const phoneDisplay = form.dataset['phone'] ?? '';
   const phoneHref = form.dataset['phoneHref'] ?? '';
+  const msg = {
+    sending: form.dataset['msgSending'] ?? '',
+    failed: form.dataset['msgFailed'] ?? '',
+    one: form.dataset['msgOne'] ?? '',
+    many: form.dataset['msgMany'] ?? '',
+    wa: form.dataset['msgWa'] ?? '',
+    call: form.dataset['msgCall'] ?? '',
+    intro: form.dataset['msgIntro'] ?? '',
+    consent: form.dataset['msgConsent'] ?? ''
+  };
 
   const status = form.querySelector<HTMLElement>('[data-status]');
   const submit = form.querySelector<HTMLButtonElement>('[data-submit]');
@@ -191,27 +259,25 @@ export function initLeadForm(): void {
   const summaryList = summaryBox?.querySelector('ul') ?? null;
   const sentPanel = document.querySelector<HTMLElement>('[data-sent-panel]');
 
-  // La validation est reprise en main : messages en français, résumé
-  // navigable, focus maîtrisé. Sans JavaScript, la validation native reste
-  // active et le formulaire poste directement.
+  linkFamilyToProduct(form);
+
+  // La validation est reprise en main : messages dans la langue de la page,
+  // résumé navigable, focus maîtrisé. Sans JavaScript, la validation native
+  // reste active et le formulaire poste directement.
   form.noValidate = true;
 
   let started = false;
-  form.addEventListener(
-    'input',
-    () => {
-      if (started) return;
-      started = true;
-      track('formulaire_demarre');
-    },
-    { once: false }
-  );
+  form.addEventListener('input', () => {
+    if (started) return;
+    started = true;
+    track('formulaire_demarre');
+  });
 
   // Un champ corrigé efface son erreur immédiatement.
   form.addEventListener('input', (event) => {
     const target = event.target;
     if (target instanceof HTMLElement && target.id && target.getAttribute('aria-invalid') === 'true') {
-      setError(form, target.id, '');
+      setError(form, target.id, false);
     }
   });
 
@@ -222,7 +288,7 @@ export function initLeadForm(): void {
     else delete status.dataset['tone'];
   }
 
-  function showProblems(problems: { id: string; label: string; message: string }[]): void {
+  function showProblems(problems: Problem[]): void {
     if (!summaryBox || !summaryList) return;
     summaryList.replaceChildren();
     for (const problem of problems) {
@@ -251,14 +317,14 @@ export function initLeadForm(): void {
     if (!status || !whatsappBase) return;
     const line = document.createElement('span');
     const wa = document.createElement('a');
-    wa.href = whatsappFallback(form, whatsappBase);
+    wa.href = whatsappFallback(form, whatsappBase, msg.intro);
     wa.rel = 'noopener noreferrer';
     wa.target = '_blank';
-    wa.textContent = 'Envoyer la même demande sur WhatsApp';
+    wa.textContent = msg.wa;
     const tel = document.createElement('a');
     tel.href = phoneHref;
     tel.textContent = phoneDisplay;
-    line.append(wa, document.createTextNode(' · appeler le '), tel);
+    line.append(wa, document.createTextNode(msg.call), tel);
     status.append(line);
   }
 
@@ -267,7 +333,7 @@ export function initLeadForm(): void {
 
     const problems = validate(form);
     if (problems.length > 0) {
-      say(`${problems.length} champ${problems.length > 1 ? 's' : ''} à compléter.`, 'error');
+      say(`${problems.length} ${problems.length > 1 ? msg.many : msg.one}`, 'error');
       showProblems(problems);
       return;
     }
@@ -279,10 +345,13 @@ export function initLeadForm(): void {
       return field ? valueOf(field) : '';
     };
 
+    const famille = chosenLabel(control(form, 'tp-famille'));
+    const ouvrage = chosenLabel(control(form, 'tp-ouvrage'));
+
     payload.append(entries.name, get('tp-nom'));
     payload.append(entries.email, get('tp-email'));
     payload.append(entries.phone, get('tp-tel'));
-    payload.append(entries.service, get('tp-projet-type'));
+    payload.append(entries.service, `${prefix} — ${famille} · ${ouvrage}`);
     payload.append(entries.pack, form.querySelector<HTMLInputElement>(`input[name="${entries.pack}"]`)?.value ?? '');
     payload.append(entries.details, composeDetails(form));
 
@@ -290,7 +359,7 @@ export function initLeadForm(): void {
       submit.setAttribute('aria-disabled', 'true');
       submit.disabled = true;
     }
-    say('Envoi en cours…', 'busy');
+    say(msg.sending, 'busy');
 
     // `no-cors` : la réponse est opaque par conception. Un rejet signale un
     // vrai échec réseau; une résolution signale que la requête est partie.
@@ -309,10 +378,7 @@ export function initLeadForm(): void {
           submit.removeAttribute('aria-disabled');
           submit.disabled = false;
         }
-        say(
-          'La demande n’a pas pu partir — vos réponses sont conservées ci-dessus. Réessayez, ou passez par : ',
-          'error'
-        );
+        say(msg.failed, 'error');
         offerFallback();
       });
   });

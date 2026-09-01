@@ -2,6 +2,8 @@
 ordre: 68
 legende: 'Projection d’une structure au-dessus d’un espace partagé.'
 alt: 'Projection en volume d’une structure sombre à lames au-dessus d’un espace partagé avec bancs et cheminements, haies et palmiers en bordure.'
+legendeAr: 'إسقاط لهيكل فوق فضاء مشترك.'
+altAr: 'إسقاط حجمي لهيكل داكن بشرائح فوق فضاء مشترك بمقاعد وممرّات، وأسيجة نباتية ونخيل على الحواف.'
 photo: ../../assets/photos/derived/projection-structure-espace-partage.jpg
 categories: ['conception']
 services: []

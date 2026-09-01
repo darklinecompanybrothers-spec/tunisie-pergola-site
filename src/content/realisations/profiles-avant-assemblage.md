@@ -2,6 +2,8 @@
 ordre: 62
 legende: 'Profilés rangés avant assemblage.'
 alt: 'Faisceau de profilés sombres rangés côte à côte avant assemblage, vus en enfilade.'
+legendeAr: 'مقاطع مرتّبة قبل التركيب.'
+altAr: 'حزمة مقاطع داكنة مرتّبة جنبًا إلى جنب قبل التركيب، منظورة على امتدادها.'
 photo: ../../assets/photos/derived/profiles-avant-assemblage.jpg
 categories: ['details']
 services: ['pergolas']

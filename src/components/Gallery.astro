@@ -13,8 +13,11 @@
  */
 import { getCollection } from 'astro:content';
 import Shot from './Shot.astro';
+import type { Locale } from '../i18n/locales';
+import { ui, type UIKey } from '../i18n/ui';
 
 interface Props {
+  locale: Locale;
   /** Nombre maximal de photographies (aperçu sur l'accueil). */
   limit?: number | undefined;
   /** Le filtre n'a de sens que sur la galerie complète. */
@@ -25,14 +28,14 @@ interface Props {
   eagerFirst?: boolean | undefined;
 }
 
-const { limit, filtrable = false, service, eagerFirst = false } = Astro.props;
+const { locale, limit, filtrable = false, service, eagerFirst = false } = Astro.props;
 
 const FACETS = [
-  { id: 'tout', label: 'Tout' },
-  { id: 'realisations', label: 'Réalisations terminées' },
-  { id: 'chantiers', label: 'Chantier et pose' },
-  { id: 'details', label: 'Détails de structure' }
-] as const;
+  { id: 'tout', key: 'filterAll' },
+  { id: 'realisations', key: 'filterDone' },
+  { id: 'chantiers', key: 'filterSite' },
+  { id: 'details', key: 'filterDetails' }
+] as const satisfies readonly { id: string; key: UIKey }[];
 
 const all = await getCollection('realisations');
 const entries = all
@@ -45,7 +48,7 @@ const entries = all
   {
     filtrable && (
       <fieldset class="tp-filters">
-        <legend>Filtrer les réalisations</legend>
+        <legend>{ui('filterLegend', locale)}</legend>
         {FACETS.map((facet, index) => (
           <>
             <input
@@ -55,7 +58,7 @@ const entries = all
               value={facet.id}
               checked={index === 0}
             />
-            <label for={`tp-f-${facet.id}`}>{facet.label}</label>
+            <label for={`tp-f-${facet.id}`}>{ui(facet.key, locale)}</label>
           </>
         ))}
       </fieldset>
@@ -71,8 +74,8 @@ const entries = all
         >
           <Shot
             photo={entry.data.photo}
-            alt={entry.data.alt}
-            legende={entry.data.legende}
+            alt={locale === 'ar' ? entry.data.altAr : entry.data.alt}
+            legende={locale === 'ar' ? entry.data.legendeAr : entry.data.legende}
             ratio={entry.data.ratio}
             format={entry.data.format}
             eager={eagerFirst && index === 0}

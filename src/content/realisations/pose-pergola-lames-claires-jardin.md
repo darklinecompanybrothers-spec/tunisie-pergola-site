@@ -2,6 +2,8 @@
 ordre: 57
 legende: 'Pergola à lames claires en cours de pose au-dessus d’une terrasse de jardin.'
 alt: 'Pergola à lames claires en cours de pose au-dessus d’une terrasse, caisse à outils et matériel posés sur la couverture.'
+legendeAr: 'برغولا بشرائح فاتحة في طور التركيب فوق شرفة حديقة.'
+altAr: 'برغولا بشرائح فاتحة في طور التركيب فوق شرفة، وصندوق عدّة ومعدّات موضوعة على التغطية.'
 photo: ../../assets/photos/derived/pose-pergola-lames-claires-jardin.jpg
 categories: ['chantiers']
 services: ['pergolas']

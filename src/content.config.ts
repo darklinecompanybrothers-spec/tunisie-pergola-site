@@ -27,6 +27,15 @@ const realisations = defineCollection({
       legende: z.string().min(24).max(180),
       /** Texte alternatif factuel et spécifique. */
       alt: z.string().min(24).max(180),
+      /**
+       * Les deux mêmes, en arabe. Ils sont OBLIGATOIRES : le site est
+       * bilingue, et une galerie arabe dont les images porteraient un texte
+       * alternatif français serait inutilisable au lecteur d’écran arabe.
+       * Le seuil bas est plus court qu’en français — l’écriture arabe porte
+       * davantage par caractère, à information égale.
+       */
+      legendeAr: z.string().min(16).max(180),
+      altAr: z.string().min(16).max(180),
       photo: image(),
       /** Facettes réellement attribuables depuis le manifeste d'assets. */
       categories: z

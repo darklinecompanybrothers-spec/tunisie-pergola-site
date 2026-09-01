@@ -1,48 +1,70 @@
 @layer tokens {
   /* ==========================================================================
      Tunisie Pergola — jetons de design
-     Identité v1 (proposition DCB). Aucune couleur de marque n'est écrite en
-     dur ailleurs que dans ce fichier : une validation client se répercute ici
-     et nulle part ailleurs.
+     ==========================================================================
+     DIRECTION (1er septembre 2026)
+
+     L'entreprise n'est plus « pergolas, verrières et abris » : c'est une
+     ferronnerie-métallerie. La direction artistique suit ce déplacement, sans
+     rien jeter de ce qui fonctionnait — l'obliquité 72/92 du monogramme, les
+     angles vifs, les scènes sombres et claires alternées restent.
+
+     Ce qui change tient en une idée : LE MÉTAL SE LIT À SA LUMIÈRE. Une arête
+     forgée n'a ni couleur ni texture propre; elle a un côté clair et un côté
+     sombre, et c'est ce contraste qui la dessine. La typographie de titre
+     devient donc une typographie À CONTRASTE — pleins et déliés très écartés,
+     empattements taillés net. Le mot lui-même porte la lumière et l'ombre.
+
+     Syne partait dans l'autre sens : monolinéaire, très large, résolument
+     techno. Elle poussait les titres hors du cadre sur mobile et donnait au
+     site l'accent d'une marque de logiciel. Elle est remplacée par Bodoni
+     Moda; Manrope, honnête mais sans voix, cède la place à Readex Pro, qui a
+     l'immense avantage d'être dessinée pour le latin ET l'arabe.
+
+     Aucune couleur de marque n'est écrite en dur ailleurs que dans ce fichier.
      ========================================================================== */
 
   :root {
     /* --- Palette de marque ------------------------------------------------ */
-    --tp-anthracite: #151a1c;
+    --tp-anthracite: #12171a;
     --tp-copper: #b86f44;
     --tp-ivory: #f4f0e8;
     --tp-sea: #89aec0;
     --tp-white: #ffffff;
 
     /* --- Déclinaisons calculées pour l'accessibilité ----------------------
-       Contrastes mesurés (WCAG 2.1) :
-         anthracite / ivoire ............ 15,4:1   AAA
-         ivoire / anthracite ............ 15,4:1   AAA
-         cuivre / anthracite ............  4,5:1   AA texte courant
-         cuivre / ivoire ................  3,4:1   AA grandes tailles seulement
-         cuivre-encre / ivoire ..........  4,9:1   AA texte courant
-         encre-douce / ivoire ...........  6,9:1   AA
-         clair-doux / anthracite ........  8,1:1   AAA
-         bleu / anthracite ..............  7,4:1   AA  (jamais sur fond clair)
-       `--tp-copper-ink` est le cuivre-bois assombri : même famille, réservé au
-       texte courant sur fond clair où le cuivre de marque échoue. */
-    --tp-copper-ink: #9a5733;
+       Contrastes MESURÉS (WCAG 2.1), pas estimés :
+         anthracite / ivoire ............. 15,88:1   AAA
+         cuivre / anthracite ..............  4,64:1  AA  — traits et symboles
+         cuivre-clair / anthracite ........  6,52:1  AA+ — remplissage de bouton
+         cuivre-lueur / anthracite ........  8,18:1  AAA — texte d'accent sombre
+         cuivre-encre / ivoire ............  5,56:1  AA  — texte d'accent clair
+         encre-douce / ivoire .............  8,77:1  AAA — texte secondaire clair
+         clair-doux / anthracite .......... 10,83:1  AAA — texte secondaire sombre
+         bleu / anthracite ................  7,63:1  AAA
+         surélevé / ivoire ................ 14,18:1  AAA
+         champ de saisie / ivoire ......... 12,53:1  AAA
+
+       Les valeurs des textes secondaires ont été REMONTÉES le 1er septembre
+       2026 : le client trouvait les textes ternes, et il avait raison —
+       6,94:1 et 8,35:1 tenaient la norme sans donner de l'aplomb. Elles
+       passent toutes deux au-dessus de 8,5:1, c'est-à-dire au niveau AAA
+       auquel le texte principal était déjà. */
+    --tp-copper-ink: #8f4f2c;
     --tp-copper-light: #d08c5c;
-    --tp-anthracite-raised: #1e2528;
-    /* Surface de saisie sur fond sombre : assez claire pour qu'un champ de
-       formulaire se distingue de la scène sans devenir une carte. */
-    --tp-anthracite-field: #262f32;
-    --tp-anthracite-deep: #0e1213;
+    --tp-copper-glow: #e0a172;
+    --tp-anthracite-raised: #1b2226;
+    --tp-anthracite-field: #232c30;
+    --tp-anthracite-deep: #0c1012;
     --tp-anthracite-night: #070a0b;
     --tp-ivory-deep: #e8e2d6;
-    --tp-ink-soft: #4a5356;
-    --tp-light-soft: #a9b2b4;
+    --tp-ink-soft: #3b4448;
+    --tp-light-soft: #c2caca;
 
     /* Violet du studio — relevé sur le symbole DARKLINE lui-même (`#802fd8`,
        le pixel le plus saturé du fichier), puis éclairci pour tenir le
-       contraste sur le fond du pied de page : 6,5:1 contre 3,1:1 pour le
-       violet brut. Il n'appartient PAS à la palette Tunisie Pergola et ne sert
-       qu'à la signature `.tp-sign`. */
+       contraste sur le fond du pied de page. Il n'appartient PAS à la palette
+       Tunisie Pergola et ne sert qu'à la signature `.tp-sign`. */
     --tp-darkline: color-mix(in srgb, #802fd8 62%, #ffffff);
 
     /* --- Rôles ------------------------------------------------------------ */
@@ -52,53 +74,81 @@
     --tp-text-soft: var(--tp-ink-soft);
     --tp-accent: var(--tp-copper-ink);
     --tp-accent-display: var(--tp-copper);
-    --tp-line: color-mix(in srgb, var(--tp-anthracite) 16%, transparent);
-    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 34%, transparent);
-    --tp-focus: var(--tp-copper);
+    --tp-line: color-mix(in srgb, var(--tp-anthracite) 20%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 40%, transparent);
+    --tp-focus: var(--tp-copper-ink);
 
     /* Le symbole hérite des rôles : il change avec la scène, sans variante. */
     --tp-mark-structure: currentColor;
     --tp-mark-lames: var(--tp-accent-display);
 
     /* --- Typographie ------------------------------------------------------
-       Deux familles libres, sous-licence OFL, auto-hébergées, une seule
-       graisse variable chacune. */
-    --tp-font-display: 'Syne Variable', 'Syne', 'Trebuchet MS', ui-sans-serif, system-ui,
+       Trois familles libres, sous licence SIL OFL, auto-hébergées, sans aucune
+       requête vers un tiers.
+
+         Bodoni Moda   titres latins. Une didone : pleins épais, déliés fins,
+                       empattements taillés à angle droit. C'est la lumière et
+                       l'ombre d'une arête, dans la lettre elle-même. Le fichier
+                       retenu est celui à axe de GRAISSE seul : l'axe de taille
+                       optique afinerait les déliés à mesure que le titre
+                       grandit, ce qui est joli sur écran de studio et fragile
+                       sur un téléphone en plein soleil. Les déliés restent donc
+                       calibrés pour une taille de texte, à toutes les tailles.
+
+         Amiri         titres arabes. Un naskh de haute tenue, à contraste
+                       calligraphique marqué : c'est le seul choix qui donne à
+                       l'arabe la MÊME propriété optique que Bodoni au latin.
+                       Une géométrique arabe aurait été plus légère à charger et
+                       fausse à lire — deux registres différents dans un même
+                       site.
+
+         Readex Pro    texte courant, dans LES DEUX écritures. Un même dessin,
+                       une même hauteur d'x, un même rythme pour le français et
+                       l'arabe : c'est ce qui empêche la version arabe d'avoir
+                       l'air d'une traduction posée sur une maquette française.
+
+       Poids de la page : 57 Ko de fontes en français (contre 59 Ko pour
+       Syne + Manrope), 154 Ko en arabe — Amiri est une fonte lourde, et c'est
+       le prix d'un arabe qui ne soit pas une police par défaut. */
+    --tp-font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Bodoni 72', Didot,
+      'Times New Roman', serif;
+    --tp-font-text: 'Readex Pro Variable', 'Readex Pro', 'Segoe UI', ui-sans-serif, system-ui,
       sans-serif;
-    --tp-font-text: 'Manrope Variable', 'Manrope', 'Segoe UI', ui-sans-serif, system-ui,
-      sans-serif;
 
-    /* Échelle fluide. Les bornes sont choisies pour que la ligne la plus
-       longue du site tienne à 320 px sans débordement horizontal. */
-    --tp-text-xs: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
-    --tp-text-sm: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
-    --tp-text-base: clamp(1rem, 0.97rem + 0.16vw, 1.125rem);
-    --tp-text-md: clamp(1.0625rem, 1rem + 0.3vw, 1.3125rem);
-    --tp-text-lg: clamp(1.25rem, 1.14rem + 0.55vw, 1.75rem);
-    --tp-text-xl: clamp(1.5rem, 1.26rem + 1.2vw, 2.5rem);
-    --tp-text-2xl: clamp(1.875rem, 1.4rem + 2.4vw, 3.75rem);
-    --tp-text-3xl: clamp(2.25rem, 1.5rem + 3.75vw, 5rem);
-    --tp-display: clamp(2.2rem, 1.1rem + 5.4vw, 4.35rem);
-    --tp-manifesto: clamp(2.7rem, 1rem + 9vw, 9.5rem);
-    /* Deux échelles monumentales, calibrées pour tenir sans césure à 320 px :
-       `--tp-headline` porte la promesse du premier écran, `--tp-monument` les
-       mots qui deviennent de l'architecture (titres de scène, noms de villes,
-       chiffres d'index). */
-    --tp-headline: clamp(2rem, 0.55rem + 5.1vw, 4.6rem);
-    --tp-monument: clamp(3.2rem, 0.4rem + 12vw, 12rem);
-    --tp-numeral: clamp(3.5rem, 1rem + 11vw, 10rem);
+    /* Échelle fluide. Les bornes basses sont calculées pour que le titre le
+       plus long du site tienne à 320 px SANS césure : c'est le reproche fait à
+       la version précédente, où `--tp-monument` montait à 12vw et cassait les
+       mots en deux. Aucune valeur ne dépasse désormais 7,5vw. */
+    --tp-text-xs: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
+    --tp-text-sm: clamp(0.9375rem, 0.91rem + 0.13vw, 1rem);
+    --tp-text-base: clamp(1.0625rem, 1.03rem + 0.19vw, 1.1875rem);
+    --tp-text-md: clamp(1.125rem, 1.05rem + 0.36vw, 1.375rem);
+    --tp-text-lg: clamp(1.3125rem, 1.19rem + 0.62vw, 1.75rem);
+    --tp-text-xl: clamp(1.5rem, 1.28rem + 1.1vw, 2.25rem);
+    --tp-text-2xl: clamp(1.75rem, 1.34rem + 2.05vw, 3.15rem);
+    --tp-text-3xl: clamp(2.05rem, 1.5rem + 2.75vw, 3.95rem);
+    --tp-display: clamp(1.9rem, 1.42rem + 2.4vw, 3.5rem);
+    --tp-manifesto: clamp(2.35rem, 1.35rem + 5vw, 6.5rem);
+    /* Deux échelles monumentales : `--tp-headline` porte la promesse du premier
+       écran, `--tp-monument` les mots qui deviennent de l'architecture. */
+    --tp-headline: clamp(2.05rem, 1.32rem + 3.65vw, 4.4rem);
+    --tp-monument: clamp(2.6rem, 1.4rem + 6vw, 7.5rem);
+    --tp-numeral: clamp(2.6rem, 1.5rem + 5.5vw, 6.5rem);
 
-    --tp-leading-tight: 0.95;
-    --tp-leading-snug: 1.12;
-    --tp-leading-body: 1.62;
+    --tp-leading-tight: 0.98;
+    --tp-leading-snug: 1.08;
+    --tp-leading-body: 1.66;
 
-    --tp-track-display: -0.025em;
-    --tp-track-eyebrow: 0.22em;
+    /* Bodoni ne demande pas le resserrement que réclamait Syne : ses chasses
+       sont déjà étroites et ses approches justes. Trop d'approche négative
+       ferait toucher les empattements. */
+    --tp-track-display: -0.012em;
+    --tp-track-eyebrow: 0.2em;
 
     /* --- Rythme ----------------------------------------------------------- */
     --tp-gutter: clamp(1.25rem, 5vw, 4rem);
     --tp-shell: 90rem;
-    --tp-measure: 62ch;
+    --tp-measure: 64ch;
     --tp-scene-y: clamp(4.5rem, 11vw, 10.5rem);
     --tp-gap-xs: clamp(0.5rem, 1vw, 0.75rem);
     --tp-gap-sm: clamp(0.75rem, 1.6vw, 1.25rem);
@@ -108,8 +158,6 @@
 
     /* --- Contrôles -------------------------------------------------------- */
     --tp-hit: 2.75rem; /* 44 px — cible tactile minimale */
-    /* Hauteur de la barre flottante. Toutes les têtes de page la réservent :
-       aucun contenu ne peut passer dessous. */
     --tp-header-h: 4.5rem;
     --tp-radius: 0;
     --tp-radius-soft: 2px;
@@ -122,12 +170,49 @@
     --tp-speed: 460ms;
     --tp-speed-slow: 900ms;
 
+    /* --- Budget d'effets -------------------------------------------------
+       `1` = les effets coûteux sont permis, `0` = ils sont coupés. Un seul
+       nombre, lu par toutes les scènes : le budget se règle à un endroit, et
+       les media queries qui le fixent sont juste en dessous. C'est ce qui
+       permet de retirer flou et vitre sur mobile sans disperser vingt règles
+       dans quatre feuilles. */
+    --tp-fx: 1;
+
     /* --- Obliquité de marque ---------------------------------------------
        Le plan de toiture du monogramme descend de 92 pour 72 : c'est le seul
        angle du site. Toutes les lames, les masques et les transitions de scène
        s'y conforment, ce qui donne à l'ensemble sa signature géométrique. */
     --tp-rake: 38.06deg; /* atan(72 / 92) */
     --tp-rake-x: 0.7826; /* 72 / 92 */
+  }
+
+  /* --- Arabe -------------------------------------------------------------
+     Trois réglages, et pas un de plus — mais aucun n'est facultatif.
+
+     1. L'INTERLETTRAGE PASSE À ZÉRO. En écriture arabe, les lettres d'un mot
+        sont LIÉES : espacer les caractères ne les aère pas, cela COUPE le mot
+        en morceaux. `--tp-track-eyebrow: 0.2em`, parfait sur un sur-titre
+        latin en capitales, rendrait un sur-titre arabe illisible.
+
+     2. L'INTERLIGNE MONTE. L'arabe empile des signes au-dessus et au-dessous
+        de la ligne de base; l'interligne du latin les fait se heurter.
+
+     3. LA FAMILLE DE TITRE CHANGE. Amiri passe devant, mais Bodoni reste
+        derrière elle : un mot latin dans un titre arabe — « Tunisie Pergola »,
+        « WhatsApp » — retombe sur une didone, pas sur la police par défaut du
+        système. Les deux ont le même contraste; la ligne reste homogène. */
+  :root:lang(ar) {
+    --tp-font-display: 'Amiri', 'Bodoni Moda Variable', 'Times New Roman', serif;
+    --tp-track-display: 0;
+    --tp-track-eyebrow: 0;
+    --tp-leading-tight: 1.28;
+    --tp-leading-snug: 1.38;
+    --tp-leading-body: 1.9;
+    /* Amiri porte une hauteur d'x plus basse que Bodoni : à corps égal le
+       titre arabe paraît plus petit. Le corps monte donc d'un cran. */
+    --tp-headline: clamp(2.1rem, 1.3rem + 4vw, 4.9rem);
+    --tp-monument: clamp(2.6rem, 1.4rem + 6vw, 7.2rem);
+    --tp-manifesto: clamp(2.4rem, 1.4rem + 5vw, 6.4rem);
   }
 
   /* --- Progression de scène ----------------------------------------------
@@ -157,19 +242,18 @@
      `color-scheme` est déclaré ici parce qu'il ne concerne pas nos composants
      mais tout ce que le NAVIGATEUR dessine lui-même à l'intérieur de la scène :
      le menu déroulant d'un `<select>`, la barre de défilement d'une zone de
-     texte, la poignée de redimensionnement, le remplissage automatique, les
-     sélecteurs de date. Sans lui, ces éléments restent clairs au milieu d'une
-     scène sombre — et le menu d'un `<select>` devient illisible. */
+     texte, la poignée de redimensionnement, le remplissage automatique. */
   .tp-dark {
     color-scheme: dark;
     --tp-surface: var(--tp-anthracite);
     --tp-surface-raised: var(--tp-anthracite-field);
     --tp-text: var(--tp-ivory);
     --tp-text-soft: var(--tp-light-soft);
-    --tp-accent: var(--tp-copper);
-    --tp-accent-display: var(--tp-copper);
-    --tp-line: color-mix(in srgb, var(--tp-ivory) 18%, transparent);
-    --tp-line-strong: color-mix(in srgb, var(--tp-ivory) 38%, transparent);
+    --tp-accent: var(--tp-copper-glow);
+    --tp-accent-display: var(--tp-copper-light);
+    --tp-line: color-mix(in srgb, var(--tp-ivory) 20%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-ivory) 42%, transparent);
+    --tp-focus: var(--tp-copper-glow);
 
     color: var(--tp-text);
     background-color: var(--tp-surface);
@@ -183,8 +267,9 @@
     --tp-text-soft: var(--tp-ink-soft);
     --tp-accent: var(--tp-copper-ink);
     --tp-accent-display: var(--tp-copper);
-    --tp-line: color-mix(in srgb, var(--tp-anthracite) 16%, transparent);
-    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 34%, transparent);
+    --tp-line: color-mix(in srgb, var(--tp-anthracite) 20%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-anthracite) 40%, transparent);
+    --tp-focus: var(--tp-copper-ink);
 
     color: var(--tp-text);
     background-color: var(--tp-surface);
@@ -193,6 +278,30 @@
   @media (min-width: 62rem) {
     :root {
       --tp-header-h: 5.25rem;
+    }
+  }
+
+  /* --- Où le budget d'effets tombe à zéro ---------------------------------
+     Trois cas, tous mesurés plutôt que devinés :
+
+       • pointeur grossier (téléphone, tablette) — c'est le profil où le flou
+         lié au défilement coûtait le plus cher, et celui de la vidéo envoyée
+         par le client;
+       • fenêtre étroite — les scènes s'y dépinglent de toute façon, les effets
+         n'ont plus rien à mettre en scène;
+       • réduction de mouvement — la demande est explicite.
+
+     Deux écritures selon ce que l'effet permet. Un effet CHIFFRÉ — rayon de
+     flou, opacité d'un voile, amplitude d'une parallaxe — se multiplie par
+     `--tp-fx` et tombe de lui-même à zéro. Un effet qui ne se chiffre pas —
+     `backdrop-filter`, qui crée une racine de composition même à 0 px — se
+     déclare dans la requête INVERSE, notée `@media (hover: hover) and
+     (min-width: 62rem)` là où elle apparaît. Les deux formes tombent
+     ensemble : c'est le même seuil, écrit deux fois parce que CSS ne sait pas
+     nommer une condition. */
+  @media (hover: none), (max-width: 61.99rem), (prefers-reduced-motion: reduce) {
+    :root {
+      --tp-fx: 0;
     }
   }
 

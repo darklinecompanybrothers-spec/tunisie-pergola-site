@@ -2,6 +2,8 @@
 ordre: 38
 legende: 'Toile repliée en attente, sous une corniche lumineuse.'
 alt: 'Couverture en toile sombre repliée le long de son rail sous une corniche lumineuse, écran enroulable descendu sur le côté droit.'
+legendeAr: 'قماش مطوي في الانتظار، تحت إفريز مضاء.'
+altAr: 'تغطية بقماش داكن مطوي على امتداد سكّته تحت إفريز مضاء، وشاشة قابلة للفّ منزلة على اليمين.'
 photo: ../../assets/photos/derived/toile-repliee-corniche-lumineuse.jpg
 categories: ['details']
 services: ['pergolas']

@@ -2,6 +2,8 @@
 ordre: 13
 legende: 'Pergola à lames claires éclairée de nuit devant une pièce de vie entièrement vitrée.'
 alt: 'Pergola à lames claires avec éclairage périphérique, de nuit, devant une pièce de vie vitrée et éclairée, gazon synthétique au sol.'
+legendeAr: 'برغولا بشرائح فاتحة مضاءة ليلًا أمام غرفة معيشة مزجّجة بالكامل.'
+altAr: 'برغولا بشرائح فاتحة بإنارة محيطية، ليلًا، أمام غرفة معيشة مزجّجة ومضاءة، وعشب صناعي على الأرض.'
 photo: ../../assets/photos/derived/pergola-lames-claires-nuit-baies.jpg
 categories: ['realisations']
 services: ['pergolas']

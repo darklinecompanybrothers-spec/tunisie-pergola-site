@@ -2,6 +2,8 @@
 ordre: 23
 legende: 'Toiture à lames aspect bois vue depuis l’étage supérieur.'
 alt: 'Toiture à lames aspect bois vue de dessus depuis un étage, montrant l’alignement des lames et les bâtiments voisins à l’arrière-plan.'
+legendeAr: 'سقف بشرائح بمظهر الخشب منظور من الطابق الأعلى.'
+altAr: 'سقف بشرائح بمظهر الخشب منظور من الأعلى من طابق، يُظهر انتظام الشرائح والمباني المجاورة في الخلفية.'
 photo: ../../assets/photos/derived/toiture-lames-bois-vue-dessus.jpg
 categories: ['realisations', 'details']
 services: ['pergolas']

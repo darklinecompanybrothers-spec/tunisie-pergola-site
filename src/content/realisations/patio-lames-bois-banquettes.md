@@ -2,6 +2,8 @@
 ordre: 7
 legende: 'Patio fermé de murs blancs, couvert par une structure sombre à lames aspect bois, avec banquettes maçonnées.'
 alt: 'Patio aux murs blancs couvert d’une structure sombre à lames aspect bois, banquettes maçonnées plantées en bordure et sol en lames de bois.'
+legendeAr: 'فناء مغلق بجدران بيضاء، مغطّى بهيكل داكن بشرائح بمظهر الخشب، مع مقاعد مبنية.'
+altAr: 'فناء بجدران بيضاء مغطّى بهيكل داكن بشرائح بمظهر الخشب، ومقاعد مبنية مغروسة على الحواف وأرضية بألواح خشب.'
 photo: ../../assets/photos/derived/patio-lames-bois-banquettes.jpg
 categories: ['realisations']
 services: ['pergolas']

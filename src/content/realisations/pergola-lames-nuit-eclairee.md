@@ -2,6 +2,8 @@
 ordre: 11
 legende: 'Pergola à lames claires éclairée de nuit, en limite d’une pièce de vie vitrée.'
 alt: 'Pergola à lames claires éclairée par en dessous à la tombée de la nuit, adossée à une maison dont les baies vitrées sont allumées.'
+legendeAr: 'برغولا بشرائح فاتحة مضاءة ليلًا، على حدّ غرفة معيشة مزجّجة.'
+altAr: 'برغولا بشرائح فاتحة مضاءة من الأسفل عند حلول الليل، ملاصقة لمنزل نوافذه الزجاجية مضاءة.'
 photo: ../../assets/photos/derived/pergola-lames-nuit-eclairee.jpg
 categories: ['realisations']
 services: ['pergolas']

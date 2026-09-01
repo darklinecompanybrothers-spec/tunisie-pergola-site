@@ -2,6 +2,8 @@
 ordre: 52
 legende: 'Pose d’une structure claire au-dessus d’une terrasse, dans un jardin planté.'
 alt: 'Pose d’une structure claire au-dessus d’une longue terrasse, ouvriers sur la toiture et sur une échelle, palmiers et transats sur la pelouse.'
+legendeAr: 'تركيب هيكل فاتح فوق شرفة، في حديقة مغروسة.'
+altAr: 'تركيب هيكل فاتح فوق شرفة طويلة، وعمّال على السقف وعلى سلّم، ونخيل وكراسي استلقاء على العشب.'
 photo: ../../assets/photos/derived/pose-structure-claire-jardin-hotel.jpg
 categories: ['chantiers']
 services: ['pergolas']

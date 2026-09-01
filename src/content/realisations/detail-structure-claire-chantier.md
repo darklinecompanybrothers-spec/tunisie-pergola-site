@@ -2,6 +2,8 @@
 ordre: 48
 legende: 'Détail sous une grande structure claire, chantier en cours.'
 alt: 'Détail sous une grande structure claire à lames, échelle et matériel de chantier visibles au sol.'
+legendeAr: 'تفصيل تحت هيكل فاتح كبير، والورشة جارية.'
+altAr: 'تفصيل تحت هيكل فاتح كبير بشرائح، مع سلّم ومعدّات ورشة ظاهرة على الأرض.'
 photo: ../../assets/photos/derived/detail-structure-claire-chantier.jpg
 categories: ['chantiers', 'details']
 services: ['pergolas']

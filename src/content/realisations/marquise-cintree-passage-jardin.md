@@ -2,6 +2,8 @@
 ordre: 39
 legende: 'Marquise cintrée fixée en façade au-dessus d’un passage de jardin.'
 alt: 'Marquise cintrée translucide fixée en façade au-dessus d’un passage dallé, jardin et pelouse de part et d’autre.'
+legendeAr: 'سقيفة مقوّسة مثبّتة على الواجهة فوق ممرّ حديقة.'
+altAr: 'سقيفة مقوّسة شفّافة مثبّتة على الواجهة فوق ممرّ مبلّط، وحديقة وعشب على الجانبين.'
 photo: ../../assets/photos/derived/marquise-cintree-passage-jardin.jpg
 categories: ['realisations']
 services: ['abris']

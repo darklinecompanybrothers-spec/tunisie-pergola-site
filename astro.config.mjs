@@ -29,7 +29,18 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes('/404'),
       changefreq: 'monthly',
-      lastmod: new Date(SITE.lastReviewed)
+      lastmod: new Date(SITE.lastReviewed),
+      /**
+       * Sitemap bilingue. L'intégration déduit la langue du préfixe de chemin
+       * et écrit, pour chaque URL, les balises `xhtml:link` vers son
+       * équivalent dans l'autre langue. Les `hreflang` du sitemap et ceux du
+       * `<head>` viennent donc de la même règle de préfixe : ils ne peuvent
+       * pas diverger.
+       */
+      i18n: {
+        defaultLocale: 'fr',
+        locales: { fr: 'fr-TN', ar: 'ar-TN' }
+      }
     })
   ],
   devToolbar: { enabled: false },

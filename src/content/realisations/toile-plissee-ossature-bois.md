@@ -2,6 +2,8 @@
 ordre: 33
 legende: 'Toile plissée tendue sur une ossature, vue par en dessous.'
 alt: 'Toile beige plissée en accordéon tendue sur une ossature, vue par en dessous sur fond de ciel bleu et de nuages.'
+legendeAr: 'قماش مطوي مشدود على هيكل، منظور من الأسفل.'
+altAr: 'قماش بيج مطوي كالأكورديون مشدود على هيكل، منظور من الأسفل على خلفية سماء زرقاء وغيوم.'
 photo: ../../assets/photos/derived/toile-plissee-ossature-bois.jpg
 categories: ['realisations', 'details']
 services: ['pergolas']

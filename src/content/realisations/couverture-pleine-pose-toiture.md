@@ -2,6 +2,8 @@
 ordre: 41
 legende: 'Pose d’une couverture pleine sur une ossature, en toiture.'
 alt: 'Deux personnes posant des panneaux de couverture nervurés sur une ossature métallique en toiture, ville à l’horizon.'
+legendeAr: 'تركيب تغطية كاملة على هيكل، فوق السطح.'
+altAr: 'شخصان يركّبان ألواح تغطية مضلّعة على هيكل معدني فوق السطح، والمدينة في الأفق.'
 photo: ../../assets/photos/derived/couverture-pleine-pose-toiture.jpg
 categories: ['chantiers']
 services: ['abris']

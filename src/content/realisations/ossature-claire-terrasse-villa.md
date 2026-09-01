@@ -2,6 +2,8 @@
 ordre: 49
 legende: 'Ossature claire posée au-dessus de la terrasse d’une villa.'
 alt: 'Ossature claire à lames posée au-dessus de la terrasse d’une villa, échelles en place et ciel dégagé.'
+legendeAr: 'هيكل فاتح مركّب فوق شرفة فيلا.'
+altAr: 'هيكل فاتح بشرائح مركّب فوق شرفة فيلا، وسلالم في مكانها وسماء صافية.'
 photo: ../../assets/photos/derived/ossature-claire-terrasse-villa.jpg
 categories: ['chantiers']
 services: ['pergolas']

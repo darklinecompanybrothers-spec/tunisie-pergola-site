@@ -1,0 +1,859 @@
+@layer components {
+  /* ==========================================================================
+     LE CATALOGUE
+     ==========================================================================
+     Onze familles, cinquante ouvrages, et pas une photographie pour huit
+     d'entre elles. Le vocabulaire graphique de cette couche est donc celui du
+     dessin d'exécution : traits d'épaisseur unique, numéros, cotes, filets.
+     C'est le langage naturel d'un métier qui commence par un relevé — et il a
+     l'avantage d'être honnête, puisqu'un dessin ne prétend jamais montrer un
+     chantier livré.
+
+     Tout est en propriétés logiques : cette couche se retourne entière en
+     arabe sans une règle de plus.
+     ========================================================================== */
+
+  /* --- L'élévation dessinée ---------------------------------------------- */
+  .tp-motif {
+    inline-size: 100%;
+    block-size: auto;
+    color: var(--tp-text);
+    overflow: visible;
+  }
+
+  /* Deuxième encre : les pièces qui font la spécificité de la famille. */
+  .tp-motif__a {
+    stroke: var(--tp-accent-display);
+  }
+
+  /* Le trait se dessine quand la planche entre dans le champ. C'est une
+     animation de `stroke-dashoffset` sur quelques centaines d'octets de SVG —
+     sans commune mesure avec le flou qu'elle remplace. Elle est gardée par
+     `--tp-fx` : sur mobile, le dessin est simplement là, entier. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) and (hover: hover) and (min-width: 62rem) {
+      .tp-board__motif path,
+      .tp-board__motif circle,
+      .tp-index-list__motif path,
+      .tp-index-list__motif circle {
+        animation: tp-draw var(--tp-ease-blade) both;
+        animation-timeline: view();
+        animation-range: entry 10% entry 60%;
+      }
+    }
+  }
+
+  @keyframes tp-draw {
+    from {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      opacity: 0.25;
+    }
+    to {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  }
+
+  /* ==========================================================================
+     La planche — les onze familles en cases numérotées
+     ========================================================================== */
+  .tp-board__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* Le fond affleure entre les cases : c'est LUI qui dessine la trame, et
+       aucune bordure ne se dédouble aux jonctions. */
+    background-color: var(--tp-line);
+    border: 1px solid var(--tp-line);
+  }
+
+  .tp-board__grid--short {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  }
+
+  .tp-board__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'n motif'
+      'nom nom'
+      'count count';
+    align-items: start;
+    gap: 0.4rem 1rem;
+    block-size: 100%;
+    padding: clamp(1rem, 2.2vw, 1.5rem);
+    text-decoration: none;
+    color: var(--tp-text);
+    background-color: var(--tp-surface);
+    transition:
+      background-color var(--tp-speed-fast) var(--tp-ease),
+      color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-board__n {
+    grid-area: n;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--tp-accent);
+    letter-spacing: 0.08em;
+  }
+
+  .tp-board__motif {
+    grid-area: motif;
+    inline-size: clamp(4.5rem, 9vw, 6.5rem);
+    justify-self: end;
+    color: var(--tp-line-strong);
+    transition: color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-board__nom {
+    grid-area: nom;
+    margin-block-start: clamp(1.5rem, 4vw, 2.75rem);
+    font-family: var(--tp-font-text);
+    font-size: var(--tp-text-md);
+    font-weight: 600;
+    line-height: 1.22;
+    text-wrap: balance;
+  }
+
+  .tp-board__count {
+    grid-area: count;
+    font-size: var(--tp-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tp-text-soft);
+  }
+
+  :root:lang(ar) .tp-board__count {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* Le filet cuivre qui balaie la case, à l'obliquité de marque. Il part du
+     bord de lecture — donc de la droite en arabe, sans règle de plus. */
+  .tp-board__card::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 2px;
+    background-color: var(--tp-accent-display);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale var(--tp-speed) var(--tp-ease-blade);
+  }
+
+  [dir='rtl'] .tp-board__card::after {
+    transform-origin: right;
+  }
+
+  .tp-board__card:hover,
+  .tp-board__card:focus-visible {
+    background-color: var(--tp-surface-raised);
+  }
+
+  .tp-board__card:hover::after,
+  .tp-board__card:focus-visible::after {
+    scale: 1 1;
+  }
+
+  .tp-board__card:hover .tp-board__motif,
+  .tp-board__card:focus-visible .tp-board__motif {
+    color: var(--tp-text);
+  }
+
+  .tp-board__card--all .tp-board__nom {
+    color: var(--tp-accent);
+  }
+
+  /* ==========================================================================
+     La liste des ouvrages d'une famille
+     ==========================================================================
+     Un ouvrage n'est pas une carte : c'est une ligne d'un bordereau. Le numéro
+     est celui du relevé client — il ne recommence pas à 1 sur chaque page,
+     parce qu'il désigne l'ouvrage dans la liste des cinquante, et cette
+     continuité est une information. */
+  .tp-works {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: 0 var(--tp-gap-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .tp-works__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding-block: 0.85rem;
+    border-block-start: 1px solid var(--tp-line);
+  }
+
+  .tp-works__n {
+    flex: none;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--tp-accent);
+    direction: ltr;
+  }
+
+  .tp-works__nom {
+    font-size: var(--tp-text-base);
+    line-height: 1.35;
+  }
+
+  /* ==========================================================================
+     Le hub — onze rangées, cinquante ouvrages
+     ========================================================================== */
+  .tp-index-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tp-index-list__row {
+    display: grid;
+    gap: var(--tp-gap-sm);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+    border-block-start: 1px solid var(--tp-line);
+  }
+
+  .tp-index-list__row:last-child {
+    border-block-end: 1px solid var(--tp-line);
+  }
+
+  @media (min-width: 60rem) {
+    .tp-index-list__row {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: var(--tp-gap-lg);
+      align-items: start;
+    }
+
+    .tp-index-list__head {
+      grid-row: span 2;
+    }
+  }
+
+  .tp-index-list__head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.75rem 1.1rem;
+  }
+
+  .tp-index-list__n {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--tp-accent);
+    letter-spacing: 0.08em;
+  }
+
+  .tp-index-list__motif {
+    inline-size: clamp(3.75rem, 7vw, 5.25rem);
+    justify-self: end;
+    color: var(--tp-line-strong);
+  }
+
+  .tp-index-list__nom {
+    grid-column: 1 / -1;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-xl);
+    font-weight: 600;
+    line-height: 1.06;
+    letter-spacing: var(--tp-track-display);
+  }
+
+  :root:lang(ar) .tp-index-list__nom {
+    line-height: 1.34;
+  }
+
+  .tp-index-list__nom a {
+    text-decoration: none;
+    background-image: linear-gradient(var(--tp-accent-display), var(--tp-accent-display));
+    background-repeat: no-repeat;
+    background-size: 0 2px;
+    background-position: 0 100%;
+    transition: background-size var(--tp-speed) var(--tp-ease-blade);
+  }
+
+  [dir='rtl'] .tp-index-list__nom a {
+    background-position: 100% 100%;
+  }
+
+  .tp-index-list__nom a:hover,
+  .tp-index-list__nom a:focus-visible {
+    background-size: 100% 2px;
+  }
+
+  .tp-index-list__lede {
+    color: var(--tp-text-soft);
+    max-width: 58ch;
+  }
+
+  .tp-index-list__works {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--tp-text-sm);
+    color: var(--tp-text);
+  }
+
+  /* Les ouvrages se lisent en enfilade, séparés par un filet cuivre : une
+     énumération, pas une liste à puces. Le séparateur est en `::after` sur
+     tous sauf le dernier, ce qui reste correct dans les deux directions. */
+  .tp-index-list__works li {
+    display: flex;
+    align-items: center;
+  }
+
+  .tp-index-list__works li:not(:last-child)::after {
+    content: '';
+    inline-size: 1px;
+    block-size: 0.9em;
+    margin-inline: 0.75rem;
+    background-color: var(--tp-accent-display);
+    opacity: 0.8;
+  }
+
+  /* ==========================================================================
+     Usages — une liste de contextes, pas des étiquettes décoratives
+     ========================================================================== */
+  .tp-tags {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tp-tags li {
+    padding-block: 0.55rem;
+    border-block-start: 1px solid var(--tp-line);
+    font-size: var(--tp-text-sm);
+    color: var(--tp-text-soft);
+  }
+
+  .tp-tags li:first-child {
+    border-block-start-color: var(--tp-line-strong);
+  }
+
+  /* ==========================================================================
+     Questions et réponses
+     ========================================================================== */
+  .tp-qa {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    max-width: var(--tp-measure);
+  }
+
+  .tp-qa > div {
+    padding-block: clamp(1.1rem, 2.5vw, 1.75rem);
+    border-block-start: 1px solid var(--tp-line);
+  }
+
+  .tp-qa > div:last-child {
+    border-block-end: 1px solid var(--tp-line);
+  }
+
+  .tp-qa dt {
+    font-family: var(--tp-font-text);
+    font-size: var(--tp-text-md);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-block-end: 0.5em;
+    color: var(--tp-text);
+  }
+
+  .tp-qa dd {
+    margin: 0;
+    color: var(--tp-text-soft);
+  }
+
+  /* ==========================================================================
+     Le plan de la famille — l'élévation en grand, dans sa scène
+     ========================================================================== */
+  .tp-fam__plan {
+    inline-size: min(100%, 26rem);
+    margin-inline-start: auto;
+    color: var(--tp-line-strong);
+  }
+
+  /* Le chiffre monumental du hub : cinquante, à la taille d'une enseigne. */
+  .tp-numeral {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-numeral);
+    font-weight: 500;
+    line-height: 0.82;
+    letter-spacing: -0.03em;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--tp-accent-display);
+    direction: ltr;
+  }
+
+  /* ==========================================================================
+     Le panneau des familles, déployé depuis la barre
+     ==========================================================================
+     Onze entrées ne tiennent pas dans une barre horizontale. Elles vivent donc
+     dans un `<details>` natif : il s'ouvre au clavier et à la souris sans une
+     ligne de JavaScript, et son état est correctement exposé. Le script
+     n'ajoute que la fermeture par Échap et par clic extérieur.
+     ========================================================================== */
+  .tp-mega {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 100%;
+    z-index: 70;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    background-color: var(--tp-anthracite-raised);
+    border-block: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+    box-shadow: 0 32px 64px -32px rgb(0 0 0 / 0.75);
+    color: var(--tp-ivory);
+  }
+
+  /* Le panneau est plus large que son parent : il reprend la largeur de la
+     fenêtre, ce que `position: fixed` obtient sans dépendre d'un ancêtre. */
+  @media (min-width: 62rem) {
+    .tp-nav__group[open] > .tp-mega {
+      position: fixed;
+      inset-block-start: var(--tp-header-h);
+    }
+  }
+
+  .tp-mega__inner {
+    display: grid;
+    gap: var(--tp-gap-md);
+  }
+
+  @media (min-width: 72rem) {
+    .tp-mega__inner {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      gap: var(--tp-gap-lg);
+      align-items: start;
+    }
+  }
+
+  .tp-mega__text {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-lg);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: var(--tp-track-display);
+    max-width: 20ch;
+  }
+
+  :root:lang(ar) .tp-mega__text {
+    line-height: 1.36;
+  }
+
+  .tp-mega__lede {
+    display: grid;
+    gap: var(--tp-gap-sm);
+    justify-items: start;
+  }
+
+  .tp-mega__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+  }
+
+  .tp-mega__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'n motif'
+      'nom nom';
+    gap: 0.3rem 0.75rem;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    min-block-size: 5.5rem;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    background-color: var(--tp-anthracite-raised);
+    transition: background-color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-mega__item:hover,
+  .tp-mega__item:focus-visible,
+  .tp-mega__item[aria-current='page'] {
+    background-color: color-mix(in srgb, var(--tp-copper) 22%, var(--tp-anthracite-raised));
+  }
+
+  .tp-mega__n {
+    grid-area: n;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--tp-copper-glow);
+    letter-spacing: 0.08em;
+  }
+
+  .tp-mega__motif {
+    grid-area: motif;
+    inline-size: 2.75rem;
+    justify-self: end;
+    color: color-mix(in srgb, var(--tp-ivory) 42%, transparent);
+  }
+
+  .tp-mega__item:hover .tp-mega__motif,
+  .tp-mega__item:focus-visible .tp-mega__motif {
+    color: var(--tp-ivory);
+  }
+
+  .tp-mega__nom {
+    grid-area: nom;
+    align-self: end;
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* ==========================================================================
+     Le sélecteur de langue
+     ==========================================================================
+     Un LIEN vers la page équivalente, jamais un bouton qui recharge : il doit
+     être suivable par un robot d'indexation, et il l'est. Aucune redirection
+     automatique n'existe nulle part sur le site.
+     ========================================================================== */
+  .tp-lang {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+  }
+
+  .tp-lang__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--tp-hit);
+    min-inline-size: var(--tp-hit);
+    padding-inline: 0.7rem;
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 32%, transparent);
+    transition:
+      border-color var(--tp-speed-fast) var(--tp-ease),
+      color var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  .tp-lang__link:hover,
+  .tp-lang__link:focus-visible {
+    border-color: var(--tp-copper-glow);
+    color: var(--tp-copper-glow);
+  }
+
+  /* ==========================================================================
+     Menu mobile — les familles d'abord
+     ========================================================================== */
+  .tp-menu__shell {
+    display: grid;
+    gap: var(--tp-gap-md);
+    align-content: start;
+    padding-block-end: var(--tp-gap-lg);
+  }
+
+  .tp-menu__families {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+    gap: 1px;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    background-color: color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tp-ivory) 14%, transparent);
+  }
+
+  .tp-menu__families a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'n motif'
+      'nom nom';
+    gap: 0.25rem 0.6rem;
+    align-items: center;
+    block-size: 100%;
+    padding: 0.7rem 0.85rem;
+    min-block-size: 5rem;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    background-color: var(--tp-anthracite);
+    font-size: var(--tp-text-sm);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .tp-menu__families a[aria-current='page'] {
+    background-color: color-mix(in srgb, var(--tp-copper) 24%, var(--tp-anthracite));
+  }
+
+  .tp-menu__families a > span:last-child {
+    grid-area: nom;
+    align-self: end;
+  }
+
+  .tp-menu__n {
+    grid-area: n;
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-xs);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--tp-copper-glow);
+  }
+
+  .tp-menu__motif {
+    grid-area: motif;
+    inline-size: 2.25rem;
+    justify-self: end;
+    color: color-mix(in srgb, var(--tp-ivory) 40%, transparent);
+  }
+
+  .tp-menu__lang {
+    display: flex;
+    gap: 0.75rem;
+    margin-block-start: 0.5rem;
+  }
+
+  .tp-menu__lang a {
+    color: var(--tp-copper-glow);
+    font-weight: 700;
+  }
+
+  /* ==========================================================================
+     Pied de page — onze familles sur deux colonnes
+     ========================================================================== */
+  @media (min-width: 34rem) {
+    .tp-footer__list--split {
+      columns: 2;
+      column-gap: var(--tp-gap-md);
+    }
+
+    .tp-footer__list--split li {
+      break-inside: avoid;
+    }
+  }
+
+  /* ==========================================================================
+     Tête de page — la trame « forge », et l'élévation en filigrane
+     ==========================================================================
+     Les familles du fer travaillé n'ont ni les lames d'une pergola ni la
+     résille d'une verrière. Leur trame est une braise sourde : deux lueurs
+     très diffuses posées loin derrière, et une limaille de traits fins. Deux
+     gradients, aucune image, aucun filtre.
+     ========================================================================== */
+  .tp-pagehead--forge .tp-pagehead__weave {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        60% 45% at 18% 12%,
+        color-mix(in srgb, var(--tp-copper) 26%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        45% 40% at 88% 82%,
+        color-mix(in srgb, var(--tp-sea) 16%, transparent) 0%,
+        transparent 72%
+      ),
+      repeating-linear-gradient(
+        52deg,
+        color-mix(in srgb, var(--tp-ivory) 7%, transparent) 0 1px,
+        transparent 1px 14px
+      );
+  }
+
+  /* Une famille sans photographie ouvre sur son élévation, posée très en
+     retrait : elle occupe le champ sans jamais concurrencer le titre. */
+  .tp-pagehead__drawing {
+    position: absolute;
+    inset-block-start: 12%;
+    inset-inline-end: -6%;
+    inline-size: min(62%, 46rem);
+    color: color-mix(in srgb, var(--tp-ivory) 16%, transparent);
+    pointer-events: none;
+  }
+
+  .tp-pagehead__drawing .tp-motif__a {
+    stroke: color-mix(in srgb, var(--tp-copper) 55%, transparent);
+  }
+
+  @media (max-width: 47.99rem) {
+    .tp-pagehead__drawing {
+      inset-block-start: 8%;
+      inline-size: 88%;
+      inset-inline-end: -14%;
+    }
+  }
+
+  /* Une tête de page dessinée n'a pas de photographie derrière son titre : le
+     texte n'a donc pas besoin du voile prévu pour la photographie, et le fond
+     peut descendre d'un cran pour que le dessin se détache. */
+  .tp-pagehead--drawn {
+    background-color: var(--tp-anthracite-deep);
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     ARABE — ce que les propriétés logiques ne savent pas retourner
+     ==========================================================================
+     Presque tout le site est écrit en propriétés logiques : la mise en page se
+     retourne d'elle-même, sans une ligne de plus. Restent les GESTES, qui ont
+     un sens physique que la logique ne devine pas — un trait qui balaie, une
+     piste qui avance, une pointe qui montre la suite. Ils sont tous ici, et
+     nulle part ailleurs.
+
+     DEUX CHOSES NE SONT DÉLIBÉRÉMENT PAS RETOURNÉES :
+       • le monogramme et le mot-symbole. Un logo miroité n'est plus le logo.
+       • l'obliquité 72/92 — les lames, les coutures, la transition entre
+         pages. C'est la signature géométrique de la marque, relevée sur le
+         plan de toiture du monogramme; la retourner en arabe donnerait deux
+         identités pour une seule entreprise.
+     ========================================================================== */
+
+  /* Les filets qui se déploient partent du bord où commence la lecture. */
+  [dir='rtl'] .tp-nav__link::after,
+  [dir='rtl'] .tp-menu__list a::after,
+  [dir='rtl'] .tp-btn--quiet::after,
+  [dir='rtl'] .tp-zones li::after,
+  [dir='rtl'] .tp-footer__list a::after,
+  [dir='rtl'] .tp-footer address a::after,
+  [dir='rtl'] .tp-sign__link::after,
+  [dir='rtl'] .tp-channel::after,
+  [dir='rtl'] .tp-btn__blades > span {
+    transform-origin: 100% 50%;
+  }
+
+  /* La pointe du bouton montre la suite de la lecture, donc la gauche. */
+  [dir='rtl'] .tp-btn__arrow {
+    scale: -1 1;
+  }
+
+  /* La bande horizontale du déroulé avance dans le sens de la lecture. Le
+     `display: flex` a déjà placé le premier temps à droite; il ne reste qu'à
+     inverser le signe de la course. */
+  [dir='rtl'] .tp-story__track {
+    translate: calc(var(--tp-x) * var(--tp-story-steps) * 100%) 0;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     ARABE — deux réglages typographiques qui doivent gagner partout
+     ==========================================================================
+     Les deux règles ci-dessous sont volontairement écrites sur `*`. Leur
+     spécificité — `:root:lang(ar)` vaut deux pseudo-classes — passe devant
+     toutes les règles de composant du site, qui n'en portent qu'une classe.
+     C'est le seul moyen d'être certain qu'aucune valeur héritée d'une scène
+     latine ne survive dans la version arabe, sans réécrire quarante règles et
+     sans en oublier une le jour où l'on en ajoutera une quarante-et-unième.
+
+     1. INTERLETTRAGE À ZÉRO. En écriture arabe, les lettres d'un mot sont
+        LIÉES. Un `letter-spacing` — positif comme négatif — ne les aère ni ne
+        les resserre : il COUPE le mot en morceaux et casse les ligatures. Les
+        valeurs du site vont de -0,05 em à +0,22 em, toutes calibrées pour une
+        didone latine; aucune n'a de sens ici.
+
+     2. INTERLIGNE MINIMAL. Les titres latins descendent à 0,82 pour que deux
+        lignes de capitales se touchent presque. L'arabe empile des signes
+        au-dessus et au-dessous de la ligne de base : au même interligne, le
+        point d'un ن vient toucher la hampe du ل de la ligne suivante. Le
+        plancher est donc remonté à 1,25 — c'est le minimum sous lequel les
+        diacritiques d'Amiri commencent à se heurter.
+     ========================================================================== */
+  :root:lang(ar) *,
+  :root:lang(ar) *::before,
+  :root:lang(ar) *::after {
+    letter-spacing: normal;
+  }
+
+  :root:lang(ar) :is(h1, h2, h3, h4, .tp-hero__title, .tp-manifesto__title, .tp-story__lede, .tp-cta__title, .tp-flow__title h2, .tp-lost__code, .tp-story__titre, .tp-index-list__nom, .tp-mega__text, .tp-board__nom) {
+    line-height: 1.25;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     Le libellé du sélecteur de langue
+     ==========================================================================
+     Il est écrit dans la langue qu'il PROPOSE : « العربية » sur les pages
+     françaises, « Français » sur les pages arabes. C'est la bonne façon de
+     proposer une langue — mais cela pose sept caractères arabes à TROIS
+     endroits de chaque page française — barre, menu, pied de page, et sept caractères suffisent au navigateur pour
+     télécharger le sous-ensemble arabe de Readex Pro : 23 Ko, sur toutes les
+     pages françaises, pour un mot de menu.
+
+     Ces sept signes sont donc rendus par la fonte arabe du système. Le mot
+     reste parfaitement lisible, sa langue reste déclarée par `lang="ar"` — et
+     le sous-ensemble arabe n'est plus téléchargé que par les lecteurs qui
+     lisent réellement la version arabe.
+     ========================================================================== */
+  .tp-lang__link:lang(ar),
+  .tp-menu__lang a:lang(ar),
+  .tp-footer__list a:lang(ar) {
+    font-family: system-ui, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     La barre et le panneau sont des surfaces sombres SANS scène
+     ==========================================================================
+     `.tp-header` et `.tp-menu` flottent au-dessus de scènes claires comme
+     sombres : ils ne portent donc ni `.tp-dark` ni `.tp-light`, et héritent
+     des rôles de la RACINE, qui sont ceux d'une scène claire. Ils déclaraient
+     bien leur encre (`color: ivoire`) mais pas leurs rôles.
+
+     Conséquence mesurée le 1er septembre 2026 : le sur-titre du panneau des
+     familles prenait `--tp-accent` de la racine — le cuivre-encre #8F4F2C,
+     calibré pour l'ivoire — et l'affichait sur l'anthracite. 2,55:1. En dessous
+     de tout seuil, sur un élément de navigation.
+
+     Les rôles sombres sont donc déclarés ici explicitement. Tout ce que la
+     barre contiendra demain les héritera sans qu'on ait à y penser.
+     ========================================================================== */
+  .tp-header,
+  .tp-menu {
+    color-scheme: dark;
+    --tp-surface: var(--tp-anthracite);
+    --tp-surface-raised: var(--tp-anthracite-raised);
+    --tp-text: var(--tp-ivory);
+    --tp-text-soft: var(--tp-light-soft);
+    --tp-accent: var(--tp-copper-glow);
+    --tp-accent-display: var(--tp-copper-light);
+    --tp-line: color-mix(in srgb, var(--tp-ivory) 20%, transparent);
+    --tp-line-strong: color-mix(in srgb, var(--tp-ivory) 42%, transparent);
+    --tp-focus: var(--tp-copper-glow);
+  }
+}

@@ -26,7 +26,9 @@
   body {
     min-height: 100svh;
     /* Aucune scène ne peut créer de débordement horizontal, même quand un
-       titre surdimensionné déborde volontairement de sa colonne. */
+       titre surdimensionné déborde volontairement de sa colonne. En RTL, le
+       débordement se produirait de l'autre côté : `clip` les couvre tous deux,
+       ce que `hidden` ne ferait pas sans casser le `position: sticky`. */
     overflow-x: clip;
   }
 
@@ -91,39 +93,62 @@
 }
 
 @layer base {
-  /* --- Polices auto-hébergées, sous-ensemble latin ------------------------
-     Licences conservées dans `public/fonts/`. Deux fichiers variables, une
-     seule requête chacun, aucune graisse statique inutile. */
+  /* --- Polices auto-hébergées --------------------------------------------
+     Licences conservées dans `public/fonts/`. Trois fichiers, aucun appel
+     réseau vers un tiers, et des `unicode-range` qui font le tri tout seuls :
+     un lecteur français ne télécharge jamais Amiri, un lecteur arabe ne
+     télécharge Bodoni que si un mot latin apparaît dans un titre.
+
+     `font-display: swap` plutôt que `optional` : le texte doit s'afficher tout
+     de suite, et les deux fontes critiques de chaque langue sont préchargées
+     par `Seo.astro`, donc l'échange a lieu avant la première peinture dans
+     l'immense majorité des cas. */
+
+  /* Titres latins — didone à axe de graisse. */
   @font-face {
-    font-family: 'Syne Variable';
-    src: url('/fonts/syne-latin-wght-normal.woff2') format('woff2-variations');
-    font-weight: 400 800;
+    font-family: 'Bodoni Moda Variable';
+    src: url('/fonts/bodoni-moda-latin-wght-normal.woff2') format('woff2-variations');
+    font-weight: 400 900;
     font-style: normal;
     font-display: swap;
-    /* Métriques ajustées sur la police de secours pour que l'échange de
-       police ne déplace pas la mise en page (CLS). */
-    size-adjust: 100%;
-    ascent-override: 96%;
-    descent-override: 24%;
-    line-gap-override: 0%;
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-      U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-      U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+      U+FEFF, U+FFFD;
+  }
+
+  /* Titres arabes — naskh de haute tenue, même contraste que la didone. */
+  @font-face {
+    font-family: 'Amiri';
+    src: url('/fonts/amiri-arabic-400-normal.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1,
+      U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74,
+      U+FE76-FEFC;
+  }
+
+  /* Texte courant — la même famille pour les deux écritures. */
+  @font-face {
+    font-family: 'Readex Pro Variable';
+    src: url('/fonts/readex-pro-latin-wght-normal.woff2') format('woff2-variations');
+    font-weight: 160 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+      U+FEFF, U+FFFD;
   }
 
   @font-face {
-    font-family: 'Manrope Variable';
-    src: url('/fonts/manrope-latin-wght-normal.woff2') format('woff2-variations');
-    font-weight: 200 800;
+    font-family: 'Readex Pro Variable';
+    src: url('/fonts/readex-pro-arabic-wght-normal.woff2') format('woff2-variations');
+    font-weight: 160 700;
     font-style: normal;
     font-display: swap;
-    size-adjust: 100%;
-    ascent-override: 104%;
-    descent-override: 27%;
-    line-gap-override: 0%;
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-      U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-      U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1,
+      U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74,
+      U+FE76-FEFC;
   }
 
   body {
@@ -155,6 +180,18 @@
   h2 {
     font-size: var(--tp-text-2xl);
   }
+  /* Les deux niveaux inférieurs REVIENNENT au sans : une didone en petit corps
+     perd ses déliés à l'écran, et c'est précisément le reproche du client sur
+     la lisibilité. Le contraste de famille prend le relais du contraste de
+     taille — un H3 en sans gras se distingue nettement d'un H2 en didone. */
+  h3,
+  h4 {
+    font-family: var(--tp-font-text);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.32;
+  }
+
   h3 {
     font-size: var(--tp-text-lg);
   }
@@ -166,24 +203,29 @@
     text-wrap: pretty;
   }
 
-  /* Sur écran étroit, un mot français long — « indépendantes »,
-     « photographiées », « interlocuteur » — dépasse la colonne. La coupure
-     automatique produit une césure correcte (le document est en `lang="fr"`),
-     bien préférable à la coupure arbitraire de `overflow-wrap`. Les deux
-     titres monumentaux en sont exclus : leur échelle est calibrée pour tenir
-     sans césure jusqu'à 320 px. */
+  /* Sur écran étroit, un mot français long — « indépendantes », « ferronnerie »,
+     « interlocuteur » — dépasse la colonne. La coupure automatique produit une
+     césure correcte (le document est en `lang="fr"`), bien préférable à la
+     coupure arbitraire de `overflow-wrap`. Les titres monumentaux en sont
+     exclus : leur échelle est calibrée pour tenir sans césure jusqu'à 320 px.
+
+     L'arabe n'est jamais coupé : la césure n'existe pas dans cette écriture, et
+     un moteur qui l'appliquerait produirait des formes de lettres fausses. */
   @media (max-width: 48rem) {
-    h1,
-    h2,
-    h3 {
+    :root:lang(fr) :is(h1, h2, h3) {
       hyphens: auto;
     }
 
     .tp-hero__title,
     .tp-manifesto__title,
-    .tp-lost__code {
+    .tp-lost__code,
+    .tp-fam__stack {
       hyphens: manual;
     }
+  }
+
+  :root:lang(ar) :is(h1, h2, h3, p, li) {
+    hyphens: none;
   }
 
   strong {
@@ -191,11 +233,14 @@
   }
 
   /* --- Focus ------------------------------------------------------------
-     Un seul anneau, très visible, jamais masqué par un `overflow`. */
+     Un seul anneau, très visible, jamais masqué par un `overflow`. Il porte
+     désormais un second trait clair : sur une scène sombre comme sur une
+     photographie, un anneau cuivre seul pouvait se perdre. */
   :focus-visible {
     outline: 3px solid var(--tp-focus);
     outline-offset: 3px;
     border-radius: var(--tp-radius-soft);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--tp-anthracite) 55%, transparent);
   }
 
   /* Navigateurs sans `:focus-visible` : on garde un focus visible. */
@@ -234,8 +279,8 @@
     min-height: var(--tp-hit);
     display: inline-flex;
     align-items: center;
-    background-color: var(--tp-copper);
-    color: var(--tp-white);
+    background-color: var(--tp-copper-light);
+    color: var(--tp-anthracite);
     font-weight: 700;
     text-decoration: none;
     transition: translate var(--tp-speed-fast) var(--tp-ease);
@@ -244,6 +289,20 @@
   .tp-skip:focus-visible {
     translate: -50% 0;
     outline-offset: -3px;
+  }
+
+  /* --- Nombres et sens de lecture ----------------------------------------
+     Un numéro de téléphone, une adresse e-mail, une URL sont des séquences
+     LATINES. Placées dans un paragraphe arabe, l'algorithme bidirectionnel les
+     lit de gauche à droite — ce qui est correct — mais laisse leur ponctuation
+     de bord flotter du mauvais côté : « +216 58 233 020 » peut s'afficher
+     « 216 58 233 020+ ». `direction: ltr` sur un élément neutre règle le cas
+     une fois pour toutes, sans toucher au reste de la phrase. */
+  .tp-ltr,
+  [dir='rtl'] a[href^='tel:'],
+  [dir='rtl'] a[href^='mailto:'] {
+    direction: ltr;
+    unicode-bidi: isolate;
   }
 
   @media (prefers-reduced-motion: reduce) {

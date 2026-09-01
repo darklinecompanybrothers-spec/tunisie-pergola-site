@@ -2,6 +2,8 @@
 ordre: 47
 legende: 'Structure claire vue depuis un étage pendant le chantier.'
 alt: 'Structure claire à lames vue depuis un étage pendant le chantier, au-dessus d’une cour en travaux.'
+legendeAr: 'هيكل فاتح منظور من طابق علوي أثناء الورشة.'
+altAr: 'هيكل فاتح بشرائح منظور من طابق علوي أثناء الورشة، فوق فناء قيد الأشغال.'
 photo: ../../assets/photos/derived/structure-claire-vue-etage.jpg
 categories: ['chantiers']
 services: ['pergolas']

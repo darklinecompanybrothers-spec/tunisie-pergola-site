@@ -2,6 +2,8 @@
 ordre: 15
 legende: 'Salle couverte par un plafond à lames, éclairage bleu intégré et façade vitrée.'
 alt: 'Salle couverte par un plafond à lames sombres avec éclairage bleu intégré, sol clair éclairé en violet, plantes en bac et façade vitrée au fond.'
+legendeAr: 'قاعة مغطّاة بسقف من شرائح، بإنارة زرقاء مدمجة وواجهة زجاجية.'
+altAr: 'قاعة مغطّاة بسقف من شرائح داكنة بإنارة زرقاء مدمجة، وأرضية فاتحة مضاءة بالبنفسجي، ونباتات في أحواض وواجهة زجاجية في العمق.'
 photo: ../../assets/photos/derived/salle-couverte-lames-eclairage-bleu.jpg
 categories: ['realisations']
 services: ['pergolas']

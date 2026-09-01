@@ -2,6 +2,8 @@
 ordre: 31
 legende: 'Véranda à ossature sombre et baies coulissantes, coiffée d’une toiture à lames claires.'
 alt: 'Véranda à ossature sombre fermée par des baies coulissantes vitrées, toiture à lames claires, claustra de bois à l’intérieur et champ au fond.'
+legendeAr: 'شرفة مزجّجة بهيكل داكن ونوافذ منزلقة، يعلوها سقف بشرائح فاتحة.'
+altAr: 'شرفة مزجّجة بهيكل داكن مغلقة بنوافذ زجاجية منزلقة، وسقف بشرائح فاتحة، وحاجز خشبي في الداخل وحقل في العمق.'
 photo: ../../assets/photos/derived/veranda-ossature-sombre-baies-coulissantes.jpg
 categories: ['realisations', 'chantiers']
 services: ['verrieres']

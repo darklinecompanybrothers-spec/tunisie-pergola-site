@@ -2,6 +2,8 @@
 ordre: 21
 legende: 'Terrasse en bois couverte par une toiture à lames, ouverte sur un palmier et la mer.'
 alt: 'Terrasse en lames de bois couverte par une toiture à lames claires portée par des poteaux sombres, ouverte sur un palmier et la mer.'
+legendeAr: 'شرفة خشبية مغطّاة بسقف من شرائح، مفتوحة على نخلة والبحر.'
+altAr: 'شرفة بألواح خشب مغطّاة بسقف من شرائح فاتحة تحمله قوائم داكنة، مفتوحة على نخلة والبحر.'
 photo: ../../assets/photos/derived/terrasse-bois-lames-palmier-mer.jpg
 categories: ['realisations']
 services: ['pergolas']

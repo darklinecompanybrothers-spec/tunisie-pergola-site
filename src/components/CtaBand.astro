@@ -7,30 +7,30 @@
 import ContactChannels from './ContactChannels.astro';
 import Btn from './Btn.astro';
 import { SITE } from '../data/site';
+import { localePath, type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 
 interface Props {
+  locale: Locale;
   title?: string | undefined;
   text?: string | undefined;
 }
 
-const {
-  title = 'Votre espace mérite une réponse précise.',
-  text = 'Décrivez le lieu, les dimensions approximatives et l’usage recherché. L’équipe chargée du suivi commercial vous répond sous 24 heures.'
-} = Astro.props;
+const { locale, title, text } = Astro.props;
 ---
 
 <section class="tp-scene tp-dark" aria-labelledby="tp-cta-titre">
   <div class="tp-shell tp-cta">
     <div class="tp-stack">
-      <p class="tp-eyebrow">Votre projet</p>
-      <h2 class="tp-cta__title tp-mask" id="tp-cta-titre">{title}</h2>
-      <p class="tp-lede">{text}</p>
+      <p class="tp-eyebrow">{ui('eyebrowYourProject', locale)}</p>
+      <h2 class="tp-cta__title tp-mask" id="tp-cta-titre">{title ?? ui('ctaTitle', locale)}</h2>
+      <p class="tp-lede">{text ?? ui('ctaText', locale)}</p>
       <div class="tp-actions">
-        <Btn href="/contact/">Parler de votre projet</Btn>
+        <Btn href={localePath('/contact/', locale)}>{ui('ctaProject', locale)}</Btn>
       </div>
-      <p class="tp-text-soft">{SITE.responsePromise}.</p>
+      <p class="tp-text-soft">{SITE.responsePromise[locale]}.</p>
     </div>
 
-    <ContactChannels />
+    <ContactChannels locale={locale} />
   </div>
 </section>

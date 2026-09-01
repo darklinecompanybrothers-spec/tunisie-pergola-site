@@ -1,0 +1,160 @@
+---
+/**
+ * Les onze motifs — une élévation dessinée par famille d'ouvrages.
+ * ================================================================
+ *
+ * POURQUOI DES DESSINS ET NON DES PHOTOGRAPHIES
+ * Huit des onze familles n'ont aucune photographie authentique dans le dossier
+ * client. Les illustrer avec une image de banque, un rendu ou une photo d'une
+ * autre famille reviendrait à faire dire à une image ce qu'elle ne montre pas
+ * — exactement ce que le reste du site refuse. Les remplacer par du vide
+ * donnerait un catalogue à trous.
+ *
+ * La troisième voie est un dessin qui ne prétend rien : une élévation au trait,
+ * comme celles qu'on trace avant de fabriquer. Elle dit le TYPE d'ouvrage sans
+ * jamais prétendre montrer un chantier réalisé. C'est honnête, c'est
+ * reconnaissable d'un coup d'œil, et c'est le vocabulaire graphique naturel
+ * d'un métier qui commence par un relevé coté.
+ *
+ * MISE EN ŒUVRE
+ * Un seul `viewBox`, une seule épaisseur de trait, un seul angle — celui du
+ * monogramme, 72 pour 92. Deux encres : la structure prend `currentColor`, les
+ * pièces qui font la spécificité de la famille prennent l'accent. Aucune
+ * couleur n'est écrite ici : le dessin change avec la scène qui le porte.
+ *
+ * Tous sont décoratifs : le nom de la famille est écrit juste à côté, en
+ * toutes lettres, dans la langue de la page.
+ */
+import type { Motif } from '../data/catalogue';
+
+interface Props {
+  motif: Motif;
+  class?: string | undefined;
+}
+
+const { motif, class: className } = Astro.props;
+
+/** Barreaudage régulier — quatre familles s'en servent. */
+function bars(from: number, to: number, top: number, bottom: number, count: number): string {
+  const step = (to - from) / (count + 1);
+  return Array.from({ length: count }, (_, index) => {
+    const x = (from + step * (index + 1)).toFixed(1);
+    return `<path d="M${x} ${top}V${bottom}" />`;
+  }).join('');
+}
+
+/** Lames obliques à l'angle de marque, contenues dans un cadre. */
+function slats(x: number, y: number, width: number, height: number, count: number): string {
+  const step = width / count;
+  return Array.from({ length: count }, (_, index) => {
+    const start = x + step * (index + 0.5);
+    return `<path d="M${start.toFixed(1)} ${y + height}L${(start + height * 0.7826).toFixed(1)} ${y}" />`;
+  }).join('');
+}
+
+const DRAWINGS: Record<Motif, string> = {
+  // Un vantail dans son cadre : panneau haut, panneau bas, poignée.
+  porte: `
+    <path d="M30 4h36v56H30z" />
+    <path class="tp-motif__a" d="M36 11h24v18H36z" />
+    <path class="tp-motif__a" d="M36 35h24v18H36z" />
+    <path d="M22 60h52" />
+    <circle class="tp-motif__a" cx="35" cy="33" r="1.6" />`,
+
+  // Deux vantaux barreaudés, chapeau droit, pilier de chaque côté.
+  portail: `
+    <path d="M6 60V18M90 60V18" />
+    <path d="M12 20h32v40H12zM52 20h32v40H52z" />
+    ${bars(12, 44, 26, 60, 4)}
+    ${bars(52, 84, 26, 60, 4)}
+    <path class="tp-motif__a" d="M12 26h32M52 26h32" />
+    <path d="M2 60h92" />`,
+
+  // Châssis à croisillon, protection rapportée en avant.
+  fenetre: `
+    <path d="M20 8h56v44H20z" />
+    <path d="M48 8v44M20 30h56" />
+    ${bars(20, 76, 8, 52, 5)}
+    <path class="tp-motif__a" d="M16 4h64v52H16z" />
+    <path d="M12 60h72" />`,
+
+  // Main courante, lisse basse, montants, nez de dalle.
+  'garde-corps': `
+    <path class="tp-motif__a" d="M8 14h80" />
+    <path d="M8 44h80" />
+    ${bars(8, 88, 14, 52, 7)}
+    <path d="M8 14v38M88 14v38" />
+    <path d="M2 52h92" />
+    <path d="M2 58h92" />`,
+
+  // Volée droite : marches, limon à l'obliquité de marque, main courante.
+  escalier: `
+    <path d="M10 58h14v-10h14V38h14V28h14V18h14V8h6" />
+    <path d="M10 58V48" />
+    <path class="tp-motif__a" d="M10 62L86 8" />
+    <path d="M2 62h92" />
+    <path d="M24 58v-10M38 48V38M52 38V28M66 28V18M80 18V8" />`,
+
+  // Le monogramme lui-même : poteaux, poutre, arêtier, lames.
+  pergola: `
+    <path d="M12 60V16M84 60V16" />
+    <path class="tp-motif__a" d="M8 16h80" />
+    ${slats(14, 20, 68, 22, 7)}
+    <path d="M8 22h80" />
+    <path d="M2 60h92" />`,
+
+  // Auvent en console : façade, plateau, contrefiches.
+  abri: `
+    <path d="M14 4v56" />
+    <path class="tp-motif__a" d="M14 22h74" />
+    <path d="M14 26h74" />
+    <path d="M88 22v6" />
+    <path class="tp-motif__a" d="M14 42L36 26M14 52L52 26" />
+    <path d="M2 60h92" />`,
+
+  // Palissade : lisses hautes et basses, lames rapprochées, terrain.
+  cloture: `
+    <path d="M6 22h84M6 50h84" />
+    ${bars(6, 90, 16, 56, 9)}
+    <path class="tp-motif__a" d="M6 16v40M90 16v40" />
+    <path d="M2 58h92" />`,
+
+  // Verrière : versant vitré, chevrons à l'obliquité, panne faîtière.
+  verriere: `
+    <path d="M10 56L48 10l38 46" />
+    <path class="tp-motif__a" d="M48 10v46" />
+    <path d="M20 44h56M29 32h38" />
+    <path d="M10 56h76" />
+    <path class="tp-motif__a" d="M6 60h84" />`,
+
+  // Portique : poteaux, ferme triangulée, contreventement.
+  structure: `
+    <path d="M12 60V24M84 60V24" />
+    <path d="M8 24h80" />
+    <path class="tp-motif__a" d="M8 24L48 6l40 18" />
+    <path d="M12 24L48 12l36 12" />
+    <path d="M30 15v6M48 6v14M66 15v6" />
+    <path d="M2 60h92" />`,
+
+  // Table : plateau, piètement, volute de ferronnerie.
+  mobilier: `
+    <path class="tp-motif__a" d="M10 24h76" />
+    <path d="M10 28h76" />
+    <path d="M20 28v30M76 28v30" />
+    <path d="M20 42h56" />
+    <path class="tp-motif__a" d="M38 42c0 8 20 8 20 0" />
+    <path d="M2 58h92" />`
+};
+---
+
+<svg
+  class:list={['tp-motif', className]}
+  viewBox="0 0 96 64"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="square"
+  aria-hidden="true"
+  focusable="false"
+  set:html={DRAWINGS[motif]}
+/>

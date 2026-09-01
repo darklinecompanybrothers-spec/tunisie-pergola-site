@@ -1,100 +1,158 @@
 ---
 /**
- * En-tête et navigation.
+ * En-tête, panneau des familles et sélecteur de langue.
  *
- * Deux règles ont guidé la construction :
- *   • aucun contrôle mort sans JavaScript — le sous-menu Services est un
+ * Trois règles ont guidé la construction :
+ *   • aucun contrôle mort sans JavaScript — le panneau des familles est un
  *     `<details>` natif, et le bouton menu est un lien vers le panneau, que
  *     `:target` sait afficher tout seul;
  *   • le script ne fait qu'améliorer : fermeture par Échap, clic extérieur,
- *     `inert` sur l'arrière-plan et retour du focus.
+ *     `inert` sur l'arrière-plan et retour du focus;
+ *   • le sélecteur de langue est un LIEN vers la page équivalente, jamais un
+ *     bouton qui recharge — il doit être suivable par un robot d'indexation,
+ *     et il l'est.
+ *
+ * ONZE FAMILLES DANS UNE BARRE
+ * Elles n'y tiennent pas, et les aligner en liste textuelle aurait donné le
+ * menu d'un catalogue de quincaillerie. Le panneau les présente donc comme une
+ * planche de fabrication : chaque famille porte son numéro, son élévation
+ * dessinée et son nom. On la reconnaît avant de la lire.
  */
 import Mark from './brand/Mark.astro';
 import Wordmark from './brand/Wordmark.astro';
+import Motif from './Motif.astro';
 import Btn from './Btn.astro';
 import { SITE } from '../data/site';
-import { PRIMARY_LINKS, SERVICE_LINKS, MOBILE_LINKS } from '../data/pages';
+import { PRIMARY_LINKS, MOBILE_LINKS, meta, type RoutePath } from '../data/pages';
+import { FAMILIES } from '../data/catalogue';
+import { LOCALES, LOCALE_INFO, localePath, type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
 
-const path = Astro.url.pathname;
-const isCurrent = (href: string) => path === href;
-const servicesOpen = SERVICE_LINKS.some((link) => isCurrent(link.href));
+interface Props {
+  route: RoutePath;
+  locale: Locale;
+}
+
+const { route, locale } = Astro.props;
+
+const href = (target: RoutePath) => localePath(target, locale);
+const isCurrent = (target: RoutePath) => target === route;
+const familiesOpen = FAMILIES.some((family) => family.route === route) || route === '/ouvrages-metalliques/';
+const other = LOCALES.filter((code) => code !== locale);
 ---
 
 <header class="tp-header" id="tp-top">
   <div class="tp-shell tp-header__bar">
-    <a class="tp-logo" href="/" aria-label={`${SITE.name} — accueil`}>
+    <a class="tp-logo" href={href('/')} aria-label={`${SITE.name} — ${ui('homeAria', locale)}`}>
       <Mark class="tp-logo__mark" variant="color" />
       <Wordmark class="tp-logo__word" />
     </a>
 
-    <nav class="tp-nav" aria-label="Navigation principale">
+    <nav class="tp-nav" aria-label={ui('navPrimary', locale)}>
       <ul class="tp-nav__list">
         <li>
-          <a
-            class="tp-nav__link"
-            href="/realisations/"
-            aria-current={isCurrent('/realisations/') ? 'page' : undefined}>Réalisations</a
-          >
-        </li>
-        <li>
           <details class="tp-nav__group">
-            <summary class="tp-nav__summary" data-current={servicesOpen ? '' : undefined}
-              >Services</summary
+            <summary class="tp-nav__summary" data-current={familiesOpen ? '' : undefined}
+              >{ui('navFamilies', locale)}</summary
             >
-            <ul class="tp-nav__panel">
-              {
-                SERVICE_LINKS.map((link) => (
-                  <li>
-                    <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
-                      {link.label}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
+            <div class="tp-mega">
+              <div class="tp-shell tp-mega__inner">
+                <div class="tp-mega__lede">
+                  <p class="tp-eyebrow">{meta('/ouvrages-metalliques/', locale).label}</p>
+                  <p class="tp-mega__text">{SITE.positioning[locale]}</p>
+                  <Btn href={href('/ouvrages-metalliques/')} tone="quiet"
+                    >{ui('navCatalogueAll', locale)}</Btn
+                  >
+                </div>
+
+                <ul class="tp-mega__grid">
+                  {
+                    FAMILIES.map((family) => (
+                      <li>
+                        <a
+                          class="tp-mega__item"
+                          href={href(family.route)}
+                          aria-current={isCurrent(family.route) ? 'page' : undefined}
+                        >
+                          <Motif motif={family.motif} class="tp-mega__motif" />
+                          <span class="tp-mega__n">{family.index}</span>
+                          <span class="tp-mega__nom">{family.nom[locale]}</span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
           </details>
         </li>
         {
-          PRIMARY_LINKS.filter((link) => link.href !== '/realisations/').map((link) => (
+          PRIMARY_LINKS.map((link) => (
             <li>
               <a
                 class="tp-nav__link"
-                href={link.href}
-                aria-current={isCurrent(link.href) ? 'page' : undefined}
+                href={href(link)}
+                aria-current={isCurrent(link) ? 'page' : undefined}
               >
-                {link.label}
+                {meta(link, locale).label}
               </a>
             </li>
           ))
         }
       </ul>
-      <Btn href="/contact/" class="tp-btn--compact">Parler de votre projet</Btn>
+
+      <div class="tp-lang" role="group" aria-label={ui('langSwitch', locale)}>
+        {
+          other.map((code) => (
+            <a class="tp-lang__link" href={localePath(route, code)} lang={LOCALE_INFO[code].htmlLang} hreflang={LOCALE_INFO[code].hreflang}>
+              {LOCALE_INFO[code].nativeName}
+            </a>
+          ))
+        }
+      </div>
+
+      <Btn href={href('/contact/')} class="tp-btn--compact">{ui('ctaProject', locale)}</Btn>
     </nav>
 
     <a class="tp-burger" href="#tp-menu" data-menu-open>
       <span class="tp-burger__glyph" aria-hidden="true"></span>
-      Menu
+      {ui('menuOpen', locale)}
     </a>
   </div>
 </header>
 
-<div class="tp-menu" id="tp-menu" aria-label="Menu du site">
-  <div class="tp-shell">
+<div class="tp-menu" id="tp-menu" aria-label={ui('menuLabel', locale)}>
+  <div class="tp-shell tp-menu__shell">
     <div class="tp-menu__top">
-      <a class="tp-logo" href="/" aria-label={`${SITE.name} — accueil`}>
+      <a class="tp-logo" href={href('/')} aria-label={`${SITE.name} — ${ui('homeAria', locale)}`}>
         <Mark class="tp-logo__mark" variant="color" />
         <Wordmark class="tp-logo__word" />
       </a>
-      <a class="tp-menu__close" href="#tp-top" data-menu-close>Fermer</a>
+      <a class="tp-menu__close" href="#tp-top" data-menu-close>{ui('menuClose', locale)}</a>
     </div>
 
-    <nav aria-label="Navigation du menu">
+    <nav aria-label={ui('navMenu', locale)}>
+      <p class="tp-eyebrow">{ui('navFamilies', locale)}</p>
+      <ul class="tp-menu__families">
+        {
+          FAMILIES.map((family) => (
+            <li>
+              <a href={href(family.route)} aria-current={isCurrent(family.route) ? 'page' : undefined}>
+                <Motif motif={family.motif} class="tp-menu__motif" />
+                <span class="tp-menu__n">{family.index}</span>
+                <span>{family.nom[locale]}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
       <ul class="tp-menu__list">
         {
           MOBILE_LINKS.map((link) => (
             <li>
-              <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
-                {link.label}
+              <a href={href(link)} aria-current={isCurrent(link) ? 'page' : undefined}>
+                {meta(link, locale).label}
               </a>
             </li>
           ))
@@ -102,15 +160,24 @@ const servicesOpen = SERVICE_LINKS.some((link) => isCurrent(link.href));
       </ul>
     </nav>
 
-    <Btn href="/contact/">Parler de votre projet</Btn>
+    <Btn href={href('/contact/')}>{ui('ctaProject', locale)}</Btn>
 
     <div class="tp-menu__meta">
-      <a href={SITE.contact.phoneHref} data-track="phone">{SITE.contact.phoneDisplay}</a>
+      <a href={SITE.contact.phoneHref} data-track="phone" class="tp-ltr">{SITE.contact.phoneDisplay}</a>
       <a href={SITE.contact.whatsappHref} rel="noopener noreferrer" target="_blank" data-track="whatsapp"
-        >WhatsApp<span class="tp-visually-hidden"> (nouvel onglet)</span></a
+        >{ui('channelWhatsapp', locale)}<span class="tp-visually-hidden">{ui('newTab', locale)}</span></a
       >
-      <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>
-      <p>{SITE.address.inline}</p>
+      <a href={SITE.contact.emailHref} class="tp-ltr">{SITE.contact.email}</a>
+      <p>{SITE.address.inline[locale]}</p>
+      <p class="tp-menu__lang">
+        {
+          other.map((code) => (
+            <a href={localePath(route, code)} lang={LOCALE_INFO[code].htmlLang} hreflang={LOCALE_INFO[code].hreflang}>
+              {LOCALE_INFO[code].nativeName}
+            </a>
+          ))
+        }
+      </p>
     </div>
   </div>
 </div>

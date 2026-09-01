@@ -1,0 +1,107 @@
+---
+/**
+ * Zones d'intervention — une seule page pour toutes les villes.
+ *
+ * Aucune page ville n'est générée par permutation : ce serait exactement le
+ * schéma de « pages satellites » que Google sanctionne, et surtout il n'y a
+ * aujourd'hui aucun contenu propre à chaque ville. Une page locale ne sera
+ * créée que le jour où une réalisation identifiée, ses photographies et ses
+ * informations vérifiées la rendent utile.
+ */
+import Base from '../../layouts/Base.astro';
+import Btn from '../Btn.astro';
+import PageHead from '../PageHead.astro';
+import CtaBand from '../CtaBand.astro';
+import ContactChannels from '../ContactChannels.astro';
+import { SITE, areaServed } from '../../data/site';
+import { ZONES } from '../../data/copy';
+import { localePath, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const villes = areaServed(locale);
+const observes = SITE.observedProjectPlaces.map((place) => place[locale]);
+---
+
+<Base route="/zones-intervention/" locale={locale}>
+  <PageHead
+    route="/zones-intervention/"
+    locale={locale}
+    eyebrow={ZONES.eyebrow[locale]}
+    title={ZONES.title[locale]}
+    lede={`${SITE.name} — ${SITE.positioning[locale]}. ${villes.length} ${ui('citiesDeclared', locale)}.`}
+    theme="grid"
+  />
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-villes">
+    <div class="tp-shell tp-stack tp-stack--lg">
+      <div class="tp-grid">
+        <div class="tp-stack tp-span-lede">
+          <p class="tp-eyebrow">{ZONES.citiesEyebrow[locale]}</p>
+          <h2 class="tp-mask" id="tp-villes">{villes.length}</h2>
+        </div>
+        <p class="tp-lede tp-reveal tp-span-body">{ZONES.citiesLede[locale]}</p>
+      </div>
+
+      <ul class="tp-zones tp-reveal">
+        {villes.map((ville) => <li>{ville}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-dark tp-scene--ruled" aria-labelledby="tp-lieux">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ZONES.placesEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-lieux">{ZONES.placesTitle[locale]}</h2>
+      </div>
+      <div class="tp-prose tp-reveal tp-span-body">
+        <p>
+          {ZONES.placesBody1[locale]} {observes.slice(0, -1).join('، ')} — {observes[observes.length - 1]}.
+          {' '}{ZONES.placesBody2[locale]}
+        </p>
+        <p>{ZONES.placesBody3[locale]}</p>
+        <p><Btn href={localePath('/realisations/', locale)} tone="quiet">{ui('ctaSeeWorks', locale)}</Btn></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-scene tp-light" aria-labelledby="tp-comment">
+    <div class="tp-shell tp-grid">
+      <div class="tp-stack tp-span-lede">
+        <p class="tp-eyebrow">{ZONES.howEyebrow[locale]}</p>
+        <h2 class="tp-mask" id="tp-comment">{ZONES.howTitle[locale]}</h2>
+        <p class="tp-text-soft">{ZONES.howText[locale]}</p>
+      </div>
+
+      <div class="tp-stack tp-span-body tp-reveal">
+        <dl class="tp-nap">
+          <div>
+            <dt>{ui('channelAddress', locale)}</dt>
+            <dd>{SITE.address.inline[locale]}</dd>
+          </div>
+          <div>
+            <dt>{ui('labelPhone', locale)}</dt>
+            <dd>
+              <a href={SITE.contact.phoneHref} class="tp-tabular tp-ltr" data-track="phone"
+                >{SITE.contact.phoneDisplay}</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt>{ui('channelEmail', locale)}</dt>
+            <dd><a href={SITE.contact.emailHref} class="tp-ltr">{SITE.contact.email}</a></dd>
+          </div>
+        </dl>
+
+        <ContactChannels locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} />
+</Base>

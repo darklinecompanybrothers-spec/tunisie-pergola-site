@@ -2,6 +2,8 @@
 ordre: 28
 legende: 'Véranda vitrée coiffée d’une toiture à lames, aménagée en salon et ouverte sur le bassin.'
 alt: 'Véranda entièrement vitrée coiffée d’une toiture à lames sombres, salon en résine tressée, tronc de palmier au premier plan et bassin au fond.'
+legendeAr: 'شرفة مزجّجة يعلوها سقف بشرائح، مهيّأة صالونًا ومفتوحة على الحوض.'
+altAr: 'شرفة مزجّجة بالكامل يعلوها سقف بشرائح داكنة، وصالون من الراتنج المضفور، وجذع نخلة في المقدّمة وحوض ماء في العمق.'
 photo: ../../assets/photos/derived/veranda-vitree-lames-salon.jpg
 categories: ['realisations']
 services: ['verrieres']
