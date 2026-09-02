@@ -100,19 +100,26 @@ const other = LOCALES.filter((code) => code !== locale);
           ))
         }
       </ul>
-
-      <div class="tp-lang" role="group" aria-label={ui('langSwitch', locale)}>
-        {
-          other.map((code) => (
-            <a class="tp-lang__link" href={localePath(route, code)} lang={LOCALE_INFO[code].htmlLang} hreflang={LOCALE_INFO[code].hreflang}>
-              {LOCALE_INFO[code].nativeName}
-            </a>
-          ))
-        }
-      </div>
-
-      <Btn href={href('/contact/')} class="tp-btn--compact">{ui('ctaProject', locale)}</Btn>
     </nav>
+
+    {/* Le sélecteur de langue vit dans la BARRE, pas dans la navigation large.
+        Placé dans `.tp-nav`, il disparaissait avec elle sous 62 rem : un
+        lecteur arabophone arrivant sur mobile devait ouvrir le menu pour
+        trouver sa langue — c'est-à-dire deviner qu'elle s'y trouve. Ici, il
+        est visible dès le premier écran, à côté du bouton de menu, dans les
+        deux tailles. L'ordre du DOM donne aussi l'ordre visuel voulu sur
+        grand écran : liens, langue, appel à l'action. */}
+    <div class="tp-lang" role="group" aria-label={ui('langSwitch', locale)}>
+      {
+        other.map((code) => (
+          <a class="tp-lang__link" href={localePath(route, code)} lang={LOCALE_INFO[code].htmlLang} hreflang={LOCALE_INFO[code].hreflang}>
+            {LOCALE_INFO[code].nativeName}
+          </a>
+        ))
+      }
+    </div>
+
+    <Btn href={href('/contact/')} class="tp-btn--compact tp-header__cta">{ui('ctaProject', locale)}</Btn>
 
     <a class="tp-burger" href="#tp-menu" data-menu-open>
       <span class="tp-burger__glyph" aria-hidden="true"></span>

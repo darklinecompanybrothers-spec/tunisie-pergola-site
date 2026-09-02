@@ -762,9 +762,24 @@
 
   /* La bande horizontale du déroulé avance dans le sens de la lecture. Le
      `display: flex` a déjà placé le premier temps à droite; il ne reste qu'à
-     inverser le signe de la course. */
-  [dir='rtl'] .tp-story__track {
-    translate: calc(var(--tp-x) * var(--tp-story-steps) * 100%) 0;
+     inverser le signe de la course.
+
+     LA REQUÊTE MÉDIA N'EST PAS UN RAFFINEMENT, ELLE EST OBLIGATOIRE.
+     Sous 62 rem — et sous réduction de mouvement — `scenes.css` DÉPINGLE la
+     scène : la piste redevient une liste verticale et son déplacement est
+     annulé par `.tp-story__track { translate: none }`. Cette règle-ci porte un
+     sélecteur d'attribut EN PLUS d'une classe : elle est donc plus spécifique
+     que l'annulation, et sans la même borne elle la réécrasait — la liste
+     verticale arabe repartait vers la droite au fil du défilement, jusqu'à
+     trois largeurs d'écran.
+
+     La condition ci-dessous est l'exacte négation de celle du repli. Les deux
+     doivent changer ensemble : c'est le prix d'une règle directionnelle qui
+     touche à une valeur qu'une autre feuille annule. */
+  @media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
+    [dir='rtl'] .tp-story__track {
+      translate: calc(var(--tp-x) * var(--tp-story-steps) * 100%) 0;
+    }
   }
 }
 
@@ -855,5 +870,46 @@
     --tp-line: color-mix(in srgb, var(--tp-ivory) 20%, transparent);
     --tp-line-strong: color-mix(in srgb, var(--tp-ivory) 42%, transparent);
     --tp-focus: var(--tp-copper-glow);
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     La barre : ce qui reste visible sur petit écran
+     ==========================================================================
+     Trois éléments sortent ou restent selon la largeur, et un seul est
+     commun aux deux : le sélecteur de langue.
+
+       logo          toujours — le mot-symbole tombe sous 26 rem
+       navigation    grand écran seulement (le menu déployé la remplace)
+       LANGUE        TOUJOURS — c'est le correctif du 2 septembre 2026
+       appel à l'action  grand écran seulement (il est en tête du menu déployé)
+       bouton menu   petit écran seulement
+
+     Le sélecteur était auparavant DANS `.tp-nav`, donc masqué avec elle sous
+     62 rem. Un visiteur arabophone devait ouvrir le menu pour trouver sa
+     langue — autrement dit deviner qu'elle s'y trouvait. Il est maintenant
+     posé à côté du bouton de menu, premier écran, sans un geste.
+
+     Il reste AUSSI en bas du panneau déployé (`.tp-menu__lang`) : quand le
+     menu est ouvert, la barre est rendue `inert` et son sélecteur devient
+     inatteignable. Les deux ne sont donc jamais actifs en même temps.
+     ========================================================================== */
+  .tp-header__cta {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .tp-header__cta {
+      display: inline-flex;
+    }
+  }
+
+  /* Sur petit écran, la langue et le bouton de menu forment une paire : ils se
+     touchent presque, et l'espace large de la barre les sépare du logo. */
+  @media (max-width: 61.99rem) {
+    .tp-lang {
+      margin-inline-end: calc(var(--tp-gap-md) * -0.6);
+    }
   }
 }
