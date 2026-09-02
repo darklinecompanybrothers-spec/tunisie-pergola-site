@@ -9,6 +9,7 @@
  */
 import Base from '../../layouts/Base.astro';
 import Btn from '../Btn.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import PageHead from '../PageHead.astro';
 import CtaBand from '../CtaBand.astro';
 import Gallery from '../Gallery.astro';
@@ -48,11 +49,12 @@ const entries = await getCollection('realisations');
       </div>
       <div class="tp-prose tp-reveal tp-span-body">
         {WORKS.scopeBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
-        <p>
-          <Btn href={localePath('/ouvrages-metalliques/', locale)} tone="quiet"
+        <div class="tp-actions">
+          <QuoteBtn locale={locale} from={WORKS.title[locale]} />
+          <Btn href={localePath('/ouvrages-metalliques/', locale)} tone="ghost"
             >{ui('ctaCatalogue', locale)}</Btn
           >
-        </p>
+        </div>
       </div>
     </div>
   </section>
@@ -74,7 +76,7 @@ const entries = await getCollection('realisations');
         <p>{entries.length} {WORKS.originBody1[locale]}</p>
         <p>{WORKS.originBody2[locale]}</p>
         <p>
-          <Btn href={SITE.social.facebook} tone="quiet" external>{WORKS.originLink[locale]}</Btn>
+          <Btn href={SITE.social.facebook} tone="quiet" external locale={locale}>{WORKS.originLink[locale]}</Btn>
         </p>
       </div>
     </div>

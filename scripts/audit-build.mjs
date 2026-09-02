@@ -42,6 +42,8 @@ const root = resolve(here, '..');
 const DIST = join(root, 'dist');
 
 const problems = [];
+/** Le numéro attendu dans chaque adresse `wa.me`, sans le `+`. */
+const waNumber = SITE.contact.phoneE164.replace('+', '');
 const notes = [];
 const fail = (where, message) => problems.push(`${where} — ${message}`);
 
@@ -282,6 +284,23 @@ async function main() {
     if (!text.includes(SITE.address.inline[locale])) {
       fail(path, 'adresse publique absente ou reformulée');
     }
+    /* Conversion : la page offre-t-elle un chemin ?
+       Le site a été refait autour d'un canal unique — WhatsApp, avec le
+       message déjà écrit. Une page qui perdrait son bouton de devis ne
+       casserait rien de visible : elle cesserait simplement de convertir, en
+       silence, jusqu’à ce que quelqu’un s’en aperçoive. Le contrôle rend cet
+       oubli impossible. */
+    const waLinks = [...html.matchAll(/href="https:\/\/wa\.me\/([^"?]+)(\?text=[^"]*)?"/g)];
+    if (waLinks.length === 0) {
+      fail(path, 'aucun lien WhatsApp — la page n’offre aucun chemin de conversion');
+    }
+    if (!waLinks.some((link) => link[2])) {
+      fail(path, 'aucun lien WhatsApp avec message pré-rempli — un lien nu ouvre une conversation vide');
+    }
+    for (const link of waLinks) {
+      if (link[1] !== waNumber) fail(path, `lien WhatsApp vers un autre numéro : ${link[1]}`);
+    }
+
     // Les anciens numéros ne doivent plus exister nulle part.
     for (const retired of RETIRED_PHONES) {
       if (html.includes(retired)) fail(path, `ancien numéro encore présent : ${retired}`);

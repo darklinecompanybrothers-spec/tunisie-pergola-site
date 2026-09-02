@@ -1,0 +1,48 @@
+---
+/**
+ * « Demander un devis » — le bouton de conversion du site.
+ *
+ * Il n'existe qu'ici, pour que les dizaines d'exemplaires posés dans les pages
+ * ne puissent pas diverger : même libellé, même canal, même composition de
+ * message, même mention de nouvel onglet. Chaque page ne déclare que son
+ * SUJET; le reste est calculé.
+ *
+ * `subject` est ce que le visiteur demande — « Portails métalliques » sur la
+ * page portails, la formule générique ailleurs. `from` est le nom de la page
+ * de départ, tel qu'il s'affiche à l'écran. Les deux partent dans le message
+ * pré-rempli : l'entreprise sait de quoi on parle avant de répondre.
+ *
+ * Le lien est un lien. Pas de JavaScript pour l'ouvrir, pas de gestionnaire
+ * d'événement : il fonctionne script coupé, il se copie, il se partage, et un
+ * robot d'indexation le voit. Le script du site n'y ajoute qu'une chose, au
+ * moment du clic — la ligne d'origine de la visite.
+ */
+import Btn from './Btn.astro';
+import { quoteHref, type QuoteContext } from '../data/quote';
+import type { Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
+
+interface Props extends QuoteContext {
+  locale: Locale;
+  tone?: 'primary' | 'ghost' | 'quiet';
+  /** Étiquette courte — barres denses, en-tête, cartes. */
+  short?: boolean | undefined;
+  class?: string | undefined;
+}
+
+const { locale, subject, from, tone = 'primary', short = false, class: className } = Astro.props;
+const href = quoteHref(locale, { subject, from });
+---
+
+<Btn
+  href={href}
+  tone={tone}
+  glyph="whatsapp"
+  external
+  locale={locale}
+  track="devis"
+  class={className}
+  aria-label={ui('ctaQuoteAria', locale)}
+>
+  {short ? ui('ctaQuoteShort', locale) : ui('ctaQuote', locale)}
+</Btn>

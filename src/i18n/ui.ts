@@ -37,7 +37,7 @@ const UI = {
 
   /* --- Appels à l'action ------------------------------------------------ */
   ctaProject: { fr: 'Parler de votre projet', ar: 'تحدّث عن مشروعك' },
-  ctaSend: { fr: 'Envoyer ma demande', ar: 'إرسال طلبي' },
+  ctaSend: { fr: 'Envoyer sur WhatsApp', ar: 'إرسال عبر واتساب' },
   ctaSeeWorks: { fr: 'Voir les réalisations', ar: 'مشاهدة الإنجازات' },
   ctaAllWorks: { fr: 'Toutes les réalisations', ar: 'كلّ الإنجازات' },
   ctaZones: { fr: 'Détail des zones', ar: 'تفاصيل المناطق' },
@@ -45,6 +45,30 @@ const UI = {
   ctaFamily: { fr: 'Voir la famille', ar: 'مشاهدة العائلة' },
   ctaHowWeWork: { fr: 'Comment nous travaillons', ar: 'كيف نشتغل' },
   scrollCue: { fr: 'Défiler', ar: 'مرّر' },
+
+  /* --- Demande de devis --------------------------------------------------
+     Le libellé dit « devis », jamais « devis gratuit » : la visite et l’étude
+     sont des services payants avant engagement (CLIENT-BRIEF §2 bis), et le
+     contrôle de build refuse le mot. Promettre la gratuité pour gagner un clic
+     coûterait la confiance au premier appel. */
+  ctaQuote: { fr: 'Demander un devis', ar: 'اطلب عرض سعر' },
+  ctaQuoteShort: { fr: 'Devis', ar: 'عرض سعر' },
+  ctaQuoteAria: {
+    fr: 'Demander un devis sur WhatsApp',
+    ar: 'طلب عرض سعر عبر واتساب'
+  },
+  ctaDescribe: { fr: 'Décrire mon projet', ar: 'صف مشروعك بالتفصيل' },
+  quoteEyebrow: { fr: 'Devis', ar: 'عرض سعر' },
+  quoteNudge: {
+    fr: 'Un projet dans cette famille ?',
+    ar: 'مشروع في هذه العائلة؟'
+  },
+  quoteNudgeText: {
+    fr: 'Envoyez les dimensions approximatives et une photo du lieu sur WhatsApp : c’est le chemin le plus court vers une réponse utile.',
+    ar: 'أرسل الأبعاد التقريبية وصورة للمكان عبر واتساب: هو أقصر طريق نحو ردّ مفيد.'
+  },
+  quoteBarAria: { fr: 'Demande de devis rapide', ar: 'طلب عرض سعر سريع' },
+  whatsappAnswer: { fr: 'Réponse sur WhatsApp', ar: 'الردّ عبر واتساب' },
 
   /* --- Canaux ----------------------------------------------------------- */
   channelCall: { fr: 'Appeler', ar: 'اتصال هاتفي' },
@@ -126,10 +150,15 @@ const UI = {
   formPrivacyLink: { fr: 'Politique de confidentialité', ar: 'سياسة الخصوصية' },
   formErrorsTitle: { fr: 'Votre demande n’est pas encore partie', ar: 'لم يُرسل طلبك بعد' },
   formSending: { fr: 'Envoi en cours…', ar: 'جارٍ الإرسال…' },
-  formSentTitle: { fr: 'Demande transmise', ar: 'تمّ إرسال الطلب' },
+  formSentTitle: { fr: 'Votre demande part sur WhatsApp', ar: 'طلبك في طريقه عبر واتساب' },
   formSentText: {
-    fr: 'Votre demande est partie vers l’équipe chargée du suivi commercial.',
-    ar: 'وصل طلبك إلى الفريق المكلّف بالمتابعة التجارية.'
+    fr: 'La conversation s’ouvre avec votre demande déjà écrite : il ne reste qu’à l’envoyer. Une copie est aussi partie vers l’équipe chargée du suivi commercial.',
+    ar: 'تُفتح المحادثة وطلبك مكتوب فيها: لم يبق إلّا إرساله. وقد وصلت نسخة أيضًا إلى الفريق المكلّف بالمتابعة التجارية.'
+  },
+  formOpenWhatsapp: { fr: 'Ouvrir WhatsApp', ar: 'فتح واتساب' },
+  formSentBlocked: {
+    fr: 'Si WhatsApp ne s’est pas ouvert, ce bouton le fait.',
+    ar: 'إن لم يُفتح واتساب، فهذا الزرّ يفتحه.'
   },
   formSentFallback: {
     fr: 'Sans nouvelle d’ici là, appelez ou écrivez sur WhatsApp au',
@@ -146,14 +175,18 @@ const UI = {
   formFallbackCall: { fr: ' · appeler le ', ar: ' · الاتصال بالرقم ' },
   formCountOne: { fr: 'champ à compléter.', ar: 'خانة ينقصها.' },
   formCountMany: { fr: 'champs à compléter.', ar: 'خانات تنقصها.' },
+  /* Le deux-points : espace insécable devant en français, collé en arabe. Le
+     script du formulaire le lit dans le HTML plutôt que de le coder en dur —
+     comme tout le reste de ses chaînes. */
+  fieldSeparator: { fr: ' : ', ar: ': ' },
   consentShort: { fr: 'Consentement', ar: 'الموافقة' },
   consentLine: {
     fr: 'Consentement de contact : accordé',
     ar: 'الموافقة على الاتصال: ممنوحة'
   },
   formWhatsappIntro: {
-    fr: 'Bonjour, je souhaite parler d’un projet.',
-    ar: 'مرحبًا، أودّ الحديث عن مشروع.'
+    fr: 'Bonjour Tunisie Pergola, je souhaite un devis pour le projet suivant :',
+    ar: 'مرحبًا تونيزي برغولا، أودّ الحصول على عرض سعر للمشروع التالي:'
   },
 
   /* --- Erreurs de champ -------------------------------------------------- */

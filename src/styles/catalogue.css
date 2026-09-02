@@ -913,3 +913,281 @@
     }
   }
 }
+
+@layer components {
+  /* ==========================================================================
+     LA CONVERSION — demander un devis
+     ==========================================================================
+     Le site sait maintenant présenter cinquante ouvrages dans deux langues.
+     Cette couche répond à la question suivante : que fait le visiteur une fois
+     convaincu ? La réponse tient en un canal — WhatsApp, celui que
+     l'entreprise relève le plus vite en Tunisie — et en trois formes.
+
+       .tp-btn--whatsapp   le bouton, partout où une page appelle à l'action
+       .tp-quote           la bande contextuelle, sur les pages de famille
+       .tp-quotebar        le raccourci permanent, en bas de l'écran
+
+     Aucune n'est un widget rapporté : toutes reprennent la plaque, l'angle vif
+     et la lèvre d'ombre décalée des autres contrôles du site. C'est ce qui les
+     empêche de ressembler au bouton vert flottant qu'on colle sur un site
+     qu'on n'a pas dessiné.
+     ========================================================================== */
+
+  /* --- Le glyphe dans le bouton ------------------------------------------
+     Il se place AVANT l'étiquette et au-dessus des lames — sans quoi les six
+     lames qui se referment au survol lui passeraient dessus. */
+  .tp-btn__glyph {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    /* Le gap du bouton est calibré pour l'écart étiquette-flèche; entre le
+       glyphe et l'étiquette il est trop large d'un cheveu. */
+    margin-inline-end: -0.2rem;
+  }
+
+  /* ==========================================================================
+     La bande de devis d'une page de famille
+     ==========================================================================
+     Elle arrive juste après la liste des ouvrages — c'est-à-dire à l'instant
+     précis où le visiteur vient de reconnaître ce qu'il cherche. Le filet
+     cuivre qui l'ouvre la détache de la liste sans la couper de la scène.
+     ========================================================================== */
+  .tp-quote {
+    display: grid;
+    gap: var(--tp-gap-md);
+    align-items: center;
+    margin-block-start: var(--tp-gap-md);
+    padding-block-start: var(--tp-gap-md);
+    border-block-start: 2px solid var(--tp-accent-display);
+  }
+
+  @media (min-width: 48rem) {
+    .tp-quote {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--tp-gap-lg);
+    }
+  }
+
+  .tp-quote__text {
+    display: grid;
+    gap: 0.4rem;
+    max-width: 52ch;
+  }
+
+  .tp-quote__title {
+    font-family: var(--tp-font-display);
+    font-size: var(--tp-text-lg);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: var(--tp-track-display);
+  }
+
+  :root:lang(ar) .tp-quote__title {
+    line-height: 1.35;
+  }
+
+  /* ==========================================================================
+     Le raccourci permanent
+     ==========================================================================
+     Les pages sont longues — seize mille pixels sur l'accueil. Un visiteur
+     convaincu au tiers de la descente n'avait, sans cette barre, que deux
+     chemins : remonter, ou aller jusqu'en bas. Elle met le canal à portée de
+     pouce sans jamais recouvrir le texte qu'on lit.
+
+     RÈGLE INVERSÉE, comme la barre de navigation : l'état ÉCRIT est visible.
+     Ce n'est qu'en présence d'une chronologie de défilement que la barre
+     s'efface sur le premier écran, là où le hero porte déjà ses propres appels
+     à l'action. Un moteur qui ignore la règle affiche une barre toujours
+     présente — moins élégant, jamais absent.
+     ========================================================================== */
+  .tp-quotebar {
+    position: fixed;
+    z-index: 80;
+    inset-block-end: max(1rem, env(safe-area-inset-bottom, 0px));
+    inset-inline-end: max(1rem, env(safe-area-inset-right, 0px));
+    /* Le conteneur ne capte rien : seule la plaque est cliquable, et le reste
+       de l'écran reste au contenu. */
+    pointer-events: none;
+  }
+
+  .tp-quotebar__link {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-block-size: var(--tp-hit);
+    padding-inline: clamp(0.9rem, 3vw, 1.25rem);
+    font-size: var(--tp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--tp-ivory);
+    background-color: var(--tp-anthracite);
+    border: 1px solid var(--tp-copper-light);
+    /* La même lèvre d'ombre décalée que le bouton principal, à l'échelle de la
+       barre : la plaque est posée sur la page, pas collée dessus. */
+    box-shadow:
+      0.5rem 0.5rem 0 0 color-mix(in srgb, var(--tp-copper) 34%, transparent),
+      0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.6);
+    transition:
+      background-color var(--tp-speed-fast) var(--tp-ease),
+      color var(--tp-speed-fast) var(--tp-ease),
+      box-shadow var(--tp-speed-fast) var(--tp-ease),
+      translate var(--tp-speed-fast) var(--tp-ease);
+  }
+
+  :root:lang(ar) .tp-quotebar__link {
+    text-transform: none;
+  }
+
+  .tp-quotebar__glyph {
+    inline-size: 1.3em;
+    block-size: 1.3em;
+    flex: none;
+  }
+
+  .tp-quotebar__link:hover,
+  .tp-quotebar__link:focus-visible {
+    color: var(--tp-anthracite);
+    background-color: var(--tp-copper-light);
+    box-shadow:
+      0.2rem 0.2rem 0 0 color-mix(in srgb, var(--tp-copper) 60%, transparent),
+      0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.6);
+    translate: 0 -2px;
+  }
+
+  .tp-quotebar__link:active {
+    box-shadow: 0 0 0 0 transparent;
+    translate: 0.2rem 0.2rem;
+  }
+
+  /* La barre s'efface pendant la saisie : c'est le seul moment où elle
+     pourrait masquer un champ ou le bouton d'envoi. La règle porte sur le LIEN
+     et non sur le conteneur, qui est animé — une animation gagne toujours sur
+     une déclaration ordinaire, et le masquage n'aurait aucun effet. */
+  body:has(.tp-form :focus) .tp-quotebar__link {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-quotebar {
+        animation: tp-quotebar-enter linear both;
+        animation-timeline: scroll(root block);
+        /* Plage COURTE, et plateau atteint bien avant la fin — les deux pour la
+           même raison : une page peu haute a une course de défilement peu
+           haute, et une plage plus longue qu'elle ne se terminerait jamais.
+           La barre resterait alors à demi transparente pour toujours, ce qui
+           est pire que de ne pas l'animer du tout.
+
+           Avec 30vh de plage et le plateau à 55 %, la barre est pleinement
+           posée dès 17 vh de défilement : toute page qui défile un peu la fait
+           apparaître entièrement. Et une page qui ne défile pas du tout rend
+           la chronologie inactive, donc l'animation sans effet — l'état écrit,
+           « visible », reprend la main. */
+        animation-range: 0 30vh;
+      }
+    }
+  }
+
+  @keyframes tp-quotebar-enter {
+    0% {
+      opacity: 0;
+      translate: 0 1.75rem;
+      visibility: hidden;
+    }
+    55%,
+    100% {
+      opacity: 1;
+      translate: 0 0;
+      visibility: visible;
+    }
+  }
+
+  /* ==========================================================================
+     Les deux actions du menu déployé
+     ========================================================================== */
+  .tp-menu__actions {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: stretch;
+  }
+
+  .tp-menu__actions .tp-btn {
+    justify-content: center;
+  }
+}
+
+@layer components {
+  /* --- Ajustements relevés à l'écran, 2 septembre 2026 -------------------- */
+
+  /* Le glyphe était collé à l'étiquette : la marge négative mangeait presque
+     tout l'écart du bouton. Elle est retirée — le gap du contrôle suffit, et
+     c'est lui qui doit rester la référence d'espacement. */
+  .tp-btn__glyph {
+    inline-size: 1.4em;
+    block-size: 1.4em;
+    /* La cause du glyphe collé n'était pas la marge : `.tp-btn` porte
+       `gap: 0`. La flèche s'écarte par sa propre `margin-inline-start`, jamais
+       par un espacement du conteneur — le glyphe suit donc la même règle, et
+       l'écartement du contrôle reste décidé pièce par pièce plutôt que par un
+       gap global qui les déplacerait toutes. */
+    margin-inline-end: 0.7rem;
+  }
+
+  /* La plaque flottante disait « Demander un devis » en entier, soit 260 px :
+     sur un écran de 390, elle barrait un tiers de la ligne en cours de
+     lecture. Sous 48 rem elle ne dit plus que « Devis » — le glyphe porte le
+     canal, et la cible tactile reste entière. */
+  .tp-quotebar__long {
+    display: none;
+  }
+
+  .tp-quotebar__short {
+    display: inline;
+  }
+
+  @media (min-width: 48rem) {
+    .tp-quotebar__long {
+      display: inline;
+    }
+
+    .tp-quotebar__short {
+      display: none;
+    }
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     La plaque du bouton principal — relevée à 6,52:1
+     ==========================================================================
+     Le remplissage était le cuivre de marque, #B86F44, qui donne 4,64:1 avec
+     l'encre anthracite. C'est conforme AA pour une étiquette de 14 px en gras
+     — mais de justesse, sans aucune marge, et sur le contrôle qui porte
+     désormais toute la conversion du site.
+
+     Il passe au cuivre CLAIR, #D08C5C : 6,52:1 mesuré, soit AAA pour ce corps.
+     La couleur reste de la palette — c'est la déclinaison documentée dans
+     `tokens.css`, pas une teinte inventée — et le bouton y gagne en présence,
+     ce qui est exactement ce qu'on attend d'un appel à l'action.
+
+     Le cuivre de marque, lui, ne bouge pas : il reste l'encre des filets, des
+     sur-titres et des lames du monogramme, où il n'a jamais à porter de texte.
+     ========================================================================== */
+  .tp-btn--primary {
+    --tp-btn-plate: var(--tp-copper-light);
+    --tp-btn-lip: color-mix(in srgb, var(--tp-copper) 52%, transparent);
+    background-color: var(--tp-copper-light);
+    border-color: var(--tp-copper-light);
+  }
+
+  .tp-btn--primary:hover {
+    background-color: color-mix(in srgb, var(--tp-copper-light) 86%, var(--tp-white));
+    border-color: color-mix(in srgb, var(--tp-copper-light) 86%, var(--tp-white));
+  }
+}

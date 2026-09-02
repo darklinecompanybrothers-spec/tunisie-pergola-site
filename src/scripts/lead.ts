@@ -88,6 +88,18 @@ function labelOf(form: HTMLFormElement, id: string): string {
   return (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * Le deux-points de la langue de la page.
+ *
+ * Le français met une espace insécable devant, l'arabe le colle au mot. Le
+ * gabarit écrit la bonne forme dans le HTML; ce fichier la lit, comme il lit
+ * déjà tous ses autres textes. Sans cela, chaque ligne d'un message arabe
+ * porterait une ponctuation française.
+ */
+function sepOf(form: HTMLFormElement): string {
+  return form.dataset['msgSep'] ?? ' : ';
+}
+
 function valueOf(field: Field): string {
   if (field instanceof HTMLInputElement && field.type === 'checkbox') {
     return field.checked ? field.value || 'oui' : '';
@@ -179,18 +191,19 @@ function composeDetails(form: HTMLFormElement): string {
     return field ? valueOf(field) : '';
   };
   const label = (id: string) => labelOf(form, id);
+  const sep = sepOf(form);
 
   const lines = [
     get('tp-message'),
     '',
-    `${label('tp-ville')} : ${get('tp-ville')}`,
-    `${label('tp-famille')} : ${chosenLabel(control(form, 'tp-famille'))}`,
-    `${label('tp-ouvrage')} : ${chosenLabel(control(form, 'tp-ouvrage'))}`,
-    `${label('tp-dimensions')} : ${get('tp-dimensions')}`
+    `${label('tp-ville')}${sep}${get('tp-ville')}`,
+    `${label('tp-famille')}${sep}${chosenLabel(control(form, 'tp-famille'))}`,
+    `${label('tp-ouvrage')}${sep}${chosenLabel(control(form, 'tp-ouvrage'))}`,
+    `${label('tp-dimensions')}${sep}${get('tp-dimensions')}`
   ];
 
   const echeance = get('tp-echeance');
-  if (echeance) lines.push(`${label('tp-echeance')} : ${echeance}`);
+  if (echeance) lines.push(`${label('tp-echeance')}${sep}${echeance}`);
 
   lines.push(form.dataset['msgConsent'] ?? '');
 
@@ -205,23 +218,55 @@ function composeDetails(form: HTMLFormElement): string {
   return lines.join('\n');
 }
 
-/** Reprend la demande dans un message WhatsApp prérempli, sans rien perdre. */
-function whatsappFallback(form: HTMLFormElement, base: string, intro: string): string {
+/**
+ * La demande, écrite dans un message WhatsApp.
+ *
+ * Ce n'est plus un repli : c'est la SORTIE du formulaire. Le prospect remplit
+ * ses champs, et la conversation s'ouvre avec sa demande déjà rédigée — il n'a
+ * plus qu'à appuyer sur envoyer. C'est le canal que l'entreprise relève le plus
+ * vite, et le seul où la réponse peut être immédiate.
+ *
+ * Les libellés viennent des étiquettes du formulaire, donc de la langue de la
+ * page : le message part en français ou en arabe selon le visiteur, sans une
+ * seule chaîne traduite dans ce fichier.
+ */
+function composeWhatsapp(form: HTMLFormElement, base: string, intro: string): string {
   const get = (id: string) => {
     const field = control(form, id);
     return field ? valueOf(field) : '';
   };
   const label = (id: string) => labelOf(form, id);
-  const text = [
+  const sep = sepOf(form);
+
+  const lines = [
     intro,
-    `${label('tp-nom')} : ${get('tp-nom')}`,
-    `${label('tp-ville')} : ${get('tp-ville')}`,
-    `${label('tp-ouvrage')} : ${chosenLabel(control(form, 'tp-ouvrage'))}`,
-    `${label('tp-dimensions')} : ${get('tp-dimensions')}`,
     '',
-    get('tp-message')
-  ].join('\n');
-  return `${base}?text=${encodeURIComponent(text)}`;
+    `${label('tp-nom')}${sep}${get('tp-nom')}`,
+    `${label('tp-tel')}${sep}${get('tp-tel')}`,
+    `${label('tp-ville')}${sep}${get('tp-ville')}`,
+    `${label('tp-famille')}${sep}${chosenLabel(control(form, 'tp-famille'))}`,
+    `${label('tp-ouvrage')}${sep}${chosenLabel(control(form, 'tp-ouvrage'))}`,
+    `${label('tp-dimensions')}${sep}${get('tp-dimensions')}`
+  ];
+
+  const echeance = get('tp-echeance');
+  if (echeance) lines.push(`${label('tp-echeance')}${sep}${echeance}`);
+  const email = get('tp-email');
+  if (email) lines.push(`${label('tp-email')}${sep}${email}`);
+
+  lines.push('', get('tp-message'));
+
+  /* L'ORIGINE DE LA VISITE N'EST PAS ICI, ET C'EST VOULU.
+     Ce message est celui que le PROSPECT envoie de son propre compte : il doit
+     ressembler à ce qu'il aurait écrit lui-même. Une ligne « Source : Google ·
+     page d’entrée : / » y serait du jargon d'outil — en français dans un
+     message arabe de surcroît — et donnerait le sentiment d'être suivi.
+
+     L'attribution existe, entière, dans la copie qui part vers DCB
+     (`composeDetails`). C'est le bon endroit : elle sert l'entreprise, pas la
+     conversation. */
+
+  return `${base}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
 
 export function initLeadForm(): void {
@@ -243,8 +288,6 @@ export function initLeadForm(): void {
   const phoneDisplay = form.dataset['phone'] ?? '';
   const phoneHref = form.dataset['phoneHref'] ?? '';
   const msg = {
-    sending: form.dataset['msgSending'] ?? '',
-    failed: form.dataset['msgFailed'] ?? '',
     one: form.dataset['msgOne'] ?? '',
     many: form.dataset['msgMany'] ?? '',
     wa: form.dataset['msgWa'] ?? '',
@@ -258,6 +301,9 @@ export function initLeadForm(): void {
   const summaryBox = form.querySelector<HTMLElement>('#tp-form-erreurs');
   const summaryList = summaryBox?.querySelector('ul') ?? null;
   const sentPanel = document.querySelector<HTMLElement>('[data-sent-panel]');
+  /* Le lien de secours du panneau de confirmation : il reçoit la même adresse
+     WhatsApp que l'onglet ouvert, pour le cas où celui-ci a été bloqué. */
+  const sentLink = sentPanel?.querySelector<HTMLAnchorElement>('a.tp-btn') ?? null;
 
   linkFamilyToProduct(form);
 
@@ -313,11 +359,18 @@ export function initLeadForm(): void {
     summaryList.replaceChildren();
   }
 
-  function offerFallback(): void {
-    if (!status || !whatsappBase) return;
+  /**
+   * Le navigateur a refusé d'ouvrir l'onglet WhatsApp.
+   *
+   * Cela arrive quand un bloqueur juge le geste trop indirect. Le message est
+   * prêt et l'adresse aussi : on la donne en clair, plutôt que de laisser le
+   * prospect devant un panneau qui affirme qu'il s'est passé quelque chose.
+   */
+  function offerFallback(waUrl: string): void {
+    if (!status) return;
     const line = document.createElement('span');
     const wa = document.createElement('a');
-    wa.href = whatsappFallback(form, whatsappBase, msg.intro);
+    wa.href = waUrl;
     wa.rel = 'noopener noreferrer';
     wa.target = '_blank';
     wa.textContent = msg.wa;
@@ -348,38 +401,45 @@ export function initLeadForm(): void {
     const famille = chosenLabel(control(form, 'tp-famille'));
     const ouvrage = chosenLabel(control(form, 'tp-ouvrage'));
 
+    /* --- 1. WhatsApp, SYNCHRONEMENT --------------------------------------
+       L'ouverture doit se produire DANS le geste de l'utilisateur. Après le
+       moindre `await`, le navigateur ne la rattache plus au clic et le
+       bloqueur d'onglets l'arrête. C'est toute la raison pour laquelle la
+       copie vers DCB part après, et non l'inverse. */
+    const waUrl = composeWhatsapp(form, whatsappBase, msg.intro);
+    if (sentLink) sentLink.href = waUrl;
+    const opened = whatsappBase ? window.open(waUrl, '_blank', 'noopener,noreferrer') : null;
+
+    /* --- 2. La copie vers le circuit DCB ---------------------------------
+       Elle part sans bloquer et sans rien annoncer. Un prospect qui a déjà sa
+       conversation ouverte n'a que faire du sort d'une copie — et la trace
+       écrite existe même s'il referme WhatsApp sans envoyer, ce qui est
+       exactement ce qu'on attend d'une copie.
+
+       `no-cors` : la réponse est opaque par conception. Le site n'annonce
+       donc jamais « reçue », seulement « partie ». */
     payload.append(entries.name, get('tp-nom'));
     payload.append(entries.email, get('tp-email'));
     payload.append(entries.phone, get('tp-tel'));
     payload.append(entries.service, `${prefix} — ${famille} · ${ouvrage}`);
     payload.append(entries.pack, form.querySelector<HTMLInputElement>(`input[name="${entries.pack}"]`)?.value ?? '');
     payload.append(entries.details, composeDetails(form));
+    void fetch(action, { method: 'POST', mode: 'no-cors', body: payload }).catch(() => {
+      /* Sans effet visible : la demande est déjà partie par l'autre canal. */
+    });
 
+    /* --- 3. Le panneau ---------------------------------------------------- */
+    track('formulaire_envoye');
     if (submit) {
       submit.setAttribute('aria-disabled', 'true');
       submit.disabled = true;
     }
-    say(msg.sending, 'busy');
-
-    // `no-cors` : la réponse est opaque par conception. Un rejet signale un
-    // vrai échec réseau; une résolution signale que la requête est partie.
-    void fetch(action, { method: 'POST', mode: 'no-cors', body: payload })
-      .then(() => {
-        track('formulaire_envoye');
-        say('', '');
-        form.hidden = true;
-        if (sentPanel) {
-          sentPanel.hidden = false;
-          sentPanel.focus();
-        }
-      })
-      .catch(() => {
-        if (submit) {
-          submit.removeAttribute('aria-disabled');
-          submit.disabled = false;
-        }
-        say(msg.failed, 'error');
-        offerFallback();
-      });
+    say('', '');
+    form.hidden = true;
+    if (sentPanel) {
+      sentPanel.hidden = false;
+      sentPanel.focus();
+    }
+    if (!opened) offerFallback(waUrl);
   });
 }

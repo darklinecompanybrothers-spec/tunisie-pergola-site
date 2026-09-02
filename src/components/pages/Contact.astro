@@ -11,6 +11,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHead from '../PageHead.astro';
 import LeadForm from '../LeadForm.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import ContactChannels from '../ContactChannels.astro';
 import { SITE } from '../../data/site';
 import { CONTACT } from '../../data/copy';
@@ -39,6 +40,10 @@ const { locale } = Astro.props;
       <div class="tp-stack tp-span-lede">
         <h2 class="tp-mask" id="tp-formulaire">{CONTACT.formTitle[locale]}</h2>
         <p class="tp-text-soft">{CONTACT.formText[locale]}</p>
+
+        {/* Pour qui ne veut pas remplir dix champs : la conversation, tout de
+            suite. Le formulaire reste à côté pour qui veut être précis. */}
+        <p><QuoteBtn locale={locale} from={CONTACT.title[locale]} /></p>
 
         <hr class="tp-rule--accent" />
 

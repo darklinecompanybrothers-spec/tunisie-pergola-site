@@ -19,6 +19,7 @@ import PageHead from '../PageHead.astro';
 import CtaBand from '../CtaBand.astro';
 import Motif from '../Motif.astro';
 import Btn from '../Btn.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import { absolute } from '../../data/site';
 import { FAMILIES, PRODUCT_COUNT } from '../../data/catalogue';
 import { HUB } from '../../data/copy';
@@ -83,7 +84,10 @@ const headAlt = {
       </div>
       <div class="tp-prose tp-reveal tp-span-body">
         {HUB.introBody[locale].map((paragraphe) => <p>{paragraphe}</p>)}
-        <p><Btn href={localePath('/contact/', locale)} tone="quiet">{ui('ctaProject', locale)}</Btn></p>
+        <div class="tp-actions">
+          <QuoteBtn locale={locale} from={HUB.title[locale]} />
+          <Btn href={localePath('/contact/', locale)} tone="ghost">{ui('ctaDescribe', locale)}</Btn>
+        </div>
       </div>
     </div>
   </section>

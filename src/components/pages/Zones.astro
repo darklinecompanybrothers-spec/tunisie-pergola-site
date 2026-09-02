@@ -10,6 +10,7 @@
  */
 import Base from '../../layouts/Base.astro';
 import Btn from '../Btn.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import PageHead from '../PageHead.astro';
 import CtaBand from '../CtaBand.astro';
 import ContactChannels from '../ContactChannels.astro';
@@ -99,6 +100,8 @@ const observes = SITE.observedProjectPlaces.map((place) => place[locale]);
         </dl>
 
         <ContactChannels locale={locale} />
+
+        <p><QuoteBtn locale={locale} from={ZONES.title[locale]} /></p>
       </div>
     </div>
   </section>

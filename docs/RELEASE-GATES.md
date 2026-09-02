@@ -43,6 +43,30 @@ durée du tout.
 
 ## C — Destinataires réels et sous-traitance · BLOQUANT
 
+**Le circuit a changé le 2 septembre 2026.** Le site est désormais construit
+autour d’un canal de conversion unique : WhatsApp, au +216 58 233 020.
+
+| Chemin | Ce qui part | Vers qui |
+|---|---|---|
+| Bouton « Demander un devis » (barre, sections, barre flottante) | Un message pré-rempli — sujet et page d’origine — que le prospect envoie **de son propre compte** | Directement l’entreprise |
+| Formulaire de projet | Le même message, complété des dix champs de qualification | Directement l’entreprise |
+| Formulaire de projet, **copie simultanée** | Nom, téléphone, e-mail, famille · ouvrage, et le bloc de qualification complet avec l’origine de la visite | DCB, par le formulaire Google existant |
+
+Deux conséquences à valider avec le client et avec DCB :
+
+- **L’entreprise reçoit désormais des demandes que DCB ne voit pas** — celles
+  qui partent d’un bouton de devis sans passer par le formulaire. La ligne de
+  suivi de DCB ne peut donc plus être présentée comme exhaustive.
+- **Le prospect doit appuyer sur « envoyer » dans WhatsApp.** Le site ouvre la
+  conversation avec le message écrit; il ne l’envoie pas à sa place, et ne
+  peut pas savoir s’il a été envoyé. La copie vers DCB est ce qui garantit
+  qu’une demande remplie ne se perde pas si le prospect referme WhatsApp.
+
+La page de confidentialité décrit ce circuit en toutes lettres, dans les deux
+langues, y compris le fait que WhatsApp est un service tiers dont les
+conditions s’appliquent à la conversation.
+
+
 La page annonce : réception par DCB Authority Group pendant la phase initiale,
 puis transmission à l'entreprise, avec Google comme hébergeur des réponses.
 

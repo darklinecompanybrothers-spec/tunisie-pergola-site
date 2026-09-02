@@ -6,6 +6,7 @@
  */
 import ContactChannels from './ContactChannels.astro';
 import Btn from './Btn.astro';
+import QuoteBtn from './QuoteBtn.astro';
 import { SITE } from '../data/site';
 import { localePath, type Locale } from '../i18n/locales';
 import { ui } from '../i18n/ui';
@@ -14,9 +15,13 @@ interface Props {
   locale: Locale;
   title?: string | undefined;
   text?: string | undefined;
+  /** Sujet du devis — le nom de la famille sur une page de famille. */
+  subject?: string | undefined;
+  /** Page de départ, telle qu’elle s’affiche au visiteur. */
+  from?: string | undefined;
 }
 
-const { locale, title, text } = Astro.props;
+const { locale, title, text, subject, from } = Astro.props;
 ---
 
 <section class="tp-scene tp-dark" aria-labelledby="tp-cta-titre">
@@ -25,10 +30,16 @@ const { locale, title, text } = Astro.props;
       <p class="tp-eyebrow">{ui('eyebrowYourProject', locale)}</p>
       <h2 class="tp-cta__title tp-mask" id="tp-cta-titre">{title ?? ui('ctaTitle', locale)}</h2>
       <p class="tp-lede">{text ?? ui('ctaText', locale)}</p>
+      {/* Deux chemins, un seul aboutissement. Le premier ouvre la
+          conversation tout de suite, avec la demande déjà écrite : c’est le
+          plus court, et c’est celui que prend la majorité sur mobile. Le
+          second mène au formulaire, qui qualifie davantage — et qui repart
+          lui aussi sur WhatsApp une fois rempli. */}
       <div class="tp-actions">
-        <Btn href={localePath('/contact/', locale)}>{ui('ctaProject', locale)}</Btn>
+        <QuoteBtn locale={locale} subject={subject} from={from} />
+        <Btn href={localePath('/contact/', locale)} tone="ghost">{ui('ctaDescribe', locale)}</Btn>
       </div>
-      <p class="tp-text-soft">{SITE.responsePromise[locale]}.</p>
+      <p class="tp-text-soft">{ui('whatsappAnswer', locale)} · {SITE.responsePromise[locale]}.</p>
     </div>
 
     <ContactChannels locale={locale} />

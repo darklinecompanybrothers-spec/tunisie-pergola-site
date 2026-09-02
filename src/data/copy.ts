@@ -459,11 +459,13 @@ export const PRIVACY = {
   whoTitle: { fr: 'DCB, puis l’entreprise.', ar: 'DCB، ثمّ المؤسسة.' },
   whoBody: {
     fr: [
-      'Pendant la phase initiale, les demandes envoyées depuis ce site sont reçues et traitées par DCB Authority Group, l’agence qui opère ce site pour Tunisie Pergola, puis transmises à l’entreprise pour le suivi du projet.',
+      'Le bouton d’envoi du formulaire ouvre une conversation WhatsApp avec votre demande déjà rédigée. L’envoi reste votre geste : tant que vous n’appuyez pas sur envoyer, rien ne part par ce canal. WhatsApp est un service tiers, et ses propres conditions s’appliquent à la conversation.',
+      'En parallèle, une copie de la demande est transmise à DCB Authority Group, l’agence qui opère ce site pour Tunisie Pergola, puis relayée à l’entreprise pour le suivi du projet. Les boutons « Demander un devis » du site, eux, ouvrent WhatsApp sans copie : ils ne transmettent que ce que vous écrivez vous-même dans la conversation.',
       'Techniquement, le formulaire poste vers un formulaire Google : les réponses sont donc hébergées par Google, chez qui DCB les consulte. Aucun autre destinataire n’existe, et aucune donnée n’est revendue ni utilisée à des fins publicitaires.'
     ],
     ar: [
-      'خلال المرحلة الأولى، تتلقّى DCB Authority Group — الوكالة التي تدير هذا الموقع لفائدة تونيزي برغولا — الطلبات المرسلة من هذا الموقع وتعالجها، ثمّ تحيلها على المؤسسة لمتابعة المشروع.',
+      'زرّ إرسال الاستمارة يفتح محادثة واتساب وطلبك مكتوب فيها. أمّا الإرسال فيبقى فعلك أنت: ما لم تضغط على «إرسال» لا يخرج شيء عبر هذه القناة. وواتساب خدمة طرف ثالث، وشروطه الخاصّة تنطبق على المحادثة.',
+      'وبالتوازي، تُحال نسخة من الطلب إلى DCB Authority Group — الوكالة التي تدير هذا الموقع لفائدة تونيزي برغولا — ثمّ إلى المؤسسة لمتابعة المشروع. أمّا أزرار «اطلب عرض سعر» في الموقع فتفتح واتساب دون نسخة: ولا تنقل إلّا ما تكتبه أنت في المحادثة.',
       'وتقنيًا، ترسل الاستمارة إلى استمارة غوغل: فتُستضاف الإجابات لدى غوغل، وهناك تطّلع عليها DCB. ولا وجود لأيّ متلقٍّ آخر، ولا تُباع أيّ بيانات ولا تُستعمل لأغراض إشهارية.'
     ]
   },

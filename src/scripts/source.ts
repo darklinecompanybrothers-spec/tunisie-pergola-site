@@ -177,6 +177,13 @@ export function watchContactLinks(): void {
       if (!link) return;
       const href = link.getAttribute('href') ?? '';
       if (href.startsWith('tel:')) track('clic_telephone');
+      /* Le clic de devis est enregistré, mais le lien n'est PAS réécrit.
+         Le message WhatsApp est celui que le prospect envoie de son propre
+         compte : il doit ressembler à ce qu'il aurait écrit lui-même. Une
+         ligne « Source : Google · page d'entrée : / » y serait du jargon
+         d'outil, et donnerait le sentiment d'être suivi. La provenance y
+         figure déjà, en clair et dans sa langue — « Depuis la page :
+         Portails métalliques ». */
       else if (/^https:\/\/wa\.me\//i.test(href)) track('clic_whatsapp');
     },
     true

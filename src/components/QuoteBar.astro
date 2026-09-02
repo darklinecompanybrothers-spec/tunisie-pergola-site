@@ -1,0 +1,54 @@
+---
+/**
+ * La barre de devis — le raccourci permanent vers la conversation.
+ * ================================================================
+ *
+ * POURQUOI ELLE EXISTE
+ * Les pages du site sont longues : la page d'accueil fait seize mille pixels.
+ * Un visiteur convaincu au tiers de la descente n'a, sans elle, qu'un seul
+ * chemin — remonter chercher la barre, ou continuer jusqu'en bas. Cette barre
+ * met le canal à portée de pouce à chaque instant, sans jamais recouvrir le
+ * texte qu'on est en train de lire.
+ *
+ * POURQUOI ELLE N'EST PAS LE WIDGET VERT HABITUEL
+ * Le disque vert flottant est le signe extérieur d'un site qu'on n'a pas
+ * dessiné. Celle-ci est une plaque du site : anthracite, angle vif, liseré
+ * cuivre, la même étiquette en capitales espacées que les autres contrôles.
+ * Elle appartient à la page au lieu de flotter dessus.
+ *
+ * COMMENT ELLE APPARAÎT — RÈGLE INVERSÉE, COMME LA BARRE DE NAVIGATION
+ * L'état ÉCRIT est « visible ». Ce n'est qu'en présence d'une chronologie de
+ * défilement — donc sans une ligne de JavaScript, et sans rien à
+ * réinitialiser — qu'elle s'efface sur le premier écran, là où le hero porte
+ * déjà ses propres appels à l'action et où elle ferait doublon. Un moteur
+ * ancien affiche une barre toujours présente : moins élégant, jamais absent.
+ *
+ * Elle s'efface aussi pendant la saisie du formulaire (`:has(:focus-within)`),
+ * qui est le seul moment où elle pourrait masquer un champ.
+ */
+import GlyphWhatsapp from './GlyphWhatsapp.astro';
+import { quoteHref, type QuoteContext } from '../data/quote';
+import type { Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
+
+interface Props extends QuoteContext {
+  locale: Locale;
+}
+
+const { locale, subject, from } = Astro.props;
+const href = quoteHref(locale, { subject, from });
+---
+
+<div class="tp-quotebar" role="complementary" aria-label={ui('quoteBarAria', locale)}>
+  <a class="tp-quotebar__link" href={href} rel="noopener noreferrer" target="_blank" data-track="devis">
+    <GlyphWhatsapp class="tp-quotebar__glyph" />
+    {/* Deux étiquettes, une seule affichée : la longue sur grand écran, la
+        courte sur petit — où une plaque de 260 px recouvrirait un tiers de la
+        ligne qu'on est en train de lire. Celle qui n'est pas affichée est en
+        `display: none`, donc absente aussi de l’arbre d’accessibilité : le
+        lecteur d’écran n’annonce jamais le libellé deux fois. */}
+    <span class="tp-quotebar__long">{ui('ctaQuote', locale)}</span>
+    <span class="tp-quotebar__short">{ui('ctaQuoteShort', locale)}</span>
+    <span class="tp-visually-hidden">{ui('newTab', locale)}</span>
+  </a>
+</div>

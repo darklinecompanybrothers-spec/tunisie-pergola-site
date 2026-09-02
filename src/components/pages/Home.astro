@@ -16,6 +16,7 @@ import Base from '../../layouts/Base.astro';
 import Mark from '../brand/Mark.astro';
 import Shutter from '../Shutter.astro';
 import Btn from '../Btn.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import Shot from '../Shot.astro';
 import Families from '../Families.astro';
 import Story from '../Story.astro';
@@ -24,6 +25,7 @@ import LeadForm from '../LeadForm.astro';
 import ContactChannels from '../ContactChannels.astro';
 import { SITE, areaServed } from '../../data/site';
 import { HOME } from '../../data/copy';
+import { meta } from '../../data/pages';
 import { localePath, type Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
 import { Picture } from 'astro:assets';
@@ -77,7 +79,7 @@ const path = (route: Parameters<typeof localePath>[0]) => localePath(route, loca
         </h1>
         <p class="tp-hero__lede">{HOME.heroLede[locale]}</p>
         <div class="tp-actions">
-          <Btn href={path('/contact/')}>{ui('ctaProject', locale)}</Btn>
+          <QuoteBtn locale={locale} from={meta('/', locale).label} />
           <Btn href={path('/ouvrages-metalliques/')} tone="ghost">{ui('ctaCatalogue', locale)}</Btn>
         </div>
       </div>
@@ -235,6 +237,8 @@ const path = (route: Parameters<typeof localePath>[0]) => localePath(route, loca
         <ContactChannels locale={locale} />
       </div>
 
+      {/* Le formulaire complet reste le canal de qualification. Il repart lui
+          aussi sur WhatsApp : les deux chemins aboutissent au même endroit. */}
       <LeadForm locale={locale} />
     </div>
   </section>

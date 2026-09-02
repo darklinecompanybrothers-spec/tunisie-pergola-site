@@ -57,14 +57,13 @@ const ECHEANCES = ['deadlineAsap', 'deadline1to3', 'deadline3to6', 'deadlineUnsu
   data-phone={SITE.contact.phoneDisplay}
   data-phone-href={SITE.contact.phoneHref}
   data-locale={locale}
-  data-msg-sending={ui('formSending', locale)}
-  data-msg-failed={ui('formFailed', locale)}
   data-msg-one={ui('formCountOne', locale)}
   data-msg-many={ui('formCountMany', locale)}
   data-msg-wa={ui('formFallbackWhatsapp', locale)}
   data-msg-call={ui('formFallbackCall', locale)}
   data-msg-intro={ui('formWhatsappIntro', locale)}
   data-msg-consent={ui('consentLine', locale)}
+  data-msg-sep={ui('fieldSeparator', locale)}
 >
   <div class="tp-summary" id="tp-form-erreurs" role="alert" tabindex="-1">
     <h3>{ui('formErrorsTitle', locale)}</h3>
@@ -233,15 +232,35 @@ const ECHEANCES = ['deadlineAsap', 'deadline1to3', 'deadline3to6', 'deadlineUnsu
   </div>
 
   <div class="tp-actions">
-    <Btn type="submit" submitHook>{ui('ctaSend', locale)}</Btn>
+    <Btn type="submit" submitHook glyph="whatsapp">{ui('ctaSend', locale)}</Btn>
   </div>
 
   <p class="tp-status" data-status role="status" aria-live="polite"></p>
 </form>
 
+{/* Le panneau de confirmation porte un lien vers la MÊME adresse WhatsApp que
+    l'onglet ouvert au moment de l'envoi. Le script y recopie l'adresse
+    complète, message compris : si le bloqueur d'onglets a arrêté l'ouverture
+    — ou si le visiteur a fermé l'onglet par réflexe — un seul bouton le
+    remet dans la conversation, sans qu'il ait à ressaisir quoi que ce soit. */}
 <div class="tp-sent" id="tp-envoye" tabindex="-1" hidden data-sent-panel>
   <h3>{ui('formSentTitle', locale)}</h3>
   <p>{ui('formSentText', locale)} {SITE.responsePromise[locale]}.</p>
+
+  <div class="tp-actions">
+    <Btn
+      href={SITE.contact.whatsappHref}
+      glyph="whatsapp"
+      external
+      locale={locale}
+      track="devis"
+      aria-label={ui('ctaQuoteAria', locale)}
+    >
+      {ui('formOpenWhatsapp', locale)}
+    </Btn>
+  </div>
+
+  <p class="tp-text-soft">{ui('formSentBlocked', locale)}</p>
   <p class="tp-text-soft">
     {ui('formSentFallback', locale)}
     <a href={SITE.contact.phoneHref} class="tp-ltr">{SITE.contact.phoneDisplay}</a>.

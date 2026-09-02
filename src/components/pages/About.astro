@@ -9,6 +9,7 @@
  */
 import Base from '../../layouts/Base.astro';
 import Btn from '../Btn.astro';
+import QuoteBtn from '../QuoteBtn.astro';
 import PageHead from '../PageHead.astro';
 import CtaBand from '../CtaBand.astro';
 import Shot from '../Shot.astro';
@@ -144,9 +145,10 @@ const { locale } = Astro.props;
           {SITE.areaServed.length} {ABOUT.whereBody3[locale]}
         </p>
         <p>{ABOUT.whereIntake[locale]} {SITE.intake.inline[locale]}</p>
-        <p>
-          <Btn href={localePath('/zones-intervention/', locale)} tone="quiet">{ui('ctaZones', locale)}</Btn>
-        </p>
+        <div class="tp-actions">
+          <QuoteBtn locale={locale} from={ABOUT.title[locale]} />
+          <Btn href={localePath('/zones-intervention/', locale)} tone="ghost">{ui('ctaZones', locale)}</Btn>
+        </div>
       </div>
     </div>
   </section>

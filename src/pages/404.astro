@@ -14,6 +14,7 @@ import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Mark from '../components/brand/Mark.astro';
 import Motif from '../components/Motif.astro';
+import QuoteBtn from '../components/QuoteBtn.astro';
 import { SITE } from '../data/site';
 import { FAMILIES } from '../data/catalogue';
 import { LOST } from '../data/copy';
@@ -43,8 +44,8 @@ const locale = 'fr' as const;
       </div>
 
       <div class="tp-actions">
-        <Btn href={localePath('/ouvrages-metalliques/', locale)}>{ui('ctaCatalogue', locale)}</Btn>
-        <Btn href={localePath('/contact/', locale)} tone="ghost">{ui('ctaProject', locale)}</Btn>
+        <QuoteBtn locale={locale} from={LOST.eyebrow.fr} />
+        <Btn href={localePath('/ouvrages-metalliques/', locale)} tone="ghost">{ui('ctaCatalogue', locale)}</Btn>
       </div>
 
       <ul class="tp-board__grid tp-board__grid--short" role="list">

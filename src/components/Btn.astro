@@ -13,13 +13,33 @@
  * bouton à l'autre.
  *
  * `href` produit un lien, `type` un bouton. Aucun des deux ensemble.
+ *
+ * `glyph` pose un pictogramme de canal AVANT l'étiquette. Un seul existe —
+ * WhatsApp — et il n'est pas là pour décorer : un bouton qui fait quitter le
+ * site doit annoncer où il mène avant qu'on clique. Le glyphe se reconnaît
+ * plus vite que le mot ne se lit.
  */
+import GlyphWhatsapp from './GlyphWhatsapp.astro';
+import { type Locale } from '../i18n/locales';
+import { ui } from '../i18n/ui';
+
 interface Props {
   href?: string | undefined;
   type?: 'submit' | 'button' | undefined;
   tone?: 'primary' | 'ghost' | 'quiet';
+  /** Pictogramme de canal, posé avant l'étiquette. */
+  glyph?: 'whatsapp' | undefined;
   /** Ouvre dans un nouvel onglet — ajoute le `rel` et la mention lecteur d'écran. */
   external?: boolean | undefined;
+  /**
+   * Langue de la mention « nouvel onglet ».
+   *
+   * Elle est annoncée aux lecteurs d'écran, donc elle doit être dans la langue
+   * de la page : une page arabe qui dirait « (nouvel onglet) » en français
+   * ferait basculer la voix de synthèse au milieu d’un libellé. Le français
+   * reste le défaut, ce qui laisse intacts les appels qui ne la passent pas.
+   */
+  locale?: Locale | undefined;
   /** Valeur de `data-track`, lue par le suivi d'origine des demandes. */
   track?: string | undefined;
   /** Attribut de repérage utilisé par le script du formulaire. */
@@ -32,7 +52,9 @@ const {
   href,
   type,
   tone = 'primary',
+  glyph,
   external = false,
+  locale = 'fr',
   track,
   submitHook = false,
   class: className,
@@ -44,7 +66,7 @@ if (!href && !type) {
 }
 
 const BLADES = [0, 1, 2, 3, 4, 5];
-const classes = ['tp-btn', `tp-btn--${tone}`, className];
+const classes = ['tp-btn', `tp-btn--${tone}`, glyph && `tp-btn--${glyph}`, className];
 ---
 
 {
@@ -62,11 +84,12 @@ const classes = ['tp-btn', `tp-btn--${tone}`, className];
           <span />
         ))}
       </span>
+      {glyph === 'whatsapp' && <GlyphWhatsapp class="tp-btn__glyph" />}
       <span class="tp-btn__label">
         <slot />
       </span>
       <span class="tp-btn__arrow" aria-hidden="true" />
-      {external && <span class="tp-visually-hidden"> (nouvel onglet)</span>}
+      {external && <span class="tp-visually-hidden">{ui('newTab', locale)}</span>}
     </a>
   ) : (
     <button class:list={classes} type={type} aria-label={ariaLabel} data-submit={submitHook ? '' : undefined}>
@@ -75,6 +98,7 @@ const classes = ['tp-btn', `tp-btn--${tone}`, className];
           <span />
         ))}
       </span>
+      {glyph === 'whatsapp' && <GlyphWhatsapp class="tp-btn__glyph" />}
       <span class="tp-btn__label">
         <slot />
       </span>

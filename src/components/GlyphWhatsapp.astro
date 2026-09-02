@@ -1,0 +1,41 @@
+---
+/**
+ * Le glyphe du canal — une bulle, un combiné.
+ *
+ * Il est là pour une raison d'usage, pas de décoration : un bouton qui ouvre
+ * WhatsApp doit le dire AVANT le clic. Le mot seul ne suffit pas — le glyphe
+ * se reconnaît plus vite qu'il ne se lit, et c'est lui qui fait comprendre que
+ * la conversation s'ouvre là où le visiteur écrit déjà tous les jours.
+ *
+ * Dessiné, pas importé : aucune requête, aucune dépendance, et il prend
+ * `currentColor` — donc la couleur du bouton qui le porte, dans les deux
+ * thèmes. La bulle est au trait comme tout le site; le combiné est plein,
+ * parce qu'à 18 px un combiné au trait n'est plus qu'une tache.
+ *
+ * Décoratif : le libellé du bouton dit déjà où l'on va.
+ */
+interface Props {
+  class?: string | undefined;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['tp-glyph', className]}
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path
+    d="M20.4 11.7a8.4 8.4 0 0 1-12.5 7.4l-4.3 1.4 1.4-4.2A8.4 8.4 0 1 1 20.4 11.7Z"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M9.1 8.5c.2-.5.5-.5.8-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.1.2-.2.3 0 .5a5.8 5.8 0 0 0 2.5 2.2c.2.1.4.1.6-.1l.4-.5c.2-.2.3-.2.5-.1l1.6.7c.3.2.4.3.4.5v.7c0 .4-.3.8-.8 1-.6.3-1.5.2-2.6-.2a9.7 9.7 0 0 1-5.2-5.1c-.4-1-.4-1.8.1-2.3Z"
+    fill="currentColor"
+  />
+</svg>

@@ -22,6 +22,8 @@ import Mark from './brand/Mark.astro';
 import Wordmark from './brand/Wordmark.astro';
 import Motif from './Motif.astro';
 import Btn from './Btn.astro';
+import QuoteBtn from './QuoteBtn.astro';
+import { GENERIC_SUBJECT } from '../data/quote';
 import { SITE } from '../data/site';
 import { PRIMARY_LINKS, MOBILE_LINKS, meta, type RoutePath } from '../data/pages';
 import { FAMILIES } from '../data/catalogue';
@@ -39,6 +41,9 @@ const href = (target: RoutePath) => localePath(target, locale);
 const isCurrent = (target: RoutePath) => target === route;
 const familiesOpen = FAMILIES.some((family) => family.route === route) || route === '/ouvrages-metalliques/';
 const other = LOCALES.filter((code) => code !== locale);
+/* La barre est présente sur toutes les pages : son devis part donc sur le
+   sujet générique, avec le nom de la page courante pour la provenance. */
+const pageLabel = meta(route, locale).label;
 ---
 
 <header class="tp-header" id="tp-top">
@@ -119,7 +124,12 @@ const other = LOCALES.filter((code) => code !== locale);
       }
     </div>
 
-    <Btn href={href('/contact/')} class="tp-btn--compact tp-header__cta">{ui('ctaProject', locale)}</Btn>
+    <QuoteBtn
+      locale={locale}
+      subject={GENERIC_SUBJECT[locale]}
+      from={pageLabel}
+      class="tp-btn--compact tp-header__cta"
+    />
 
     <a class="tp-burger" href="#tp-menu" data-menu-open>
       <span class="tp-burger__glyph" aria-hidden="true"></span>
@@ -167,7 +177,12 @@ const other = LOCALES.filter((code) => code !== locale);
       </ul>
     </nav>
 
-    <Btn href={href('/contact/')}>{ui('ctaProject', locale)}</Btn>
+    {/* Deux actions dans le menu déployé : la conversation immédiate, puis
+        le formulaire pour qui veut décrire son projet en détail. */}
+    <div class="tp-menu__actions">
+      <QuoteBtn locale={locale} subject={GENERIC_SUBJECT[locale]} from={pageLabel} />
+      <Btn href={href('/contact/')} tone="ghost">{ui('ctaDescribe', locale)}</Btn>
+    </div>
 
     <div class="tp-menu__meta">
       <a href={SITE.contact.phoneHref} data-track="phone" class="tp-ltr">{SITE.contact.phoneDisplay}</a>

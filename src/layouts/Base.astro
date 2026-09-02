@@ -19,9 +19,10 @@
 import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import QuoteBar from '../components/QuoteBar.astro';
 import Mark from '../components/brand/Mark.astro';
 import Wordmark from '../components/brand/Wordmark.astro';
-import type { RoutePath } from '../data/pages';
+import { meta, type RoutePath } from '../data/pages';
 import { LOCALE_INFO, type Locale } from '../i18n/locales';
 import { ui } from '../i18n/ui';
 import '../styles/app.css';
@@ -34,9 +35,17 @@ interface Props {
   curtain?: boolean | undefined;
   /** Nœuds JSON-LD propres à la page. */
   graph?: readonly object[] | undefined;
+  /**
+   * Sujet de la demande de devis, pour la barre flottante.
+   *
+   * Une page de famille passe le nom de la famille : le message WhatsApp part
+   * alors déjà qualifié. Les autres pages n’en passent pas et reçoivent la
+   * formule générique.
+   */
+  quoteSubject?: string | undefined;
 }
 
-const { route, locale, shareImage, curtain = false, graph } = Astro.props;
+const { route, locale, shareImage, curtain = false, graph, quoteSubject } = Astro.props;
 const info = LOCALE_INFO[locale];
 ---
 
@@ -64,6 +73,8 @@ const info = LOCALE_INFO[locale];
     </main>
 
     <SiteFooter locale={locale} />
+
+    <QuoteBar locale={locale} subject={quoteSubject} from={meta(route, locale).label} />
 
     <script>
       import '../scripts/site';
