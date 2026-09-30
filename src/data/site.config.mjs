@@ -27,8 +27,8 @@ const ORIGIN = 'https://tunisiepergola.tn';
  * plus apparaître nulle part : `scripts/audit-build.mjs` les recherche
  * nommément dans le HTML produit.
  */
-const PHONE_E164 = '+21658233020';
-const PHONE_DISPLAY = '+216 58 233 020';
+const PHONE_E164 = '+216 99 447 993';
+const PHONE_DISPLAY = '+216 99 447 993';
 
 export const SITE = {
   origin: ORIGIN,
