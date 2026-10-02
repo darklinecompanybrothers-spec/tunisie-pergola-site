@@ -44,7 +44,7 @@ durée du tout.
 ## C — Destinataires réels et sous-traitance · BLOQUANT
 
 **Le circuit a changé le 2 septembre 2026.** Le site est désormais construit
-autour d’un canal de conversion unique : WhatsApp, au +216 58 233 020.
+autour d’un canal de conversion unique : WhatsApp, au +216 99 447 993.
 
 | Chemin | Ce qui part | Vers qui |
 |---|---|---|

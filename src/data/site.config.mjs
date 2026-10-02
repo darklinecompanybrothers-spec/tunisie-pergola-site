@@ -21,19 +21,18 @@ const ORIGIN = 'https://tunisiepergola.tn';
 
 /**
  * Numéro public, deux écritures pour un seul et même numéro.
- * Ligne commerciale confirmée le 1er septembre 2026. Elle remplace le numéro
- * du 27 août (+216 99 447 993), lui-même successeur du numéro historique
- * incrusté sur d'anciennes photos (+216 98 363 003). Aucun des deux ne doit
- * plus apparaître nulle part : `scripts/audit-build.mjs` les recherche
- * nommément dans le HTML produit.
+ * Ligne commerciale actualisée le 2 octobre 2026 : le +216 99 447 993
+ * remplace le +216 58 233 020. Le numéro historique incrusté sur d'anciennes
+ * photos (+216 98 363 003) reste également retiré. Le contrôle de build
+ * interdit ces anciens numéros dans le HTML produit.
  */
-const PHONE_E164 = '+216 99 447 993';
+const PHONE_E164 = '+21699447993';
 const PHONE_DISPLAY = '+216 99 447 993';
 
 export const SITE = {
   origin: ORIGIN,
   /** Date du dernier contrôle du dossier client. */
-  lastReviewed: '2026-09-01',
+  lastReviewed: '2026-10-02',
 
   name: 'Tunisie Pergola',
   /** Signature de marque — proposition identité v1, à valider. */
@@ -295,4 +294,4 @@ export const BRAND = {
  * Anciens numéros publics. Ils ne sont conservés que pour être INTERDITS :
  * le contrôle de build échoue si l'un d'eux réapparaît dans le HTML produit.
  */
-export const RETIRED_PHONES = ['+216 99 447 993', '+21699447993', '+216 98 363 003', '+21698363003'];
+export const RETIRED_PHONES = ['+216 58 233 020', '+21658233020', '+216 98 363 003', '+21698363003'];

@@ -295,8 +295,8 @@
      Un numéro de téléphone, une adresse e-mail, une URL sont des séquences
      LATINES. Placées dans un paragraphe arabe, l'algorithme bidirectionnel les
      lit de gauche à droite — ce qui est correct — mais laisse leur ponctuation
-     de bord flotter du mauvais côté : « +216 58 233 020 » peut s'afficher
-     « 216 58 233 020+ ». `direction: ltr` sur un élément neutre règle le cas
+     de bord flotter du mauvais côté : « +216 99 447 993 » peut s'afficher
+     « 216 99 447 993+ ». `direction: ltr` sur un élément neutre règle le cas
      une fois pour toutes, sans toucher au reste de la phrase. */
   .tp-ltr,
   [dir='rtl'] a[href^='tel:'],
